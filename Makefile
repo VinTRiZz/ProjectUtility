@@ -52,9 +52,13 @@ OBJECTS_DIR   = BUILD/
 
 SOURCES       = src/main.cpp \
 		src/gui/mainwindow.cpp \
+		src/filework/dependencyparser.cpp \
+		src/filework/filesearcher.cpp \
 		src/filework/projectdirectoryfileinterface.cpp BUILD/moc_mainwindow.cpp
 OBJECTS       = BUILD/main.o \
 		BUILD/mainwindow.o \
+		BUILD/dependencyparser.o \
+		BUILD/filesearcher.o \
 		BUILD/projectdirectoryfileinterface.o \
 		BUILD/moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -118,6 +122,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -139,8 +144,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		DepsSearcher.pro src/gui/mainwindow.h \
+		src/filework/dependencyparser.h \
+		src/filework/filesearcher.h \
 		src/filework/projectdirectoryfileinterface.h src/main.cpp \
 		src/gui/mainwindow.cpp \
+		src/filework/dependencyparser.cpp \
+		src/filework/filesearcher.cpp \
 		src/filework/projectdirectoryfileinterface.cpp
 QMAKE_TARGET  = DepsSearcher
 DESTDIR       = BIN/
@@ -215,6 +224,7 @@ Makefile: DepsSearcher.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -301,6 +311,7 @@ Makefile: DepsSearcher.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -340,8 +351,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/dependencyparser.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/dependencyparser.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents src/gui/mainwindow.ui $(DISTDIR)/
 
 
@@ -377,7 +388,8 @@ BUILD/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.c
 compiler_moc_header_make_all: BUILD/moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) BUILD/moc_mainwindow.cpp
-BUILD/moc_mainwindow.cpp: src/gui/mainwindow.h \
+BUILD/moc_mainwindow.cpp: src/filework/projectdirectoryfileinterface.h \
+		src/gui/mainwindow.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Документы/Projects/Qt/DepsSearcher/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/gui/mainwindow.h -o BUILD/moc_mainwindow.cpp
@@ -403,14 +415,25 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-BUILD/main.o: src/main.cpp 
+BUILD/main.o: src/main.cpp src/gui/mainwindow.h \
+		src/filework/projectdirectoryfileinterface.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main.o src/main.cpp
 
 BUILD/mainwindow.o: src/gui/mainwindow.cpp src/gui/mainwindow.h \
+		src/filework/projectdirectoryfileinterface.h \
 		BUILD/ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/mainwindow.o src/gui/mainwindow.cpp
 
-BUILD/projectdirectoryfileinterface.o: src/filework/projectdirectoryfileinterface.cpp src/filework/projectdirectoryfileinterface.h
+BUILD/dependencyparser.o: src/filework/dependencyparser.cpp src/filework/dependencyparser.h \
+		src/filework/filesearcher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependencyparser.o src/filework/dependencyparser.cpp
+
+BUILD/filesearcher.o: src/filework/filesearcher.cpp src/filework/filesearcher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/filesearcher.o src/filework/filesearcher.cpp
+
+BUILD/projectdirectoryfileinterface.o: src/filework/projectdirectoryfileinterface.cpp src/filework/projectdirectoryfileinterface.h \
+		src/filework/filesearcher.h \
+		src/filework/dependencyparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/projectdirectoryfileinterface.o src/filework/projectdirectoryfileinterface.cpp
 
 BUILD/moc_mainwindow.o: BUILD/moc_mainwindow.cpp 
