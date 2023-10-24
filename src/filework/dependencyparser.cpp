@@ -25,7 +25,7 @@ void DependencyParser::setPath(const QString &path)
 
 void DependencyParser::parseAllDepends()
 {
-    qDebug() << "Parsing all depends BEGIN";
+    qDebug() << "[PARSING DEPENDS]";
 
     if (currentBasePath.size() > 0)
     {
@@ -36,7 +36,7 @@ void DependencyParser::parseAllDepends()
             parseDepends(lib);
     }
 
-    qDebug() << "Parsing all depends END";
+    qDebug() << "[PARSED]";
 }
 
 void DependencyParser::parseDepends(Project &proj)
@@ -104,6 +104,6 @@ void DependencyParser::parseDepends(Project &proj)
     {
         dep.chop(8);
         proj.depends << QFileInfo(dep).baseName();
-        qDebug() << "Found dep:" << proj.name << "--->" << proj.depends.last();
+        qDebug() << "Parsed dep:" << proj.name << "--->" << proj.depends.last();
     }
 }

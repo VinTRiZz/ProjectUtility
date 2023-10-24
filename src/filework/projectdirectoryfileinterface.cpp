@@ -2,6 +2,7 @@
 
 #include "filesearcher.h"
 #include "dependencyparser.h"
+#include "backupmanager.h"
 
 #include <QDebug>
 
@@ -25,6 +26,8 @@ struct ProjectDirectoryFileInterface::Impl
 
     FileSearcher m_searcher{ apps, libs };
     DependencyParser m_depParser { apps, libs };
+
+    BackupManager m_backupManager;
 
     void DEBUG_PRINT_FILES()
     {
@@ -107,6 +110,22 @@ struct ProjectDirectoryFileInterface::Impl
         }
         qDebug() << "[DEPENDS UPDATED]";
     }
+
+    void backupAll()
+    {
+        for (Project & app : apps)
+        {
+            m_backupManager.backup(app.name, app.srcFilePath);
+            m_backupManager.backup(app.name, app.dependFilePath);
+        }
+
+        for (Project & lib : libs)
+        {
+            m_backupManager.backup(lib.name, lib.srcFilePath);
+            m_backupManager.backup(lib.name, lib.useFilePath);
+            m_backupManager.backup(lib.name, lib.dependFilePath);
+        }
+    }
 };
 
 ProjectDirectoryFileInterface::ProjectDirectoryFileInterface() :
@@ -136,6 +155,8 @@ int ProjectDirectoryFileInterface::searchForFiles(const QString path)
             m_pImpl->m_depParser.parseAllDepends();
             // m_pImpl->DEBUG_ADD_DEPENDS();
             m_pImpl->DEBUG_PRINT_FILES();
+
+            m_pImpl->backupAll();
         }
     );
 
