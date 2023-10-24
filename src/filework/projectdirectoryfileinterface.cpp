@@ -47,6 +47,11 @@ struct ProjectDirectoryFileInterface::Impl
         Project foundProj;
         foundProj.isLibrary = isLibs;
 
+        if (!isLibs)
+            apps.clear();
+        else
+            libs.clear();
+
         for (QString & entry : entries)
         {
             foundProj.name = entry;
@@ -179,20 +184,21 @@ struct ProjectDirectoryFileInterface::Impl
     {
         int currentIteration = 1;
         qDebug() << "--------------------------------------------------------------------------------------------------------";
-        qDebug() << "\033[32mFound apps:\033[0m";
+        qDebug() << "[\033[34mDEBUG\033[0m] \033[32mFound apps:\033[0m";
         for (Project & app : apps)
         {
-            qDebug() << "\033[33mAPP N:" << currentIteration++ << "\033[0m" << endl
-                     << "NAME:" << app.name                                 << endl
-                     << "SRC: " << app.srcFilePath                          << endl
-                     << "DEPS:" << app.dependFilePath
+            qDebug() << "\033[33mAPP N:" << currentIteration++ << "\033[0m"   << endl
+                     << "NAME:  " << app.name                                 << endl
+                     << "SRC:   " << app.srcFilePath                          << endl
+                     << "DEPS:  " << app.dependFilePath                       << endl
+                     << "DEPON: " << app.depends.join(", ")                   << endl
             ;
         }
 
         qDebug() << "--------------------------------------------------------------------------------------------------------";
 
         currentIteration = 1;
-        qDebug() << "\033[32mFound libraries:\033[0m";
+        qDebug() << "[\033[34mDEBUG\033[0m] \033[32mFound libraries:\033[0m";
         for (Project & lib : libs)
         {
             qDebug() << "\033[33mLIBRARY N:" << currentIteration++ << "\033[0m" << endl
@@ -203,6 +209,21 @@ struct ProjectDirectoryFileInterface::Impl
             ;
         }
         qDebug() << "--------------------------------------------------------------------------------------------------------";
+    }
+
+    void DEBUG_ADD_DEPENDS()
+    {
+        QString anotherDepName;
+        for (Project & app : apps)
+        {
+            for (int i = 0; i < (qrand() % (libs.size() - 1) + 1); i++)
+            {
+                anotherDepName = libs[qrand() % libs.size()].name;
+                qDebug() << "[\033[34mDEBUG\033[0m] Adding depend on" << anotherDepName << "for" << app.name;
+                if (!app.depends.contains(anotherDepName))
+                    app.depends << anotherDepName;
+            }
+        }
     }
 };
 
@@ -230,7 +251,8 @@ int ProjectDirectoryFileInterface::searchForFiles(const QString path)
         [this]()
         {
             m_pImpl->findFiles();
-            m_pImpl->DEBUG_PRINT_FILES();
+            m_pImpl->DEBUG_ADD_DEPENDS();
+            // m_pImpl->DEBUG_PRINT_FILES();
         }
     );
 
@@ -242,6 +264,47 @@ int ProjectDirectoryFileInterface::searchForFiles(const QString path)
 QString ProjectDirectoryFileInterface::currentBasePath() const
 {
     return m_pImpl->currentBasePath;
+}
+
+QStringList ProjectDirectoryFileInterface::getLibraryNameList()
+{
+    QStringList result;
+    for (Project & lib : m_pImpl->libs)
+    {
+        result << lib.name;
+    }
+    return result;
+}
+
+QStringList ProjectDirectoryFileInterface::getAppNameList()
+{
+    QStringList result;
+    for (Project & app : m_pImpl->apps)
+    {
+        result << app.name;
+    }
+    return result;
+}
+
+void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QString &libraryName)
+{
+    qDebug() << "\033[32mAdding library" << libraryName << "to project:" << appName << "\033[0m";
+}
+
+void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const QString &libraryName)
+{
+    qDebug() << "\033[33mRemoving library" << libraryName << "from project:" << appName << "\033[0m";
+}
+
+QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
+{
+    auto app = std::find_if( m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](const Project & app){ return (appName == app.name); } );
+
+    if (app != m_pImpl->apps.end())
+    {
+        return app->depends;
+    }
+    return QStringList();
 }
 
 void ProjectDirectoryFileInterface::poll()

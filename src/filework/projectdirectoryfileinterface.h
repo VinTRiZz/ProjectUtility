@@ -17,6 +17,14 @@ public:
     int searchForFiles(const QString path);
     QString currentBasePath() const;
 
+    QStringList getLibraryNameList();
+    QStringList getAppNameList();
+
+    void addLibrary(const QString & appName, const QString & libraryName);
+    void removeLibrary(const QString & appName, const QString & libraryName);
+
+    QStringList getDepends(const QString & appName);
+
     void poll();
 
 private:

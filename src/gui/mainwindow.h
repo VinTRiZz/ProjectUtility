@@ -17,10 +17,19 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void addSelectedLibrary();
+    void removeSelectedLibrary();
+    void loadDependencyList();
+
 private:
     Ui::MainWindow *ui;
 
     FileWork::ProjectDirectoryFileInterface m_fileInterface;
+
+    void updateProjectList();
+    void setupAvailableLibrariesView();
+    void updateUsedLibraries();
 };
 
 #endif // MAINWINDOW_H
