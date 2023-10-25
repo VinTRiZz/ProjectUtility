@@ -55,6 +55,7 @@ SOURCES       = src/main.cpp \
 		src/filework/backupmanager.cpp \
 		src/filework/cleaner.cpp \
 		src/filework/dependencyparser.cpp \
+		src/filework/dependsworker.cpp \
 		src/filework/filesearcher.cpp \
 		src/filework/projectdirectoryfileinterface.cpp BUILD/moc_mainwindow.cpp
 OBJECTS       = BUILD/main.o \
@@ -62,6 +63,7 @@ OBJECTS       = BUILD/main.o \
 		BUILD/backupmanager.o \
 		BUILD/cleaner.o \
 		BUILD/dependencyparser.o \
+		BUILD/dependsworker.o \
 		BUILD/filesearcher.o \
 		BUILD/projectdirectoryfileinterface.o \
 		BUILD/moc_mainwindow.o
@@ -151,12 +153,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/filework/backupmanager.h \
 		src/filework/cleaner.h \
 		src/filework/dependencyparser.h \
+		src/filework/dependsworker.h \
 		src/filework/filesearcher.h \
 		src/filework/projectdirectoryfileinterface.h src/main.cpp \
 		src/gui/mainwindow.cpp \
 		src/filework/backupmanager.cpp \
 		src/filework/cleaner.cpp \
 		src/filework/dependencyparser.cpp \
+		src/filework/dependsworker.cpp \
 		src/filework/filesearcher.cpp \
 		src/filework/projectdirectoryfileinterface.cpp
 QMAKE_TARGET  = DepsSearcher
@@ -359,8 +363,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/backupmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/backupmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/backupmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/dependsworker.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/backupmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/dependsworker.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents src/gui/mainwindow.ui $(DISTDIR)/
 
 
@@ -397,6 +401,7 @@ compiler_moc_header_make_all: BUILD/moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) BUILD/moc_mainwindow.cpp
 BUILD/moc_mainwindow.cpp: src/filework/projectdirectoryfileinterface.h \
+		src/filework/cleaner.h \
 		src/gui/mainwindow.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -424,11 +429,13 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 BUILD/main.o: src/main.cpp src/gui/mainwindow.h \
-		src/filework/projectdirectoryfileinterface.h
+		src/filework/projectdirectoryfileinterface.h \
+		src/filework/cleaner.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main.o src/main.cpp
 
 BUILD/mainwindow.o: src/gui/mainwindow.cpp src/gui/mainwindow.h \
 		src/filework/projectdirectoryfileinterface.h \
+		src/filework/cleaner.h \
 		BUILD/ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/mainwindow.o src/gui/mainwindow.cpp
 
@@ -442,12 +449,17 @@ BUILD/dependencyparser.o: src/filework/dependencyparser.cpp src/filework/depende
 		src/filework/filesearcher.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependencyparser.o src/filework/dependencyparser.cpp
 
+BUILD/dependsworker.o: src/filework/dependsworker.cpp src/filework/dependsworker.h \
+		src/filework/filesearcher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependsworker.o src/filework/dependsworker.cpp
+
 BUILD/filesearcher.o: src/filework/filesearcher.cpp src/filework/filesearcher.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/filesearcher.o src/filework/filesearcher.cpp
 
 BUILD/projectdirectoryfileinterface.o: src/filework/projectdirectoryfileinterface.cpp src/filework/projectdirectoryfileinterface.h \
 		src/filework/filesearcher.h \
-		src/filework/dependencyparser.h
+		src/filework/dependencyparser.h \
+		src/filework/backupmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/projectdirectoryfileinterface.o src/filework/projectdirectoryfileinterface.cpp
 
 BUILD/moc_mainwindow.o: BUILD/moc_mainwindow.cpp 

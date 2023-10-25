@@ -1,8 +1,8 @@
 #include "projectdirectoryfileinterface.h"
 
 #include "filesearcher.h"
-#include "dependencyparser.h"
 #include "backupmanager.h"
+#include "dependsworker.h"
 
 #include <QDebug>
 
@@ -17,31 +17,19 @@ using namespace FileWork;
 
 struct ProjectDirectoryFileInterface::Impl
 {
-    std::thread * processThread {nullptr};
-
     QVector<Project> apps;
     QVector<Project> libs;
 
     QString currentBasePath;
 
     FileSearcher m_searcher{ apps, libs };
-    DependencyParser m_depParser { apps, libs };
-    BackupManager m_backupManager;
+    DependsWorker m_dependsWorker {apps, libs };
 
-    void poll()
-    {
-        if (processThread)
-        {
-            if (processThread->joinable())
-                processThread->join();
-            delete processThread;
-            processThread = nullptr;
-        }
-    }
+    BackupManager m_backupManager;
 
     void DEBUG_PRINT_FILES()
     {
-        poll();
+        m_dependsWorker.poll();
 
         int currentIteration = 1;
         qDebug() << "--------------------------------------------------------------------------------------------------------";
@@ -74,7 +62,7 @@ struct ProjectDirectoryFileInterface::Impl
 
     void DEBUG_ADD_DEPENDS()
     {
-        poll();
+        m_dependsWorker.poll();
 
         qsrand(std::time(NULL));
         QString anotherDepName;
@@ -91,55 +79,18 @@ struct ProjectDirectoryFileInterface::Impl
             }
         }
 
-        updateDepends();
+        m_dependsWorker.updateDepends();
     }
 
     void setPath(const QString & path)
     {
         m_searcher.setPath(path);
-        m_depParser.setPath(path);
-    }
-
-    void updateDepends()
-    {
-        poll();
-        processThread = new std::thread(
-            [this]()
-            {
-                qDebug() << "[INTERFACE] Updating depends";
-
-                QStringList dependsBuffer;
-
-                for (Project & app : apps)
-                {
-                    dependsBuffer = app.depends;
-                    std::sort(dependsBuffer.begin(), dependsBuffer.end(),
-                        [](QString & first, QString & second)
-                        {
-                            return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-                        }
-                    );
-                    m_depParser.writeDepends(app);
-                }
-
-                for (Project & lib : libs)
-                {
-                    std::sort(lib.depends.begin(), lib.depends.end(),
-                        [](QString & first, QString & second)
-                        {
-                            return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-                        }
-                    );
-                    m_depParser.writeDepends(lib);
-                }
-                qDebug() << "[INTERFACE] Depends updated";
-            }
-        );
+        m_dependsWorker.setPath(path);
     }
 
     bool backupAll()
     {
-        poll();
+        m_dependsWorker.poll();
 
         bool result = true;
         for (Project & app : apps)
@@ -161,7 +112,7 @@ struct ProjectDirectoryFileInterface::Impl
 
     bool loadBackup()
     {
-        poll();
+        m_dependsWorker.poll();
 
         apps.clear();
         libs.clear();
@@ -169,7 +120,7 @@ struct ProjectDirectoryFileInterface::Impl
         bool result = m_backupManager.loadAll();
 
         m_searcher.findFiles();
-        m_depParser.parseAllDepends();
+        m_dependsWorker.parseFiles();
 
         return result;
     }
@@ -183,33 +134,33 @@ ProjectDirectoryFileInterface::ProjectDirectoryFileInterface() :
 
 ProjectDirectoryFileInterface::~ProjectDirectoryFileInterface()
 {
-    poll();
+
 }
 
-int ProjectDirectoryFileInterface::searchForFiles(const QString path)
+int ProjectDirectoryFileInterface::processDirectory(const QString path)
 {
-    poll();
+    m_pImpl->m_dependsWorker.poll();
 
     m_pImpl->setPath(path);
 
     m_pImpl->m_searcher.findFiles();
-    m_pImpl->m_depParser.parseAllDepends();
+    m_pImpl->m_dependsWorker.parseFiles();
 //    m_pImpl->DEBUG_ADD_DEPENDS();
 //    m_pImpl->DEBUG_PRINT_FILES();
 
-    poll();
+    m_pImpl->m_dependsWorker.poll();
 
     return (m_pImpl->apps.size() + m_pImpl->libs.size());
 }
 
-QString ProjectDirectoryFileInterface::currentBasePath() const
+QString ProjectDirectoryFileInterface::currentDirectory() const
 {
     return m_pImpl->m_searcher.basePath();
 }
 
 QStringList ProjectDirectoryFileInterface::getLibraryNameList()
 {
-    poll();
+    m_pImpl->m_dependsWorker.poll();
     QStringList result;
     for (const Project & lib : m_pImpl->libs)
     {
@@ -220,7 +171,7 @@ QStringList ProjectDirectoryFileInterface::getLibraryNameList()
 
 QStringList ProjectDirectoryFileInterface::getAppNameList()
 {
-    poll();
+    m_pImpl->m_dependsWorker.poll();
     QStringList result;
     for (const Project & app : m_pImpl->apps)
     {
@@ -231,53 +182,22 @@ QStringList ProjectDirectoryFileInterface::getAppNameList()
 
 void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QString &libraryName)
 {
-    poll();
-
-    auto appPos = std::find_if(m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](Project & app){ return (app.name == appName); });
-
-    auto libraryPos = std::find_if(m_pImpl->libs.begin(), m_pImpl->libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
-
-    if ((appPos == m_pImpl->apps.end()) || (libraryPos == m_pImpl->libs.end()))
-        return;
-
-    appPos->depends << libraryName;
-
-    m_pImpl->updateDepends();
-    qDebug() << "[Dependency \033[32madded\033[0m]: " << appName << "--->" << libraryName;
+    m_pImpl->m_dependsWorker.addLibrary(appName, libraryName);
 }
 
 void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const QString &libraryName)
 {
-    poll();
-
-    auto appPos = std::find_if(m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](Project & app){ return (app.name == appName); });
-
-    auto libraryPos = std::find_if(m_pImpl->libs.begin(), m_pImpl->libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
-
-    if ((appPos == m_pImpl->apps.end()) || (libraryPos == m_pImpl->libs.end()))
-        return;
-
-    appPos->depends.removeOne(libraryName);
-
-    m_pImpl->updateDepends();
-    qDebug() << "[Dependency \033[31mremoved\033[0m]: " << appName << "-X->" << libraryName;
+    m_pImpl->m_dependsWorker.removeLibrary(appName, libraryName);
 }
 
 QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
 {
-    poll();
-
-    auto app = std::find_if( m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](const Project & currentApp){ return (appName == currentApp.name); } );
-
-    if (app != m_pImpl->apps.end())
-        return app->depends;
-
-    return QStringList();
+    return m_pImpl->m_dependsWorker.getDepends(appName);
 }
 
 void ProjectDirectoryFileInterface::poll()
 {
-    m_pImpl->poll();
+    m_pImpl->m_dependsWorker.poll();
 }
 
 bool ProjectDirectoryFileInterface::backupAll()

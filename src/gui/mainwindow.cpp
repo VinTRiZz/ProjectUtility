@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     setupAvailableLibrariesView();
 
     setBasePath(); // For tests
-    updateProjectList();
 
     // Remove focus
     REMOVE_BUTTON_FOCUS(add);
@@ -39,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CONNECT_CLIECKED(clean, removeFiles);
 
     connect(ui->project_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::loadDependencyList);
+    connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForText);
 }
 
 MainWindow::~MainWindow()
@@ -140,7 +140,7 @@ void MainWindow::removeFiles()
     if (ui->makeFiles_checkBox->isChecked())
         filesToRemove |= FileWork::FILE_REMOVE_TYPE::MAKEFILE;
 
-    QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentBasePath(), filesToRemove);
+    QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentDirectory(), filesToRemove);
 
     // Check if all's good
     for (QString & file : fileList)
@@ -161,6 +161,18 @@ void MainWindow::removeFiles()
     m_cleaner.removeFiles(fileList);
 }
 
+void MainWindow::searchForText(const QString &changedText)
+{
+    auto foundItems = ui->avaliableLibs_listWidget->findItems(changedText, Qt::MatchContains);
+
+    if (foundItems.size() < 1)
+        return;
+
+    auto pItem = foundItems[0];
+    if (pItem)
+        ui->avaliableLibs_listWidget->setCurrentItem(pItem);
+}
+
 void MainWindow::updateProjectList()
 {
     if (basePath.size() < 1)
@@ -169,7 +181,7 @@ void MainWindow::updateProjectList()
         return;
     }
 
-    int parsedFilesCount = m_fileInterface.searchForFiles(basePath);
+    int parsedFilesCount = m_fileInterface.processDirectory(basePath);
 
     if (!parsedFilesCount)
     {
@@ -204,4 +216,5 @@ void MainWindow::updateProjectList()
 void MainWindow::setupAvailableLibrariesView()
 {
     ui->avaliableLibs_listWidget->setFocusPolicy(Qt::NoFocus);
+    ui->avaliableLibs_listWidget->setSortingEnabled(true);
 }

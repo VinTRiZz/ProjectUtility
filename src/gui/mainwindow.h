@@ -30,6 +30,8 @@ public slots:
 
     void removeFiles();
 
+    void searchForText(const QString & changedText);
+
 private:
     Ui::MainWindow *ui;
 

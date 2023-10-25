@@ -14,8 +14,8 @@ public:
     ~ProjectDirectoryFileInterface();
 
     // Returns count of files found
-    int searchForFiles(const QString path);
-    QString currentBasePath() const;
+    int processDirectory(const QString path);
+    QString currentDirectory() const;
 
     QStringList getLibraryNameList();
     QStringList getAppNameList();
