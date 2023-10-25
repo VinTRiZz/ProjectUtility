@@ -1,0 +1,11 @@
+/home/lazarev_as/workspace/project/Apps/MainApp/src/src.pri
+/home/lazarev_as/workspace/project/Apps/MainApp/deps.pri
+/home/lazarev_as/workspace/project/Apps/SecondApp/src/src.pri
+/home/lazarev_as/workspace/project/Apps/ThirdApp/src/src.pri
+/home/lazarev_as/workspace/project/Libraries/FirstLibrary/src/src.pri
+/home/lazarev_as/workspace/project/Libraries/FirstLibrary/use.pri
+/home/lazarev_as/workspace/project/Libraries/SecondLibrary/src/src.pri
+/home/lazarev_as/workspace/project/Libraries/SecondLibrary/use.pri
+/home/lazarev_as/workspace/project/Libraries/SecondLibrary/deps.pri
+/home/lazarev_as/workspace/project/Libraries/ThirdLibrary/src/src.pri
+/home/lazarev_as/workspace/project/Libraries/ThirdLibrary/use.pri

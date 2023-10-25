@@ -22,6 +22,9 @@ public slots:
     void removeSelectedLibrary();
     void loadDependencyList();
 
+    void createBackup();
+    void loadBackup();
+
 private:
     Ui::MainWindow *ui;
 

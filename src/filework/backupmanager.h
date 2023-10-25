@@ -18,6 +18,8 @@ public:
     bool load(const QString & projectName, const QString & filePath);
     QStringList getFileList() const;
 
+    bool loadAll();
+
 private:
     QStringList savedFilesList;
     QFile * filesList {nullptr};

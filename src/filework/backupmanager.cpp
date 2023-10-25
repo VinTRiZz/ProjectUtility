@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
+#include <QDir>
 
 #include <QDebug>
 
@@ -85,6 +86,25 @@ bool BackupManager::load(const QString & projectName, const QString &filePath)
 QStringList BackupManager::getFileList() const
 {
     return savedFilesList;
+}
+
+bool BackupManager::loadAll()
+{
+    bool result = true;
+    QDir projectDir;
+    QFileInfo projectFileInfo;
+    for (QString & file : savedFilesList)
+    {
+        projectFileInfo.setFile(file);
+
+        projectDir.setPath(projectFileInfo.absolutePath());
+        if (projectDir.dirName() == "src")
+            projectDir.cd("..");
+
+        if (!load(projectDir.dirName(), file))
+            result = false;
+    }
+    return result;
 }
 
 void BackupManager::parseFilesList()

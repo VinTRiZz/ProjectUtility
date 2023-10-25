@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-#define PRINT(what)     ui->statusBar->showMessage(what, 3000);
+#define PRINT(what)     ui->statusBar->showMessage(what, 3000)
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->add_pushButton, &QPushButton::clicked, this, &MainWindow::addSelectedLibrary);
     connect(ui->remove_pushButton, &QPushButton::clicked, this, &MainWindow::removeSelectedLibrary);
     connect(ui->project_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::loadDependencyList);
+    connect(ui->saveBackup_pushButton, &QPushButton::clicked, this, &MainWindow::createBackup);
+    connect(ui->loadBackup_pushButton, &QPushButton::clicked, this, &MainWindow::loadBackup);
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +63,22 @@ void MainWindow::loadDependencyList()
     ui->addedLibs_listWidget->clear();
     for (auto & dep : deps)
         ui->addedLibs_listWidget->addItem( dep );
+}
+
+void MainWindow::createBackup()
+{
+    if (m_fileInterface.backupAll())
+        PRINT("Бэкап создан");
+    else
+        PRINT("Бэкап создан частично или не создан");
+}
+
+void MainWindow::loadBackup()
+{
+    if (m_fileInterface.loadBackup())
+        PRINT("Бэкап загружен");
+    else
+        PRINT("Бэкап загружен частично или не загружен");
 }
 
 void MainWindow::updateProjectList()

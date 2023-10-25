@@ -50,12 +50,14 @@ public:
     QListWidget *addedLibs_listWidget;
     QLabel *label_2;
     QGridLayout *gridLayout;
-    QSpacerItem *horizontalSpacer_2;
+    QPushButton *saveBackup_pushButton;
+    QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *add_pushButton;
     QPushButton *remove_pushButton;
     QSpacerItem *horizontalSpacer_3;
-    QSpacerItem *verticalSpacer;
+    QSpacerItem *horizontalSpacer_2;
+    QPushButton *loadBackup_pushButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -146,9 +148,14 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        saveBackup_pushButton = new QPushButton(centralWidget);
+        saveBackup_pushButton->setObjectName(QStringLiteral("saveBackup_pushButton"));
 
-        gridLayout->addItem(horizontalSpacer_2, 0, 0, 1, 1);
+        gridLayout->addWidget(saveBackup_pushButton, 1, 1, 1, 1);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout->addItem(verticalSpacer, 4, 1, 1, 1);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
@@ -170,9 +177,14 @@ public:
 
         gridLayout->addItem(horizontalSpacer_3, 0, 2, 1, 1);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout->addItem(verticalSpacer, 1, 1, 1, 1);
+        gridLayout->addItem(horizontalSpacer_2, 0, 0, 1, 1);
+
+        loadBackup_pushButton = new QPushButton(centralWidget);
+        loadBackup_pushButton->setObjectName(QStringLiteral("loadBackup_pushButton"));
+
+        gridLayout->addWidget(loadBackup_pushButton, 2, 1, 1, 1);
 
 
         gridLayout_2->addLayout(gridLayout, 2, 1, 1, 1);
@@ -203,8 +215,10 @@ public:
         label_3->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\271\320\264\320\265\320\275\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\265\320\275\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
+        saveBackup_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\261\321\215\320\272\320\260\320\277", nullptr));
         add_pushButton->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", nullptr));
         remove_pushButton->setText(QApplication::translate("MainWindow", "\320\243\320\261\321\200\320\260\321\202\321\214", nullptr));
+        loadBackup_pushButton->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 \320\261\321\215\320\272\320\260\320\277", nullptr));
     } // retranslateUi
 
 };

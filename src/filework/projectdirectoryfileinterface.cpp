@@ -111,20 +111,36 @@ struct ProjectDirectoryFileInterface::Impl
         qDebug() << "[DEPENDS UPDATED]";
     }
 
-    void backupAll()
+    bool backupAll()
     {
+        bool result = true;
         for (Project & app : apps)
         {
-            m_backupManager.backup(app.name, app.srcFilePath);
-            m_backupManager.backup(app.name, app.dependFilePath);
+            if (!m_backupManager.backup(app.name, app.srcFilePath) ||
+                !m_backupManager.backup(app.name, app.dependFilePath))
+                result = false;
         }
 
         for (Project & lib : libs)
         {
-            m_backupManager.backup(lib.name, lib.srcFilePath);
-            m_backupManager.backup(lib.name, lib.useFilePath);
-            m_backupManager.backup(lib.name, lib.dependFilePath);
+            if (!m_backupManager.backup(lib.name, lib.srcFilePath) ||
+                !m_backupManager.backup(lib.name, lib.useFilePath) ||
+                !m_backupManager.backup(lib.name, lib.dependFilePath))
+                result = false;
         }
+        return result;
+    }
+
+    bool loadBackup()
+    {
+        apps.clear();
+        libs.clear();
+
+        bool result = m_backupManager.loadAll();
+
+        updateDepends();
+
+        return result;
     }
 };
 
@@ -155,8 +171,6 @@ int ProjectDirectoryFileInterface::searchForFiles(const QString path)
             m_pImpl->m_depParser.parseAllDepends();
             // m_pImpl->DEBUG_ADD_DEPENDS();
             m_pImpl->DEBUG_PRINT_FILES();
-
-            m_pImpl->backupAll();
         }
     );
 
@@ -246,4 +260,14 @@ void ProjectDirectoryFileInterface::poll()
         delete m_pImpl->processThread;
         m_pImpl->processThread = nullptr;
     }
+}
+
+bool ProjectDirectoryFileInterface::backupAll()
+{
+    return m_pImpl->backupAll();
+}
+
+bool ProjectDirectoryFileInterface::loadBackup()
+{
+    return m_pImpl->loadBackup();
 }

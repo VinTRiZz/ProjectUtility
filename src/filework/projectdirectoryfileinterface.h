@@ -27,6 +27,9 @@ public:
 
     void poll();
 
+    bool backupAll();
+    bool loadBackup();
+
 private:
     struct Impl;
     std::unique_ptr<Impl> m_pImpl;
