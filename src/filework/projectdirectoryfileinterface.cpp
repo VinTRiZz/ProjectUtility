@@ -27,13 +27,13 @@ struct ProjectDirectoryFileInterface::Impl
 
     BackupManager m_backupManager;
 
-    void DEBUG_PRINT_FILES()
+    void logParsedProjects()
     {
         m_dependsWorker.poll();
 
         int currentIteration = 1;
         qDebug() << "--------------------------------------------------------------------------------------------------------";
-        qDebug() << "[\033[34mDEBUG\033[0m] \033[32mFound apps:\033[0m";
+        qDebug() << "\033[32mFound apps:\033[0m";
         for (Project & app : apps)
         {
             qDebug() << "\033[33mAPP N:" << currentIteration++ << "\033[0m"   << endl
@@ -47,7 +47,7 @@ struct ProjectDirectoryFileInterface::Impl
         qDebug() << "--------------------------------------------------------------------------------------------------------";
 
         currentIteration = 1;
-        qDebug() << "[\033[34mDEBUG\033[0m] \033[32mFound libraries:\033[0m";
+        qDebug() << "\033[32mFound libraries:\033[0m";
         for (Project & lib : libs)
         {
             qDebug() << "\033[33mLIBRARY N:" << currentIteration++ << "\033[0m" << endl
@@ -58,28 +58,6 @@ struct ProjectDirectoryFileInterface::Impl
                         ;
         }
         qDebug() << "--------------------------------------------------------------------------------------------------------";
-    }
-
-    void DEBUG_ADD_DEPENDS()
-    {
-        m_dependsWorker.poll();
-
-        qsrand(std::time(NULL));
-        QString anotherDepName;
-        for (Project & app : apps)
-        {
-            for (int i = 0; i < libs.size(); i++)
-            {
-                anotherDepName = libs[ qrand() % libs.size() ].name;
-                if (!app.depends.contains(anotherDepName))
-                {
-                    qDebug() << "[\033[34mDEBUG\033[0m] Adding depend on" << anotherDepName << "for" << app.name;
-                    app.depends << anotherDepName;
-                }
-            }
-        }
-
-        m_dependsWorker.updateDepends();
     }
 
     void setPath(const QString & path)
@@ -145,17 +123,11 @@ int ProjectDirectoryFileInterface::processDirectory(const QString path)
 
     m_pImpl->m_searcher.findFiles();
     m_pImpl->m_dependsWorker.parseFiles();
-//    m_pImpl->DEBUG_ADD_DEPENDS();
-//    m_pImpl->DEBUG_PRINT_FILES();
+    m_pImpl->logParsedProjects();
 
     m_pImpl->m_dependsWorker.poll();
 
     return (m_pImpl->apps.size() + m_pImpl->libs.size());
-}
-
-QString ProjectDirectoryFileInterface::currentDirectory() const
-{
-    return m_pImpl->m_searcher.basePath();
 }
 
 QStringList ProjectDirectoryFileInterface::getLibraryNameList()
@@ -180,32 +152,13 @@ QStringList ProjectDirectoryFileInterface::getAppNameList()
     return result;
 }
 
-void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QString &libraryName)
-{
-    m_pImpl->m_dependsWorker.addLibrary(appName, libraryName);
-}
+QString ProjectDirectoryFileInterface::currentDirectory() const { return m_pImpl->m_searcher.basePath(); }
 
-void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const QString &libraryName)
-{
-    m_pImpl->m_dependsWorker.removeLibrary(appName, libraryName);
-}
+void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QString &libraryName) { m_pImpl->m_dependsWorker.addLibrary(appName, libraryName); }
+void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const QString &libraryName) { m_pImpl->m_dependsWorker.removeLibrary(appName, libraryName); }
+QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName) { return m_pImpl->m_dependsWorker.getDepends(appName); }
 
-QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
-{
-    return m_pImpl->m_dependsWorker.getDepends(appName);
-}
+void ProjectDirectoryFileInterface::poll() { m_pImpl->m_dependsWorker.poll(); }
 
-void ProjectDirectoryFileInterface::poll()
-{
-    m_pImpl->m_dependsWorker.poll();
-}
-
-bool ProjectDirectoryFileInterface::backupAll()
-{
-    return m_pImpl->backupAll();
-}
-
-bool ProjectDirectoryFileInterface::loadBackup()
-{
-    return m_pImpl->loadBackup();
-}
+bool ProjectDirectoryFileInterface::backupAll() { return m_pImpl->backupAll(); }
+bool ProjectDirectoryFileInterface::loadBackup() { return m_pImpl->loadBackup(); }
