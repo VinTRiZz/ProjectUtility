@@ -26,11 +26,23 @@ struct ProjectDirectoryFileInterface::Impl
 
     FileSearcher m_searcher{ apps, libs };
     DependencyParser m_depParser { apps, libs };
-
     BackupManager m_backupManager;
+
+    void poll()
+    {
+        if (processThread)
+        {
+            if (processThread->joinable())
+                processThread->join();
+            delete processThread;
+            processThread = nullptr;
+        }
+    }
 
     void DEBUG_PRINT_FILES()
     {
+        poll();
+
         int currentIteration = 1;
         qDebug() << "--------------------------------------------------------------------------------------------------------";
         qDebug() << "[\033[34mDEBUG\033[0m] \033[32mFound apps:\033[0m";
@@ -62,11 +74,13 @@ struct ProjectDirectoryFileInterface::Impl
 
     void DEBUG_ADD_DEPENDS()
     {
+        poll();
+
         qsrand(std::time(NULL));
         QString anotherDepName;
         for (Project & app : apps)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < libs.size(); i++)
             {
                 anotherDepName = libs[ qrand() % libs.size() ].name;
                 if (!app.depends.contains(anotherDepName))
@@ -88,31 +102,45 @@ struct ProjectDirectoryFileInterface::Impl
 
     void updateDepends()
     {
-        qDebug() << "[UPDATING DEPENDS]";
-        for (Project & app : apps)
-        {
-            std::sort(app.depends.begin(), app.depends.end(),
-                [](QString & first, QString & second)
-                {
-                    return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-                }
-            );
-        }
+        poll();
+        processThread = new std::thread(
+            [this]()
+            {
+                qDebug() << "[INTERFACE] Updating depends";
 
-        for (Project & lib : libs)
-        {
-            std::sort(lib.depends.begin(), lib.depends.end(),
-                [](QString & first, QString & second)
+                QStringList dependsBuffer;
+
+                for (Project & app : apps)
                 {
-                    return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                    dependsBuffer = app.depends;
+                    std::sort(dependsBuffer.begin(), dependsBuffer.end(),
+                        [](QString & first, QString & second)
+                        {
+                            return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                        }
+                    );
+                    m_depParser.writeDepends(app);
                 }
-            );
-        }
-        qDebug() << "[DEPENDS UPDATED]";
+
+                for (Project & lib : libs)
+                {
+                    std::sort(lib.depends.begin(), lib.depends.end(),
+                        [](QString & first, QString & second)
+                        {
+                            return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                        }
+                    );
+                    m_depParser.writeDepends(lib);
+                }
+                qDebug() << "[INTERFACE] Depends updated";
+            }
+        );
     }
 
     bool backupAll()
     {
+        poll();
+
         bool result = true;
         for (Project & app : apps)
         {
@@ -133,6 +161,8 @@ struct ProjectDirectoryFileInterface::Impl
 
     bool loadBackup()
     {
+        poll();
+
         apps.clear();
         libs.clear();
 
@@ -158,10 +188,7 @@ ProjectDirectoryFileInterface::~ProjectDirectoryFileInterface()
 
 int ProjectDirectoryFileInterface::searchForFiles(const QString path)
 {
-    if (m_pImpl->processThread)
-    {
-        return 0;
-    }
+    poll();
 
     m_pImpl->setPath(path);
 
@@ -182,6 +209,7 @@ QString ProjectDirectoryFileInterface::currentBasePath() const
 
 QStringList ProjectDirectoryFileInterface::getLibraryNameList()
 {
+    poll();
     QStringList result;
     for (const Project & lib : m_pImpl->libs)
     {
@@ -192,6 +220,7 @@ QStringList ProjectDirectoryFileInterface::getLibraryNameList()
 
 QStringList ProjectDirectoryFileInterface::getAppNameList()
 {
+    poll();
     QStringList result;
     for (const Project & app : m_pImpl->apps)
     {
@@ -202,6 +231,8 @@ QStringList ProjectDirectoryFileInterface::getAppNameList()
 
 void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QString &libraryName)
 {
+    poll();
+
     auto appPos = std::find_if(m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](Project & app){ return (app.name == appName); });
 
     auto libraryPos = std::find_if(m_pImpl->libs.begin(), m_pImpl->libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
@@ -217,6 +248,8 @@ void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QSt
 
 void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const QString &libraryName)
 {
+    poll();
+
     auto appPos = std::find_if(m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](Project & app){ return (app.name == appName); });
 
     auto libraryPos = std::find_if(m_pImpl->libs.begin(), m_pImpl->libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
@@ -232,6 +265,8 @@ void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const 
 
 QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
 {
+    poll();
+
     auto app = std::find_if( m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](const Project & currentApp){ return (appName == currentApp.name); } );
 
     if (app != m_pImpl->apps.end())
@@ -242,13 +277,7 @@ QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
 
 void ProjectDirectoryFileInterface::poll()
 {
-    if (m_pImpl->processThread)
-    {
-        if (m_pImpl->processThread->joinable())
-            m_pImpl->processThread->join();
-        delete m_pImpl->processThread;
-        m_pImpl->processThread = nullptr;
-    }
+    m_pImpl->poll();
 }
 
 bool ProjectDirectoryFileInterface::backupAll()

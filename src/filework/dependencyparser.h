@@ -16,13 +16,16 @@ public:
 
     void parseAllDepends();
 
+    void parseDepends(Project & proj);
+
+    void writeDepends(const Project & proj);
+
 private:
     QVector<Project> & apps;
     QVector<Project> & libs;
 
     QString currentBasePath;
 
-    void parseDepends(Project & proj);
 };
 
 }

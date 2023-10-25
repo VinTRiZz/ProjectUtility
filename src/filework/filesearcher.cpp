@@ -78,13 +78,13 @@ bool FileSearcher::searchForFiles(const QString &basePath)
     findProcess.start();
     if (!findProcess.waitForStarted(FIND_START_TIMEOUT))
     {
-        qDebug() << "[\033[31mFIND\033[0m] Start error, args:"  << findArgs.join(" ");
+        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] Start error, args:"  << findArgs.join(" ");
         return false;
     }
 
     if (!findProcess.waitForFinished(FIND_FINISH_TIMEOUT))
     {
-        qDebug() << "[\033[31mFIND\033[0m] Finish error, args:" << findArgs.join(" ");
+        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] Finish error, args:" << findArgs.join(" ");
         return false;
     }
 
@@ -92,7 +92,7 @@ bool FileSearcher::searchForFiles(const QString &basePath)
 
     if (findOutput.size() < 1)
     {
-        qDebug() << "[\033[31mFIND\033[0m] No files found, args:"  << findArgs.join(" ");
+        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] No files found, args:"  << findArgs.join(" ");
         return false;
     }
 
@@ -108,7 +108,7 @@ void FileSearcher::findFiles()
 
     if (!searchForProjects(appDirBasePath, false) || !searchForProjects(libDirBasePath, true))
     {
-        qDebug() << "[\033[31mNot found projects of apps or libraries\033[0m]";
+        qDebug() << "[FILE SEARCHER] [\033[31mNot found projects of apps or libraries\033[0m]";
         return;
     }
 
