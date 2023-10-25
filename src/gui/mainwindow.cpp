@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     REMOVE_BUTTON_FOCUS(clean);
 
     CONNECT_CLIECKED(add, addSelectedLibrary);
-    CONNECT_CLIECKED(remove, loadDependencyList);
+    CONNECT_CLIECKED(remove, removeSelectedLibrary);
     CONNECT_CLIECKED(saveBackup, createBackup);
     CONNECT_CLIECKED(loadBackup, loadBackup);
     CONNECT_CLIECKED(update, updateProjectList);
@@ -193,7 +193,12 @@ void MainWindow::updateProjectList()
     {
         ui->project_comboBox->addItem(app);
     }
-    loadDependencyList(); // Cuz ComboBox already selected project
+
+    if (appList.size() > 0)
+    {
+        ui->project_comboBox->setCurrentIndex(0);
+        loadDependencyList(); // Cuz ComboBox already selected project
+    }
 }
 
 void MainWindow::setupAvailableLibrariesView()

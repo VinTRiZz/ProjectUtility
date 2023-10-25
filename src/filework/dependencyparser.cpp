@@ -1,5 +1,6 @@
 #include "dependencyparser.h"
 
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 
@@ -102,8 +103,8 @@ void DependencyParser::parseDepends(Project &proj)
 
     for (QString & dep : parsedDeps)
     {
-        dep.chop(8);
-        proj.depends << QFileInfo(dep).baseName();
+        dep.chop(QFileInfo(dep).fileName().size());
+        proj.depends << QDir(dep).dirName();
         qDebug() << "Parsed dep:" << proj.name << "--->" << proj.depends.last();
     }
 }
