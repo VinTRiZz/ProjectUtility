@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
@@ -37,8 +38,8 @@ public:
     QWidget *centralWidget;
     QGridLayout *gridLayout_2;
     QHBoxLayout *horizontalLayout_3;
-    QLineEdit *lineEdit;
-    QPushButton *pushButton;
+    QLineEdit *basePath_lineEdit;
+    QPushButton *acceptBasePath_pushButton;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QComboBox *project_comboBox;
@@ -49,6 +50,13 @@ public:
     QVBoxLayout *verticalLayout_2;
     QListWidget *addedLibs_listWidget;
     QLabel *label_2;
+    QVBoxLayout *verticalLayout_3;
+    QLabel *label_4;
+    QCheckBox *makeFiles_checkBox;
+    QCheckBox *lib_checkBox;
+    QCheckBox *bin_checkBox;
+    QCheckBox *build_checkBox;
+    QPushButton *clean_pushButton;
     QGridLayout *gridLayout;
     QPushButton *saveBackup_pushButton;
     QSpacerItem *verticalSpacer;
@@ -66,7 +74,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(745, 477);
+        MainWindow->resize(808, 539);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout_2 = new QGridLayout(centralWidget);
@@ -76,15 +84,15 @@ public:
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        lineEdit = new QLineEdit(centralWidget);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        basePath_lineEdit = new QLineEdit(centralWidget);
+        basePath_lineEdit->setObjectName(QStringLiteral("basePath_lineEdit"));
 
-        horizontalLayout_3->addWidget(lineEdit);
+        horizontalLayout_3->addWidget(basePath_lineEdit);
 
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        acceptBasePath_pushButton = new QPushButton(centralWidget);
+        acceptBasePath_pushButton->setObjectName(QStringLiteral("acceptBasePath_pushButton"));
 
-        horizontalLayout_3->addWidget(pushButton);
+        horizontalLayout_3->addWidget(acceptBasePath_pushButton);
 
 
         gridLayout_2->addLayout(horizontalLayout_3, 0, 0, 1, 1);
@@ -145,6 +153,47 @@ public:
 
         gridLayout_2->addLayout(verticalLayout_2, 1, 1, 1, 1);
 
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        label_4 = new QLabel(centralWidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_3->addWidget(label_4);
+
+        makeFiles_checkBox = new QCheckBox(centralWidget);
+        makeFiles_checkBox->setObjectName(QStringLiteral("makeFiles_checkBox"));
+        makeFiles_checkBox->setFocusPolicy(Qt::NoFocus);
+
+        verticalLayout_3->addWidget(makeFiles_checkBox);
+
+        lib_checkBox = new QCheckBox(centralWidget);
+        lib_checkBox->setObjectName(QStringLiteral("lib_checkBox"));
+        lib_checkBox->setFocusPolicy(Qt::NoFocus);
+
+        verticalLayout_3->addWidget(lib_checkBox);
+
+        bin_checkBox = new QCheckBox(centralWidget);
+        bin_checkBox->setObjectName(QStringLiteral("bin_checkBox"));
+        bin_checkBox->setFocusPolicy(Qt::NoFocus);
+
+        verticalLayout_3->addWidget(bin_checkBox);
+
+        build_checkBox = new QCheckBox(centralWidget);
+        build_checkBox->setObjectName(QStringLiteral("build_checkBox"));
+        build_checkBox->setFocusPolicy(Qt::NoFocus);
+
+        verticalLayout_3->addWidget(build_checkBox);
+
+        clean_pushButton = new QPushButton(centralWidget);
+        clean_pushButton->setObjectName(QStringLiteral("clean_pushButton"));
+
+        verticalLayout_3->addWidget(clean_pushButton);
+
+
+        gridLayout_2->addLayout(verticalLayout_3, 2, 0, 1, 1);
+
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
@@ -192,7 +241,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 745, 23));
+        menuBar->setGeometry(QRect(0, 0, 808, 23));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -209,12 +258,19 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
-        lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
-        pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\272", nullptr));
-        label->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\265\320\272\321\202", nullptr));
-        label_3->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\271\320\264\320\265\320\275\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
-        update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214", nullptr));
+        basePath_lineEdit->setText(QApplication::translate("MainWindow", "/home/lazarev_as/workspace/project", nullptr));
+        basePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
+        acceptBasePath_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\272", nullptr));
+        label->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\320\275\320\275\321\213\320\271 \320\277\321\200\320\276\320\265\320\272\321\202:", nullptr));
+        label_3->setText(QApplication::translate("MainWindow", "\320\224\320\276\321\201\321\202\321\203\320\277\320\275\321\213\320\265 \320\277\321\200\320\276\320\265\320\272\321\202\321\213", nullptr));
+        update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\265\320\275\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
+        label_4->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\272\320\260", nullptr));
+        makeFiles_checkBox->setText(QApplication::translate("MainWindow", "Makefile", nullptr));
+        lib_checkBox->setText(QApplication::translate("MainWindow", "LIB", nullptr));
+        bin_checkBox->setText(QApplication::translate("MainWindow", "BIN", nullptr));
+        build_checkBox->setText(QApplication::translate("MainWindow", "BUILD", nullptr));
+        clean_pushButton->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214", nullptr));
         saveBackup_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\261\321\215\320\272\320\260\320\277", nullptr));
         add_pushButton->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", nullptr));
         remove_pushButton->setText(QApplication::translate("MainWindow", "\320\243\320\261\321\200\320\260\321\202\321\214", nullptr));

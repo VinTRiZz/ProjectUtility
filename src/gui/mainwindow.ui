@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>745</width>
-    <height>477</height>
+    <width>808</width>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,14 +18,17 @@
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="basePath_lineEdit">
+        <property name="text">
+         <string>/home/lazarev_as/workspace/project</string>
+        </property>
         <property name="placeholderText">
          <string>Директория с проектами</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="acceptBasePath_pushButton">
         <property name="text">
          <string>Ок</string>
         </property>
@@ -38,7 +41,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Проект</string>
+         <string>Выбранный проект:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -58,7 +61,7 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Найденные библиотеки</string>
+         <string>Доступные проекты</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -68,7 +71,7 @@
       <item>
        <widget class="QPushButton" name="update_pushButton">
         <property name="text">
-         <string>Обновить</string>
+         <string>Обновить список</string>
         </property>
        </widget>
       </item>
@@ -86,6 +89,67 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Очистка</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="makeFiles_checkBox">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string>Makefile</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="lib_checkBox">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string>LIB</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="bin_checkBox">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string>BIN</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="build_checkBox">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string>BUILD</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="clean_pushButton">
+        <property name="text">
+         <string>Очистить</string>
         </property>
        </widget>
       </item>
@@ -173,7 +237,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>745</width>
+     <width>808</width>
      <height>23</height>
     </rect>
    </property>

@@ -138,7 +138,8 @@ struct ProjectDirectoryFileInterface::Impl
 
         bool result = m_backupManager.loadAll();
 
-        updateDepends();
+        m_searcher.findFiles();
+        m_depParser.parseAllDepends();
 
         return result;
     }
@@ -164,15 +165,10 @@ int ProjectDirectoryFileInterface::searchForFiles(const QString path)
 
     m_pImpl->setPath(path);
 
-    m_pImpl->processThread = new std::thread(
-        [this]()
-        {
-            m_pImpl->m_searcher.findFiles();
-            m_pImpl->m_depParser.parseAllDepends();
-            // m_pImpl->DEBUG_ADD_DEPENDS();
-            m_pImpl->DEBUG_PRINT_FILES();
-        }
-    );
+    m_pImpl->m_searcher.findFiles();
+    m_pImpl->m_depParser.parseAllDepends();
+//    m_pImpl->DEBUG_ADD_DEPENDS();
+//    m_pImpl->DEBUG_PRINT_FILES();
 
     poll();
 
@@ -211,10 +207,7 @@ void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QSt
     auto libraryPos = std::find_if(m_pImpl->libs.begin(), m_pImpl->libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
 
     if ((appPos == m_pImpl->apps.end()) || (libraryPos == m_pImpl->libs.end()))
-    {
-        qDebug() << "[Add dep: \033[31mApp or library not found\033[0m]: " << appName << "<-->" << libraryName;
         return;
-    }
 
     appPos->depends << libraryName;
 
@@ -229,15 +222,12 @@ void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const 
     auto libraryPos = std::find_if(m_pImpl->libs.begin(), m_pImpl->libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
 
     if ((appPos == m_pImpl->apps.end()) || (libraryPos == m_pImpl->libs.end()))
-    {
-        qDebug() << "[Remove dep: \033[31mApp or library not found\033[0m]: " << appName << "<-->" << libraryName;
         return;
-    }
 
     appPos->depends.removeOne(libraryName);
 
     m_pImpl->updateDepends();
-    qDebug() << "[Dependency \033[32mremoved\033[0m]: " << appName << "-X->" << libraryName;
+    qDebug() << "[Dependency \033[31mremoved\033[0m]: " << appName << "-X->" << libraryName;
 }
 
 QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
@@ -245,9 +235,8 @@ QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
     auto app = std::find_if( m_pImpl->apps.begin(), m_pImpl->apps.end(), [&appName](const Project & currentApp){ return (appName == currentApp.name); } );
 
     if (app != m_pImpl->apps.end())
-    {
         return app->depends;
-    }
+
     return QStringList();
 }
 

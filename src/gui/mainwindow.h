@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "filework/projectdirectoryfileinterface.h"
+#include "filework/cleaner.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,10 +26,18 @@ public slots:
     void createBackup();
     void loadBackup();
 
+    void setBasePath();
+
+    void removeFiles();
+
 private:
     Ui::MainWindow *ui;
 
     FileWork::ProjectDirectoryFileInterface m_fileInterface;
+
+    FileWork::Cleaner m_cleaner;
+
+    QString basePath;
 
     void updateProjectList();
     void setupAvailableLibrariesView();

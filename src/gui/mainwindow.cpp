@@ -1,9 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QFileInfo>
+
 #include <QDebug>
 
 #define PRINT(what)     ui->statusBar->showMessage(what, 3000)
+
+#define REMOVE_BUTTON_FOCUS(buttonName)                     ui->buttonName##_pushButton->setFocusPolicy(Qt::NoFocus)
+#define CONNECT_CLIECKED(buttonName, mainWindowFunction)    connect(ui->buttonName##_pushButton, &QPushButton::clicked, this, &MainWindow::mainWindowFunction)
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,14 +18,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setupAvailableLibrariesView();
 
+    setBasePath(); // For tests
     updateProjectList();
 
-    connect(ui->update_pushButton, &QPushButton::clicked, this, &MainWindow::updateProjectList);
-    connect(ui->add_pushButton, &QPushButton::clicked, this, &MainWindow::addSelectedLibrary);
-    connect(ui->remove_pushButton, &QPushButton::clicked, this, &MainWindow::removeSelectedLibrary);
+    // Remove focus
+    REMOVE_BUTTON_FOCUS(add);
+    REMOVE_BUTTON_FOCUS(remove);
+    REMOVE_BUTTON_FOCUS(saveBackup);
+    REMOVE_BUTTON_FOCUS(loadBackup);
+    REMOVE_BUTTON_FOCUS(update);
+    REMOVE_BUTTON_FOCUS(acceptBasePath);
+    REMOVE_BUTTON_FOCUS(clean);
+
+    CONNECT_CLIECKED(add, addSelectedLibrary);
+    CONNECT_CLIECKED(remove, loadDependencyList);
+    CONNECT_CLIECKED(saveBackup, createBackup);
+    CONNECT_CLIECKED(loadBackup, loadBackup);
+    CONNECT_CLIECKED(update, updateProjectList);
+    CONNECT_CLIECKED(acceptBasePath, setBasePath);
+    CONNECT_CLIECKED(clean, removeFiles);
+
     connect(ui->project_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::loadDependencyList);
-    connect(ui->saveBackup_pushButton, &QPushButton::clicked, this, &MainWindow::createBackup);
-    connect(ui->loadBackup_pushButton, &QPushButton::clicked, this, &MainWindow::loadBackup);
 }
 
 MainWindow::~MainWindow()
@@ -45,7 +63,10 @@ void MainWindow::removeSelectedLibrary()
 {
     auto pItem = ui->addedLibs_listWidget->currentItem();
     if (!pItem)
+    {
+        PRINT("Не выбрана библиотека");
         return;
+    }
 
     m_fileInterface.removeLibrary(ui->project_comboBox->currentText(), pItem->text());
     delete ui->addedLibs_listWidget->currentItem();
@@ -56,7 +77,10 @@ void MainWindow::loadDependencyList()
     const QString projectName = ui->project_comboBox->currentText();
 
     if (projectName.size() == 0)
+    {
+        PRINT("Не выбран проект");
         return;
+    }
 
     auto deps = m_fileInterface.getDepends(projectName);
 
@@ -81,16 +105,78 @@ void MainWindow::loadBackup()
         PRINT("Бэкап загружен частично или не загружен");
 }
 
+void MainWindow::setBasePath()
+{
+    basePath = ui->basePath_lineEdit->text();
+    if (basePath.size() < 1)
+    {
+        PRINT("Пустой путь");
+        return;
+    }
+
+    QFileInfo pathTester(basePath);
+    if (!pathTester.exists() || !pathTester.isDir())
+    {
+        basePath.clear();
+        PRINT("Или это не директория, или такой не существует");
+        return;
+    }
+    updateProjectList();
+}
+
+void MainWindow::removeFiles()
+{
+    int filesToRemove = FileWork::FILE_REMOVE_TYPE::NO_FILE;
+
+    if (ui->bin_checkBox->isChecked())
+        filesToRemove |= FileWork::FILE_REMOVE_TYPE::BIN;
+
+    if (ui->build_checkBox->isChecked())
+        filesToRemove |= FileWork::FILE_REMOVE_TYPE::BUILD;
+
+    if (ui->lib_checkBox->isChecked())
+        filesToRemove |= FileWork::FILE_REMOVE_TYPE::LIB;
+
+    if (ui->makeFiles_checkBox->isChecked())
+        filesToRemove |= FileWork::FILE_REMOVE_TYPE::MAKEFILE;
+
+    QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentBasePath(), filesToRemove);
+
+    // Check if all's good
+    for (QString & file : fileList)
+    {
+        if (
+            !file.contains("/BIN/") &&
+            !file.contains("/Makefile") &&
+            !file.contains("/BUILD/") &&
+            !file.contains("/LIB/")
+        )
+        {
+            qDebug() << "[REMOVE CHECK] Invalid file:[" << file << "]";
+            PRINT("Ошибка в списке файлов на удаление. Ничего не удалено");
+            return;
+        }
+    }
+
+    m_cleaner.removeFiles(fileList);
+}
+
 void MainWindow::updateProjectList()
 {
-    int parsedFilesCount = m_fileInterface.searchForFiles("/home/lazarev_as/workspace/project");
+    if (basePath.size() < 1)
+    {
+        PRINT("Неправильный путь");
+        return;
+    }
+
+    int parsedFilesCount = m_fileInterface.searchForFiles(basePath);
 
     if (!parsedFilesCount)
     {
-        PRINT("No files found");
+        PRINT("Ничего не найдено");
         return;
     }
-    PRINT(QString("Found some dependency files: %1").arg(QString::number(parsedFilesCount)));
+    PRINT(QString("Найдено %1 объектов").arg(QString::number(parsedFilesCount)));
 
     QStringList libList = m_fileInterface.getLibraryNameList();
 
@@ -113,9 +199,4 @@ void MainWindow::updateProjectList()
 void MainWindow::setupAvailableLibrariesView()
 {
     ui->avaliableLibs_listWidget->setFocusPolicy(Qt::NoFocus);
-}
-
-void MainWindow::updateUsedLibraries()
-{
-
 }
