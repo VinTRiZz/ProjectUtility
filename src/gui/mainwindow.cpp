@@ -101,7 +101,6 @@ void MainWindow::saveChanges()
 
     for (int currentTime = 0; (currentTime < TIMEOUT) && (ui->progressBar->value() != 100); currentTime++)
     {
-        qDebug() << ui->progressBar->value();
         ui->progressBar->setValue(m_fileInterface.progressPercent());
         QCoreApplication::processEvents();
         QThread::currentThread()->msleep(1);

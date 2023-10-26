@@ -1,2 +1,3 @@
 include($$PWD/../../Libraries/SecondLibrary/use.pri)
 include($$PWD/../../Libraries/FirstLibrary/use.pri)
+include($$PWD/../../Libraries/ThirdLibrary/use.pri)

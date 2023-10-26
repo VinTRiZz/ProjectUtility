@@ -43,7 +43,10 @@ void DependencyParser::parseAllDepends()
 void DependencyParser::parseDepends(Project &proj)
 {
     if (proj.dependFilePath.isEmpty())
+    {
+        qDebug() << "[DEPENDS PARSER] No depend file specified!";
         return;
+    }
 
     QFile deps(proj.dependFilePath);
 
@@ -109,11 +112,58 @@ void DependencyParser::parseDepends(Project &proj)
     }
 }
 
-void DependencyParser::writeDepends(const Project &proj)
+void DependencyParser::writeDepends(Project &proj)
 {
     qDebug() << "[DEPENDS PARSER] Writing depends for" << proj.name;
 
-    QFile deps(proj.dependFilePath);
-    deps.open(QIODevice::Truncate | QIODevice::WriteOnly);
-    QTextStream depsStream(&deps);
+    QIODevice::OpenMode openMode = QIODevice::Truncate;
+
+    if (proj.dependFilePath.isEmpty())
+    {
+        qDebug() << "[DEPENDS PARSER] \033[33mWarning\033[0m No depend file specified!";
+
+        if (proj.depends.size() == 0)
+        {
+            return;
+        }
+
+        qDebug() << "[DEPENDS PARSER] Depends file will be created";
+
+        openMode = QIODevice::NewOnly;
+        proj.dependFilePath = currentBasePath + "/Apps/" + proj.name + "/deps.pri";
+    }
+
+    parseDepends(proj);
+
+     QFile deps(proj.dependFilePath);
+     deps.open(openMode | QIODevice::WriteOnly);
+
+     if (!deps.isOpen())
+     {
+         qDebug() << "[DEPENDS PARSER] \033[31mError\033[0m opening depends file:" << proj.dependFilePath;
+         return;
+     }
+
+     QTextStream depsStream(&deps);
+
+    QStringList depends = proj.depends;
+
+    for (QString & dep : depends)
+    {
+        for (const Project & lib : libs)
+        {
+            if (lib.name == dep)
+            {
+                dep = lib.useFilePath;
+            }
+        }
+    }
+
+    for (QString & dep : depends)
+    {
+        dep.remove(0, currentBasePath.size());
+        dep = "include($$PWD/../.." + dep + ")";
+        depsStream << dep << endl;
+    }
+    deps.close();
 }

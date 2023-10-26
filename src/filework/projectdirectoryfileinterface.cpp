@@ -13,6 +13,8 @@
 
 #include <thread>
 
+#define SAVE_CHANGES_BACKUP_DIRECTORY "./saveChangesBackup"
+
 using namespace FileWork;
 
 struct ProjectDirectoryFileInterface::Impl
@@ -172,7 +174,7 @@ QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName) { 
 
 void ProjectDirectoryFileInterface::saveChanges()
 {
-    backupAll("./saveChangesBackup");
+    backupAll(SAVE_CHANGES_BACKUP_DIRECTORY);
     m_pImpl->m_dependsWorker.saveChanges();
 }
 

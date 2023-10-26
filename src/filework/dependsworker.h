@@ -30,7 +30,6 @@ public:
     void setupDependsFromFiles(Project & proj);
 
     void saveChanges();
-
     int progressPercent() const;
 
 private:

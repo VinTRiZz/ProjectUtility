@@ -29,7 +29,6 @@ void DependsWorker::addLibrary(const QString &appName, const QString &libraryNam
 
     appPos->depends << libraryName;
 
-    updateDepends();
     qDebug() << "[Dependency \033[32madded\033[0m]: " << appName << "--->" << libraryName;
 }
 
@@ -46,7 +45,6 @@ void DependsWorker::removeLibrary(const QString &appName, const QString &library
 
     appPos->depends.removeOne(libraryName);
 
-    updateDepends();
     qDebug() << "[Dependency \033[31mremoved\033[0m]: " << appName << "-X->" << libraryName;
 }
 

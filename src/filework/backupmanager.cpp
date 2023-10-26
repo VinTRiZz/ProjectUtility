@@ -101,7 +101,7 @@ bool BackupManager::loadAll()
 
 bool BackupManager::cd(const QString &path)
 {
-    qDebug() << "[BACKUP MANAGER] Changed backup directory from" << backupDirectoryPath << "to" << path;
+    qDebug() << "[BACKUP] Changed backup directory from" << backupDirectoryPath << "to" << path;
 
     return processBackupDirectory(path);
 }
@@ -138,10 +138,10 @@ bool BackupManager::processBackupDirectory(const QString & path)
     {
         backupDirectoryPath = path;
         mkdirCommand = QString("mkdir %1 &> /dev/null").arg(backupDirectoryPath);
-        qDebug() << "[BACKUP MANAGER] Create backup directory result:" << system(mkdirCommand.toUtf8().data()); // Create backup dir
+        qDebug() << "[BACKUP] Create backup directory result:" << system(mkdirCommand.toUtf8().data()); // Create backup dir
     } else if (!QFileInfo(path).isDir())
     {
-        qDebug() << "[BACKUP MANAGER] Not a directory:" << path;
+        qDebug() << "[BACKUP] Not a directory:" << path;
         return false;
     } else
     {
@@ -164,7 +164,7 @@ bool BackupManager::processBackupDirectory(const QString & path)
 
         if (!filesList->isOpen())
         {
-            throw std::runtime_error((std::string("Ошибка открытия и создания файла со списком сохранённых файлов: ") + filesList->errorString().toStdString()).c_str());
+            throw std::runtime_error((std::string("[BACKUP] Ошибка открытия и создания файла со списком сохранённых файлов: ") + filesList->errorString().toStdString()).c_str());
         }
     }
 

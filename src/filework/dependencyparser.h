@@ -18,7 +18,7 @@ public:
 
     void parseDepends(Project & proj);
 
-    void writeDepends(const Project & proj);
+    void writeDepends(Project & proj);
 
 private:
     QVector<Project> & apps;
