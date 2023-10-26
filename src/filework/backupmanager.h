@@ -20,11 +20,16 @@ public:
 
     bool loadAll();
 
+    bool cd(const QString & path);
+
 private:
+    QString backupDirectoryPath {"./backups"};
+    QString mkdirCommand = QString("mkdir %1 &> /dev/null").arg(backupDirectoryPath);
     QStringList savedFilesList;
     QFile * filesList {nullptr};
 
     void parseFilesList();
+    bool processBackupDirectory(const QString & path);
 };
 
 }

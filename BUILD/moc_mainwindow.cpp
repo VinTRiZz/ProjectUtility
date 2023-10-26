@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[11];
-    char stringdata0[146];
+    QByteArrayData data[12];
+    char stringdata0[158];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,18 +36,20 @@ QT_MOC_LITERAL(1, 11, 18), // "addSelectedLibrary"
 QT_MOC_LITERAL(2, 30, 0), // ""
 QT_MOC_LITERAL(3, 31, 21), // "removeSelectedLibrary"
 QT_MOC_LITERAL(4, 53, 18), // "loadDependencyList"
-QT_MOC_LITERAL(5, 72, 12), // "createBackup"
-QT_MOC_LITERAL(6, 85, 10), // "loadBackup"
-QT_MOC_LITERAL(7, 96, 11), // "setBasePath"
-QT_MOC_LITERAL(8, 108, 11), // "removeFiles"
-QT_MOC_LITERAL(9, 120, 13), // "searchForText"
-QT_MOC_LITERAL(10, 134, 11) // "changedText"
+QT_MOC_LITERAL(5, 72, 11), // "saveChanges"
+QT_MOC_LITERAL(6, 84, 12), // "createBackup"
+QT_MOC_LITERAL(7, 97, 10), // "loadBackup"
+QT_MOC_LITERAL(8, 108, 11), // "setBasePath"
+QT_MOC_LITERAL(9, 120, 11), // "removeFiles"
+QT_MOC_LITERAL(10, 132, 13), // "searchForText"
+QT_MOC_LITERAL(11, 146, 11) // "changedText"
 
     },
     "MainWindow\0addSelectedLibrary\0\0"
     "removeSelectedLibrary\0loadDependencyList\0"
-    "createBackup\0loadBackup\0setBasePath\0"
-    "removeFiles\0searchForText\0changedText"
+    "saveChanges\0createBackup\0loadBackup\0"
+    "setBasePath\0removeFiles\0searchForText\0"
+    "changedText"
 };
 #undef QT_MOC_LITERAL
 
@@ -57,7 +59,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -65,14 +67,15 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   54,    2, 0x0a /* Public */,
-       3,    0,   55,    2, 0x0a /* Public */,
-       4,    0,   56,    2, 0x0a /* Public */,
-       5,    0,   57,    2, 0x0a /* Public */,
-       6,    0,   58,    2, 0x0a /* Public */,
-       7,    0,   59,    2, 0x0a /* Public */,
-       8,    0,   60,    2, 0x0a /* Public */,
-       9,    1,   61,    2, 0x0a /* Public */,
+       1,    0,   59,    2, 0x0a /* Public */,
+       3,    0,   60,    2, 0x0a /* Public */,
+       4,    0,   61,    2, 0x0a /* Public */,
+       5,    0,   62,    2, 0x0a /* Public */,
+       6,    0,   63,    2, 0x0a /* Public */,
+       7,    0,   64,    2, 0x0a /* Public */,
+       8,    0,   65,    2, 0x0a /* Public */,
+       9,    0,   66,    2, 0x0a /* Public */,
+      10,    1,   67,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -82,7 +85,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   10,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   11,
 
        0        // eod
 };
@@ -96,11 +100,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->addSelectedLibrary(); break;
         case 1: _t->removeSelectedLibrary(); break;
         case 2: _t->loadDependencyList(); break;
-        case 3: _t->createBackup(); break;
-        case 4: _t->loadBackup(); break;
-        case 5: _t->setBasePath(); break;
-        case 6: _t->removeFiles(); break;
-        case 7: _t->searchForText((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 3: _t->saveChanges(); break;
+        case 4: _t->createBackup(); break;
+        case 5: _t->loadBackup(); break;
+        case 6: _t->setBasePath(); break;
+        case 7: _t->removeFiles(); break;
+        case 8: _t->searchForText((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -131,13 +136,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

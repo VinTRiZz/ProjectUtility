@@ -22,6 +22,7 @@ public slots:
     void addSelectedLibrary();
     void removeSelectedLibrary();
     void loadDependencyList();
+    void saveChanges();
 
     void createBackup();
     void loadBackup();

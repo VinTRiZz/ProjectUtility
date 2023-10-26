@@ -112,4 +112,8 @@ void DependencyParser::parseDepends(Project &proj)
 void DependencyParser::writeDepends(const Project &proj)
 {
     qDebug() << "[DEPENDS PARSER] Writing depends for" << proj.name;
+
+    QFile deps(proj.dependFilePath);
+    deps.open(QIODevice::Truncate | QIODevice::WriteOnly);
+    QTextStream depsStream(&deps);
 }

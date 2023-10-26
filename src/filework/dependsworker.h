@@ -29,6 +29,10 @@ public:
     void parseFiles();
     void setupDependsFromFiles(Project & proj);
 
+    void saveChanges();
+
+    int progressPercent() const;
+
 private:
     QVector<Project> & apps;
     QVector<Project> & libs;
@@ -38,6 +42,8 @@ private:
     DependencyParser m_depParser;
 
     QString currentDirectory;
+
+    std::atomic<float> processPercent {0};
 };
 
 }

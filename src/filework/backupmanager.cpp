@@ -7,64 +7,52 @@
 
 #include <QDebug>
 
-#define BACKUP_DIRECTORY "./backups"
-
 using namespace FileWork;
 
 BackupManager::BackupManager()
 {
-    qDebug() << "[BACKUP] Create backup directory result:" << system("mkdir " BACKUP_DIRECTORY " &> /dev/null"); // Create backup dir
 
-    filesList = new QFile(BACKUP_DIRECTORY "/filesList.txt");
-    filesList->open(QIODevice::ReadWrite);
-
-    if (!filesList->isOpen())
-    {
-        system("mkdir " BACKUP_DIRECTORY " &> /dev/null"); // Retry creating directory
-        filesList->open(QIODevice::NewOnly); // Try to create file
-
-        if (!filesList->isOpen())
-        {
-            throw std::runtime_error((std::string("Ошибка открытия и создания файла со списком сохранённых файлов: ") + filesList->errorString().toStdString()).c_str());
-        }
-    }
-
-    parseFilesList();
 }
 
 BackupManager::~BackupManager()
 {
-    filesList->open(QIODevice::Truncate | QIODevice::WriteOnly);
-
-    if (!filesList->isOpen())
+    if (filesList)
     {
+        filesList->open(QIODevice::Truncate | QIODevice::WriteOnly);
+        if (!filesList->isOpen())
+        {
+            delete filesList;
+            return;
+        }
+
+        QTextStream fileStream(filesList);
+        for (QString & path : savedFilesList)
+        {
+            fileStream << path << endl;
+        }
+
         delete filesList;
-        return;
     }
-
-    QTextStream fileStream(filesList);
-    for (QString & path : savedFilesList)
-    {
-        fileStream << path << endl;
-    }
-
-    delete filesList;
 }
 
 bool BackupManager::backup(const QString & projectName, const QString &filePath)
 {
     qDebug() << "[BACKUP] Creating backup for project" << projectName << "file" << QFileInfo(filePath).baseName();
 
-    const QString mkdirCommand = "mkdir " BACKUP_DIRECTORY "/" + projectName + " &> /dev/null";
+    const QString mkdirProjectCommand = QString("mkdir %1/%2 &> /dev/null").arg(backupDirectoryPath, projectName);
 
-    system(mkdirCommand.toUtf8().data());
+    system(mkdirProjectCommand.toUtf8().data());
 
     if (filePath.size() < 1)
         return false;
 
     savedFilesList << filePath;
 
-    bool result = QFile::copy(filePath, QString(BACKUP_DIRECTORY "/%1/%2").arg( projectName, QFileInfo(filePath).baseName() ));
+    const QString backupFilePath = QString(backupDirectoryPath + "/%1/%2").arg( projectName, QFileInfo(filePath).baseName() );
+
+    bool result = QFile::remove(backupFilePath);
+    result = QFile::copy(filePath, backupFilePath);
+
     if (!result)
         qDebug() << "[BACKUP] Error creating backup";
     return result;
@@ -77,9 +65,13 @@ bool BackupManager::load(const QString & projectName, const QString &filePath)
     if (filePath.size() < 1)
         return false;
 
-    bool result = QFile::copy(QString(BACKUP_DIRECTORY "/%1/%2").arg( projectName, QFileInfo(filePath).baseName() ), filePath);
+    const QString backupFilePath = QString(backupDirectoryPath + "/%1/%2").arg( projectName, QFileInfo(filePath).baseName() );
+
+    bool result = QFile::remove(filePath);
+    result = QFile::copy(backupFilePath, filePath);
+
     if (!result)
-        qDebug() << "[BACKUP] Error loading backup";
+        qDebug() << "[BACKUP] Error loading backup for file:" << QString(backupDirectoryPath + "/%1/%2").arg( projectName, QFileInfo(filePath).baseName() ) << "to path:" << filePath;
     return result;
 }
 
@@ -107,6 +99,13 @@ bool BackupManager::loadAll()
     return result;
 }
 
+bool BackupManager::cd(const QString &path)
+{
+    qDebug() << "[BACKUP MANAGER] Changed backup directory from" << backupDirectoryPath << "to" << path;
+
+    return processBackupDirectory(path);
+}
+
 void BackupManager::parseFilesList()
 {
     QString fileListData = filesList->readAll();
@@ -129,4 +128,46 @@ void BackupManager::parseFilesList()
     }
 
     filesList->close();
+    delete filesList;
+    filesList = nullptr;
+}
+
+bool BackupManager::processBackupDirectory(const QString & path)
+{
+    if (!QFileInfo(path).exists())
+    {
+        backupDirectoryPath = path;
+        mkdirCommand = QString("mkdir %1 &> /dev/null").arg(backupDirectoryPath);
+        qDebug() << "[BACKUP MANAGER] Create backup directory result:" << system(mkdirCommand.toUtf8().data()); // Create backup dir
+    } else if (!QFileInfo(path).isDir())
+    {
+        qDebug() << "[BACKUP MANAGER] Not a directory:" << path;
+        return false;
+    } else
+    {
+        backupDirectoryPath = path;
+    }
+
+    if (filesList)
+    {
+        filesList->close();
+        delete filesList;
+        filesList = nullptr;
+    }
+    filesList = new QFile(backupDirectoryPath + "/filesList.txt");
+    filesList->open(QIODevice::ReadWrite);
+
+    if (!filesList->isOpen())
+    {
+        system(mkdirCommand.toUtf8().data()); // Retry creating directory
+        filesList->open(QIODevice::NewOnly); // Try to create file
+
+        if (!filesList->isOpen())
+        {
+            throw std::runtime_error((std::string("Ошибка открытия и создания файла со списком сохранённых файлов: ") + filesList->errorString().toStdString()).c_str());
+        }
+    }
+
+    parseFilesList();
+    return true;
 }

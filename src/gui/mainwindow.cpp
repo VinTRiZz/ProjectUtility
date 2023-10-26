@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QFileInfo>
+#include <QThread>
 
 #include <QDebug>
 
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     REMOVE_BUTTON_FOCUS(update);
     REMOVE_BUTTON_FOCUS(acceptBasePath);
     REMOVE_BUTTON_FOCUS(clean);
+    REMOVE_BUTTON_FOCUS(saveChanges);
 
     CONNECT_CLIECKED(add, addSelectedLibrary);
     CONNECT_CLIECKED(remove, removeSelectedLibrary);
@@ -36,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CONNECT_CLIECKED(update, updateProjectList);
     CONNECT_CLIECKED(acceptBasePath, setBasePath);
     CONNECT_CLIECKED(clean, removeFiles);
+    CONNECT_CLIECKED(saveChanges, saveChanges);
 
     connect(ui->project_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::loadDependencyList);
     connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForText);
@@ -89,20 +92,37 @@ void MainWindow::loadDependencyList()
         ui->addedLibs_listWidget->addItem( dep );
 }
 
+void MainWindow::saveChanges()
+{
+    m_fileInterface.saveChanges();
+    PRINT("Сохранение изменений...");
+
+    const int TIMEOUT = 60000;
+
+    for (int currentTime = 0; (currentTime < TIMEOUT) && (ui->progressBar->value() != 100); currentTime++)
+    {
+        qDebug() << ui->progressBar->value();
+        ui->progressBar->setValue(m_fileInterface.progressPercent());
+        QCoreApplication::processEvents();
+        QThread::currentThread()->msleep(1);
+    }
+    PRINT("Изменения сохранены");
+}
+
 void MainWindow::createBackup()
 {
-    if (m_fileInterface.backupAll())
+    if (m_fileInterface.backupAll(ui->backupDir_lineEdit->text()))
         PRINT("Бэкап создан");
     else
-        PRINT("Бэкап создан частично или не создан");
+        PRINT("Бэкап создан частично или не создан (проверьте путь до директории с бэкапами)");
 }
 
 void MainWindow::loadBackup()
 {
-    if (m_fileInterface.loadBackup())
+    if (m_fileInterface.loadBackup(ui->backupDir_lineEdit->text()))
         PRINT("Бэкап загружен");
     else
-        PRINT("Бэкап загружен частично или не загружен");
+        PRINT("Бэкап загружен частично или не загружен (проверьте путь до директории с бэкапами)");
 }
 
 void MainWindow::setBasePath()

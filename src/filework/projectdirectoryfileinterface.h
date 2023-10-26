@@ -23,12 +23,16 @@ public:
     void addLibrary(const QString & appName, const QString & libraryName);
     void removeLibrary(const QString & appName, const QString & libraryName);
 
+    void saveChanges();
+
+    int progressPercent() const;
+
     QStringList getDepends(const QString & appName);
 
     void poll();
 
-    bool backupAll();
-    bool loadBackup();
+    bool backupAll(const QString & backupDirectory);
+    bool loadBackup(const QString & backupDirectory);
 
 private:
     struct Impl;

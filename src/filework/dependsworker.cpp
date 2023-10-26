@@ -66,36 +66,42 @@ void DependsWorker::updateDepends()
 {
     poll();
     processThread = new std::thread(
-                [this]()
-    {
-        qDebug() << "[DEPENDS WORKER] Updating depends";
-
-        QStringList dependsBuffer;
-
-        for (Project & app : apps)
+        [this]()
         {
-            dependsBuffer = app.depends;
-            std::sort(dependsBuffer.begin(), dependsBuffer.end(),
-                      [](QString & first, QString & second)
-            {
-                return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-            }
-            );
-            m_depParser.writeDepends(app);
-        }
+            processPercent.store(0);
+            float progressPart = (float)(apps.size() + libs.size()) / 100.0f;
 
-        for (Project & lib : libs)
-        {
-            std::sort(lib.depends.begin(), lib.depends.end(),
-                      [](QString & first, QString & second)
+            qDebug() << "[DEPENDS WORKER] Updating depends";
+
+            QStringList dependsBuffer;
+
+            for (Project & app : apps)
             {
-                return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                dependsBuffer = app.depends;
+                std::sort(dependsBuffer.begin(), dependsBuffer.end(),
+                          [](QString & first, QString & second)
+                {
+                    return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                }
+                );
+                m_depParser.writeDepends(app);
+                processPercent.store(processPercent.load() + progressPart);
             }
-            );
-            m_depParser.writeDepends(lib);
+
+            for (Project & lib : libs)
+            {
+                std::sort(lib.depends.begin(), lib.depends.end(),
+                          [](QString & first, QString & second)
+                {
+                    return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                }
+                );
+                m_depParser.writeDepends(lib);
+                processPercent.store(processPercent.load() + progressPart);
+            }
+            qDebug() << "[DEPENDS WORKER] Depends updated";
+            processPercent.store(100);
         }
-        qDebug() << "[DEPENDS WORKER] Depends updated";
-    }
     );
 }
 
@@ -124,4 +130,35 @@ void DependsWorker::parseFiles()
 void DependsWorker::setupDependsFromFiles(Project &proj)
 {
     m_depParser.parseDepends(proj);
+}
+
+void DependsWorker::saveChanges()
+{
+    poll();
+    processThread = new std::thread(
+        [this]()
+        {
+            processPercent.store(0);
+            float progressPart = (float)(apps.size() + libs.size()) / 100.0f;
+
+            qDebug() << "[DEPENDS WORKER] Saving changes";
+            for (Project & app : apps)
+            {
+                m_depParser.writeDepends(app);
+                processPercent.store(processPercent.load() + progressPart);
+            }
+
+            for (Project & lib : libs)
+            {
+                m_depParser.writeDepends(lib);
+                processPercent.store(processPercent.load() + progressPart);
+            }
+            qDebug() << "[DEPENDS WORKER] Saving complete";
+            processPercent.store(100);
+    });
+}
+
+int DependsWorker::progressPercent() const
+{
+    return processPercent.load();
 }

@@ -66,9 +66,15 @@ struct ProjectDirectoryFileInterface::Impl
         m_dependsWorker.setPath(path);
     }
 
-    bool backupAll()
+    bool backupAll(const QString & backupDirectory)
     {
         m_dependsWorker.poll();
+
+        if (!m_backupManager.cd(backupDirectory))
+        {
+            qDebug() << "[INTERFACE] Error setting backup directory";
+            return false;
+        }
 
         bool result = true;
         for (Project & app : apps)
@@ -88,9 +94,15 @@ struct ProjectDirectoryFileInterface::Impl
         return result;
     }
 
-    bool loadBackup()
+    bool loadBackup(const QString & backupDirectory)
     {
         m_dependsWorker.poll();
+
+        if (!m_backupManager.cd(backupDirectory))
+        {
+            qDebug() << "[INTERFACE] Error setting backup directory";
+            return false;
+        }
 
         apps.clear();
         libs.clear();
@@ -158,7 +170,18 @@ void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QSt
 void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const QString &libraryName) { m_pImpl->m_dependsWorker.removeLibrary(appName, libraryName); }
 QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName) { return m_pImpl->m_dependsWorker.getDepends(appName); }
 
+void ProjectDirectoryFileInterface::saveChanges()
+{
+    backupAll("./saveChangesBackup");
+    m_pImpl->m_dependsWorker.saveChanges();
+}
+
+int ProjectDirectoryFileInterface::progressPercent() const
+{
+    return m_pImpl->m_dependsWorker.progressPercent();
+}
+
 void ProjectDirectoryFileInterface::poll() { m_pImpl->m_dependsWorker.poll(); }
 
-bool ProjectDirectoryFileInterface::backupAll() { return m_pImpl->backupAll(); }
-bool ProjectDirectoryFileInterface::loadBackup() { return m_pImpl->loadBackup(); }
+bool ProjectDirectoryFileInterface::backupAll(const QString & backupDirectory) { return m_pImpl->backupAll(backupDirectory); }
+bool ProjectDirectoryFileInterface::loadBackup(const QString & backupDirectory) { return m_pImpl->loadBackup(backupDirectory); }
