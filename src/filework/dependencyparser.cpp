@@ -130,7 +130,10 @@ void DependencyParser::writeDepends(Project &proj)
         qDebug() << "[DEPENDS PARSER] Depends file will be created";
 
         openMode = QIODevice::NewOnly;
-        proj.dependFilePath = currentBasePath + "/Apps/" + proj.name + "/deps.pri";
+        if (proj.isLibrary)
+            proj.dependFilePath = currentBasePath + "/Libraries/" + proj.name + "/deps.pri";
+        else
+            proj.dependFilePath = currentBasePath + "/Apps/" + proj.name + "/deps.pri";
     }
 
     parseDepends(proj);

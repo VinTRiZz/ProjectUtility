@@ -7,11 +7,12 @@ namespace FileWork
 
 enum FILE_REMOVE_TYPE
 {
-    NO_FILE  = 0b0000,
-    MAKEFILE = 0b0001,
-    BUILD    = 0b0010,
-    LIB      = 0b0100,
-    BIN      = 0b1000
+    NO_FILE     = 0b00000,
+    MAKEFILE    = 0b00001,
+    BUILD       = 0b00010,
+    LIB         = 0b00100,
+    BIN         = 0b01000,
+    QMAKE_STASH = 0b10000
 };
 
 class Cleaner // Cleans projects from makefiles and object files, etc

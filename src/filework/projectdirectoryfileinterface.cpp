@@ -168,8 +168,8 @@ QStringList ProjectDirectoryFileInterface::getAppNameList()
 
 QString ProjectDirectoryFileInterface::currentDirectory() const { return m_pImpl->m_searcher.basePath(); }
 
-void ProjectDirectoryFileInterface::addLibrary(const QString &appName, const QString &libraryName) { m_pImpl->m_dependsWorker.addLibrary(appName, libraryName); }
-void ProjectDirectoryFileInterface::removeLibrary(const QString &appName, const QString &libraryName) { m_pImpl->m_dependsWorker.removeLibrary(appName, libraryName); }
+void ProjectDirectoryFileInterface::addLibrary(const QString &projectName, const QString &libraryName) { m_pImpl->m_dependsWorker.addLibrary(projectName, libraryName); }
+void ProjectDirectoryFileInterface::removeLibrary(const QString &projectName, const QString &libraryName) { m_pImpl->m_dependsWorker.removeLibrary(projectName, libraryName); }
 QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName) { return m_pImpl->m_dependsWorker.getDepends(appName); }
 
 void ProjectDirectoryFileInterface::saveChanges()

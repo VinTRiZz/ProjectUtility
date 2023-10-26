@@ -16,43 +16,64 @@ DependsWorker::~DependsWorker()
 }
 
 
-void DependsWorker::addLibrary(const QString &appName, const QString &libraryName)
+void DependsWorker::addLibrary(const QString &projectName, const QString &libraryName)
 {
     poll();
 
-    auto appPos = std::find_if(apps.begin(), apps.end(), [&appName](Project & app){ return (app.name == appName); });
+    auto projectPos = std::find_if(apps.begin(), apps.end(), [&projectName](Project & app){ return (app.name == projectName); });
+
+    if (projectPos == apps.end())
+    {
+        projectPos = std::find_if(libs.begin(), libs.end(), [&projectName](Project & app){ return (app.name == projectName); });
+
+        if (projectPos == libs.end())
+            return;
+    }
 
     auto libraryPos = std::find_if(libs.begin(), libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
 
-    if ((appPos == apps.end()) || (libraryPos == libs.end()))
+    if (libraryPos == libs.end())
         return;
 
-    appPos->depends << libraryName;
+    projectPos->depends << libraryName;
 
-    qDebug() << "[Dependency \033[32madded\033[0m]: " << appName << "--->" << libraryName;
+    qDebug() << "[Dependency \033[32madded\033[0m]: " << projectName << "--->" << libraryName;
 }
 
-void DependsWorker::removeLibrary(const QString &appName, const QString &libraryName)
+void DependsWorker::removeLibrary(const QString &projectName, const QString &libraryName)
 {
     poll();
 
-    auto appPos = std::find_if(apps.begin(), apps.end(), [&appName](Project & app){ return (app.name == appName); });
+    auto projectPos = std::find_if(apps.begin(), apps.end(), [&projectName](Project & app){ return (app.name == projectName); });
+
+    if (projectPos == apps.end())
+    {
+        projectPos = std::find_if(libs.begin(), libs.end(), [&projectName](Project & app){ return (app.name == projectName); });
+
+        if (projectPos == libs.end())
+            return;
+    }
 
     auto libraryPos = std::find_if(libs.begin(), libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
 
-    if ((appPos == apps.end()) || (libraryPos == libs.end()))
+    if (libraryPos == libs.end())
         return;
 
-    appPos->depends.removeOne(libraryName);
+    projectPos->depends.removeOne(libraryName);
 
-    qDebug() << "[Dependency \033[31mremoved\033[0m]: " << appName << "-X->" << libraryName;
+    qDebug() << "[Dependency \033[31mremoved\033[0m]: " << projectName << "-X->" << libraryName;
 }
 
-QStringList DependsWorker::getDepends(const QString &appName)
+QStringList DependsWorker::getDepends(const QString &projectName)
 {
     poll();
 
-    auto app = std::find_if( apps.begin(), apps.end(), [&appName](const Project & currentApp){ return (appName == currentApp.name); } );
+    auto lib = std::find_if( libs.begin(), libs.end(), [&projectName](const Project & currentProject){ return (projectName == currentProject.name); } );
+
+    if (lib != libs.end())
+        return lib->depends;
+
+    auto app = std::find_if( apps.begin(), apps.end(), [&projectName](const Project & currentProject){ return (projectName == currentProject.name); } );
 
     if (app != apps.end())
         return app->depends;

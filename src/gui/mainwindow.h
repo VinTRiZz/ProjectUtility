@@ -21,17 +21,20 @@ public:
 public slots:
     void addSelectedLibrary();
     void removeSelectedLibrary();
-    void loadDependencyList();
+
+    void fillProjectList();
+    void loadDependencyList(const QString & projectName);
     void saveChanges();
 
     void createBackup();
     void loadBackup();
 
-    void setBasePath();
+    void updateBasePath();
 
     void removeFiles();
 
-    void searchForText(const QString & changedText);
+    void searchForLibrary(const QString & changedText);
+    void searchForProject(const QString & changedText);
 
     void changedMenu(QAction * menuAction);
 

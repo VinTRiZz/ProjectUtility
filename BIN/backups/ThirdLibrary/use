@@ -1,3 +1,0 @@
-INCLUDEPATH += $$PWD/include
-
-LIBS += -L$$PWD/../../LIB/libThirdLibrary.so

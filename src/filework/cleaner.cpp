@@ -35,6 +35,9 @@ QStringList Cleaner::getFileList(const QString &basePath, int fileType)
     if (fileType & FILE_REMOVE_TYPE::LIB)
         searchForFiles(basePath + "/LIB", result, "f", "-type");
 
+    if (fileType & FILE_REMOVE_TYPE::QMAKE_STASH)
+        searchForFiles(basePath, result, ".qmake.stash");
+
     return result;
 }
 

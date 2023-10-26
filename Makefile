@@ -450,7 +450,8 @@ BUILD/dependencyparser.o: src/filework/dependencyparser.cpp src/filework/depende
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependencyparser.o src/filework/dependencyparser.cpp
 
 BUILD/dependsworker.o: src/filework/dependsworker.cpp src/filework/dependsworker.h \
-		src/filework/filesearcher.h
+		src/filework/filesearcher.h \
+		src/filework/dependencyparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependsworker.o src/filework/dependsworker.cpp
 
 BUILD/filesearcher.o: src/filework/filesearcher.cpp src/filework/filesearcher.h
@@ -458,8 +459,9 @@ BUILD/filesearcher.o: src/filework/filesearcher.cpp src/filework/filesearcher.h
 
 BUILD/projectdirectoryfileinterface.o: src/filework/projectdirectoryfileinterface.cpp src/filework/projectdirectoryfileinterface.h \
 		src/filework/filesearcher.h \
-		src/filework/dependencyparser.h \
-		src/filework/backupmanager.h
+		src/filework/backupmanager.h \
+		src/filework/dependsworker.h \
+		src/filework/dependencyparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/projectdirectoryfileinterface.o src/filework/projectdirectoryfileinterface.cpp
 
 BUILD/moc_mainwindow.o: BUILD/moc_mainwindow.cpp 

@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setupAvailableLibrariesView();
 
-    setBasePath(); // For tests
+    updateBasePath(); // For tests
 
     // Remove focus
     REMOVE_BUTTON_FOCUS(add);
@@ -40,14 +40,19 @@ MainWindow::MainWindow(QWidget *parent) :
     // CONNECT_CLIECKED(saveBackup, createBackup);
     // CONNECT_CLIECKED(loadBackup, loadBackup);
     CONNECT_CLIECKED(update, updateProjectList);
-    CONNECT_CLIECKED(acceptBasePath, setBasePath);
+    CONNECT_CLIECKED(acceptBasePath, updateBasePath);
     CONNECT_CLIECKED(clean, removeFiles);
     CONNECT_CLIECKED(saveChanges, saveChanges);
 
-    connect(ui->project_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::loadDependencyList);
-    connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForText);
+    connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
+
+    connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForLibrary);
+    connect(ui->searchProject_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForProject);
 
     connect(ui->menuBar, &QMenuBar::triggered, this, &MainWindow::changedMenu);
+
+    connect(ui->apps_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
+    connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
 }
 
 MainWindow::~MainWindow()
@@ -64,7 +69,18 @@ void MainWindow::addSelectedLibrary()
     if (ui->addedLibs_listWidget->findItems(pItem->text(), Qt::MatchExactly).size() > 0)
         return;
 
-    m_fileInterface.addLibrary(ui->project_comboBox->currentText(), pItem->text());
+    auto pProjectItem = ui->projects_listWidget->currentItem();
+    if (!pItem)
+        return;
+
+    const QString currentProjectName = pProjectItem->text();
+    if (currentProjectName == pItem->text())
+    {
+        PRINT("Нельзя зависеть от себя!");
+        return;
+    }
+
+    m_fileInterface.addLibrary(currentProjectName, pItem->text());
     ui->addedLibs_listWidget->addItem( pItem->text() );
 }
 
@@ -77,14 +93,16 @@ void MainWindow::removeSelectedLibrary()
         return;
     }
 
-    m_fileInterface.removeLibrary(ui->project_comboBox->currentText(), pItem->text());
+    auto pProjectItem = ui->projects_listWidget->currentItem();
+    if (!pProjectItem)
+        return;
+
+    m_fileInterface.removeLibrary(pProjectItem->text(), pItem->text());
     delete ui->addedLibs_listWidget->currentItem();
 }
 
-void MainWindow::loadDependencyList()
+void MainWindow::loadDependencyList(const QString & projectName)
 {
-    const QString projectName = ui->project_comboBox->currentText();
-
     if (projectName.size() == 0)
     {
         PRINT("Не выбран проект");
@@ -101,16 +119,6 @@ void MainWindow::loadDependencyList()
 void MainWindow::saveChanges()
 {
     m_fileInterface.saveChanges();
-    PRINT("Сохранение изменений...");
-
-    const int TIMEOUT = 60000;
-
-    for (int currentTime = 0; (currentTime < TIMEOUT) && (ui->progressBar->value() != 100); currentTime++)
-    {
-        ui->progressBar->setValue(m_fileInterface.progressPercent());
-        QCoreApplication::processEvents();
-        QThread::currentThread()->msleep(1);
-    }
     PRINT("Изменения сохранены");
 }
 
@@ -130,7 +138,7 @@ void MainWindow::loadBackup()
         PRINT("Бэкап загружен частично или не загружен (проверьте путь до директории с бэкапами)");
 }
 
-void MainWindow::setBasePath()
+void MainWindow::updateBasePath()
 {
     basePath = ui->basePath_lineEdit->text();
     if (basePath.size() < 1)
@@ -165,6 +173,9 @@ void MainWindow::removeFiles()
     if (ui->makeFiles_checkBox->isChecked())
         filesToRemove |= FileWork::FILE_REMOVE_TYPE::MAKEFILE;
 
+    if (ui->qmakeStash_checkBox->isChecked())
+        filesToRemove |= FileWork::FILE_REMOVE_TYPE::QMAKE_STASH;
+
     QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentDirectory(), filesToRemove);
 
     // Check if all's good
@@ -172,9 +183,10 @@ void MainWindow::removeFiles()
     {
         if (
             !file.contains("/BIN/") &&
-            !file.contains("/Makefile") &&
             !file.contains("/BUILD/") &&
-            !file.contains("/LIB/")
+            !file.contains("/LIB/") &&
+            !file.contains("/Makefile") &&
+            !file.contains("/.qmake.stash")
         )
         {
             qDebug() << "[REMOVE CHECK] Invalid file:[" << file << "]";
@@ -186,7 +198,7 @@ void MainWindow::removeFiles()
     m_cleaner.removeFiles(fileList);
 }
 
-void MainWindow::searchForText(const QString &changedText)
+void MainWindow::searchForLibrary(const QString &changedText)
 {
     auto foundItems = ui->avaliableLibs_listWidget->findItems(changedText, Qt::MatchContains);
 
@@ -196,6 +208,18 @@ void MainWindow::searchForText(const QString &changedText)
     auto pItem = foundItems[0];
     if (pItem)
         ui->avaliableLibs_listWidget->setCurrentItem(pItem);
+}
+
+void MainWindow::searchForProject(const QString &changedText)
+{
+    auto foundItems = ui->projects_listWidget->findItems(changedText, Qt::MatchContains);
+
+    if (foundItems.size() < 1)
+        return;
+
+    auto pItem = foundItems[0];
+    if (pItem)
+        ui->projects_listWidget->setCurrentItem(pItem);
 }
 
 void MainWindow::changedMenu(QAction *menuAction)
@@ -226,27 +250,18 @@ void MainWindow::updateProjectList()
     }
     PRINT(QString("Найдено %1 объектов").arg(QString::number(parsedFilesCount)));
 
-    QStringList libList = m_fileInterface.getLibraryNameList();
+    QStringList projectList;
+
+    // projectList.append( m_fileInterface.getLibraryNameList() );
+    projectList.append( m_fileInterface.getAppNameList() );
 
     ui->avaliableLibs_listWidget->clear();
-    for (QString & lib : libList)
+    for (QString & proj : projectList)
     {
-        ui->avaliableLibs_listWidget->addItem(lib);
+        ui->avaliableLibs_listWidget->addItem(proj);
     }
 
-    QStringList appList = m_fileInterface.getAppNameList();
-
-    ui->project_comboBox->clear();
-    for (QString & app : appList)
-    {
-        ui->project_comboBox->addItem(app);
-    }
-
-    if (appList.size() > 0)
-    {
-        ui->project_comboBox->setCurrentIndex(0);
-        loadDependencyList(); // Cuz ComboBox already selected project
-    }
+    fillProjectList();
 }
 
 void MainWindow::setupAvailableLibrariesView()
@@ -254,3 +269,21 @@ void MainWindow::setupAvailableLibrariesView()
     ui->avaliableLibs_listWidget->setFocusPolicy(Qt::NoFocus);
     ui->avaliableLibs_listWidget->setSortingEnabled(true);
 }
+
+void MainWindow::fillProjectList()
+{
+    ui->projects_listWidget->clear();
+    if (ui->libs_radioButton->isChecked())
+    {
+        QStringList appList = m_fileInterface.getAppNameList();
+        for (QString & app : appList)
+            ui->projects_listWidget->addItem(app);
+    }
+    else if (ui->apps_radioButton->isChecked())
+    {
+        QStringList libList = m_fileInterface.getLibraryNameList();
+        for (QString & lib : libList)
+            ui->projects_listWidget->addItem(lib);
+    }
+}
+
