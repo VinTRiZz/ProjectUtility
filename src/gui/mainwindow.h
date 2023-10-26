@@ -33,6 +33,8 @@ public slots:
 
     void searchForText(const QString & changedText);
 
+    void changedMenu(QAction * menuAction);
+
 private:
     Ui::MainWindow *ui;
 

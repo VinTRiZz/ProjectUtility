@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->stackedWidget->setCurrentIndex(0);
+
     setupAvailableLibrariesView();
 
     setBasePath(); // For tests
@@ -24,17 +26,19 @@ MainWindow::MainWindow(QWidget *parent) :
     // Remove focus
     REMOVE_BUTTON_FOCUS(add);
     REMOVE_BUTTON_FOCUS(remove);
-    REMOVE_BUTTON_FOCUS(saveBackup);
-    REMOVE_BUTTON_FOCUS(loadBackup);
+    // REMOVE_BUTTON_FOCUS(saveBackup);
+    // REMOVE_BUTTON_FOCUS(loadBackup);
     REMOVE_BUTTON_FOCUS(update);
     REMOVE_BUTTON_FOCUS(acceptBasePath);
     REMOVE_BUTTON_FOCUS(clean);
     REMOVE_BUTTON_FOCUS(saveChanges);
+    REMOVE_BUTTON_FOCUS(build);
+    REMOVE_BUTTON_FOCUS(rebuild);
 
     CONNECT_CLIECKED(add, addSelectedLibrary);
     CONNECT_CLIECKED(remove, removeSelectedLibrary);
-    CONNECT_CLIECKED(saveBackup, createBackup);
-    CONNECT_CLIECKED(loadBackup, loadBackup);
+    // CONNECT_CLIECKED(saveBackup, createBackup);
+    // CONNECT_CLIECKED(loadBackup, loadBackup);
     CONNECT_CLIECKED(update, updateProjectList);
     CONNECT_CLIECKED(acceptBasePath, setBasePath);
     CONNECT_CLIECKED(clean, removeFiles);
@@ -42,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->project_comboBox, &QComboBox::currentTextChanged, this, &MainWindow::loadDependencyList);
     connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForText);
+
+    connect(ui->menuBar, &QMenuBar::triggered, this, &MainWindow::changedMenu);
 }
 
 MainWindow::~MainWindow()
@@ -110,17 +116,17 @@ void MainWindow::saveChanges()
 
 void MainWindow::createBackup()
 {
-    if (m_fileInterface.backupAll(ui->backupDir_lineEdit->text()))
+    // if (m_fileInterface.backupAll(ui->backupDir_lineEdit->text()))
         PRINT("Бэкап создан");
-    else
+    // else
         PRINT("Бэкап создан частично или не создан (проверьте путь до директории с бэкапами)");
 }
 
 void MainWindow::loadBackup()
 {
-    if (m_fileInterface.loadBackup(ui->backupDir_lineEdit->text()))
+    // if (m_fileInterface.loadBackup(ui->backupDir_lineEdit->text()))
         PRINT("Бэкап загружен");
-    else
+    // else
         PRINT("Бэкап загружен частично или не загружен (проверьте путь до директории с бэкапами)");
 }
 
@@ -190,6 +196,17 @@ void MainWindow::searchForText(const QString &changedText)
     auto pItem = foundItems[0];
     if (pItem)
         ui->avaliableLibs_listWidget->setCurrentItem(pItem);
+}
+
+void MainWindow::changedMenu(QAction *menuAction)
+{
+    if (menuAction->text() == "Управление проектом")
+    {
+        ui->stackedWidget->setCurrentIndex(0);
+    } else if (menuAction->text() == "Зависимости проекта")
+    {
+        ui->stackedWidget->setCurrentIndex(1);
+    }
 }
 
 void MainWindow::updateProjectList()
