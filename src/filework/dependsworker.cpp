@@ -16,69 +16,27 @@ DependsWorker::~DependsWorker()
 }
 
 
-void DependsWorker::addLibrary(const QString &projectName, const QString &libraryName)
+void DependsWorker::addLibrary(Project * proj, const QString &libraryName)
 {
     poll();
-
-    auto projectPos = std::find_if(apps.begin(), apps.end(), [&projectName](Project & app){ return (app.name == projectName); });
-
-    if (projectPos == apps.end())
-    {
-        projectPos = std::find_if(libs.begin(), libs.end(), [&projectName](Project & app){ return (app.name == projectName); });
-
-        if (projectPos == libs.end())
-            return;
-    }
 
     auto libraryPos = std::find_if(libs.begin(), libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
 
     if (libraryPos == libs.end())
         return;
 
-    projectPos->depends << libraryName;
+    proj->depends << libraryName;
 
-    qDebug() << "[Dependency \033[32madded\033[0m]: " << projectName << "--->" << libraryName;
+    qDebug() << "[Dependency \033[32madded\033[0m]: " << proj->name << "--->" << libraryName;
 }
 
-void DependsWorker::removeLibrary(const QString &projectName, const QString &libraryName)
+void DependsWorker::removeLibrary(Project * proj, const QString &libraryName)
 {
     poll();
 
-    auto projectPos = std::find_if(apps.begin(), apps.end(), [&projectName](Project & app){ return (app.name == projectName); });
+    proj->depends.removeOne(libraryName);
 
-    if (projectPos == apps.end())
-    {
-        projectPos = std::find_if(libs.begin(), libs.end(), [&projectName](Project & app){ return (app.name == projectName); });
-
-        if (projectPos == libs.end())
-            return;
-    }
-
-    auto libraryPos = std::find_if(libs.begin(), libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
-
-    if (libraryPos == libs.end())
-        return;
-
-    projectPos->depends.removeOne(libraryName);
-
-    qDebug() << "[Dependency \033[31mremoved\033[0m]: " << projectName << "-X->" << libraryName;
-}
-
-QStringList DependsWorker::getDepends(const QString &projectName)
-{
-    poll();
-
-    auto lib = std::find_if( libs.begin(), libs.end(), [&projectName](const Project & currentProject){ return (projectName == currentProject.name); } );
-
-    if (lib != libs.end())
-        return lib->depends;
-
-    auto app = std::find_if( apps.begin(), apps.end(), [&projectName](const Project & currentProject){ return (projectName == currentProject.name); } );
-
-    if (app != apps.end())
-        return app->depends;
-
-    return QStringList();
+    qDebug() << "[Dependency \033[31mremoved\033[0m]: " << proj->name << "-X->" << libraryName;
 }
 
 void DependsWorker::updateDepends()

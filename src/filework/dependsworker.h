@@ -16,10 +16,8 @@ public:
     DependsWorker(QVector<Project> & apps, QVector<Project> & libs);
     ~DependsWorker();
 
-    void addLibrary(const QString &appName, const QString &libraryName);
-    void removeLibrary(const QString &appName, const QString &libraryName);
-
-    QStringList getDepends(const QString &appName);
+    void addLibrary(Project * proj, const QString &libraryName);
+    void removeLibrary(Project * proj, const QString &libraryName);
 
     void updateDepends();
     void poll();

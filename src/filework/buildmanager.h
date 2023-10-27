@@ -3,32 +3,41 @@
 
 #include "filesearcher.h"
 
+#include <QObject>
+#include <QFile>
+
 // 1 hour timeout :)
 #define BUILD_TIMEOUT 3600000
 
 namespace FileWork
 {
 
-class BuildManager
+class BuildManager : public QObject
 {
+    Q_OBJECT
 public:
-    BuildManager(QVector<Project> & apps, QVector<Project> & libs);
+    BuildManager(QObject * parent);
     ~BuildManager();
 
-    bool setArguments(const QStringList args);
+    bool build(const Project &proj, const QString target, const int timeout = BUILD_TIMEOUT);
+    bool rebuild(const Project &proj, const QString target, const int timeout = BUILD_TIMEOUT);
 
-    bool build(const QString & projectName, const QString & buildLogFilePath, const int timeout = BUILD_TIMEOUT);
-    bool rebuild(const QString & projectName, const QString & buildLogFilePath, const int timeout = BUILD_TIMEOUT);
+    void waitForRebuild();
 
     bool isWorking() const;
+
+    void setLogFile(const QString & logPath);
+
+signals:
+    void buildComplete(const Project & proj, bool buildResult);
 
 private:
     bool m_isWorking {false};
 
-    QStringList m_buildArgs;
+    void writeLog(const QByteArray & what);
+    bool invoke(const QString & program, const QStringList args, const int timeout);
 
-    QVector<Project> & apps;
-    QVector<Project> & libs;
+    QFile m_logFile;
 };
 
 }

@@ -38,6 +38,9 @@ public slots:
 
     void changedMenu(QAction * menuAction);
 
+    void build();
+    void rebuild();
+
 private:
     Ui::MainWindow *ui;
 

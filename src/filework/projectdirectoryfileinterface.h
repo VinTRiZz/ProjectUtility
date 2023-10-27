@@ -3,14 +3,16 @@
 
 #include <memory>
 #include <QString>
+#include <QObject>
 
 namespace FileWork
 {
 
-class ProjectDirectoryFileInterface
+class ProjectDirectoryFileInterface : public QObject
 {
+    Q_OBJECT
 public:
-    ProjectDirectoryFileInterface();
+    ProjectDirectoryFileInterface(QObject * parent = nullptr);
     ~ProjectDirectoryFileInterface();
 
     // Returns count of files found
@@ -33,6 +35,9 @@ public:
 
     bool backupAll(const QString & backupDirectory);
     bool loadBackup(const QString & backupDirectory);
+
+    bool build(const QString & projectName, const QString & target);
+    bool rebuild(const QString & projectName, const QString & target);
 
 private:
     struct Impl;

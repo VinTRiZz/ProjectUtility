@@ -43,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     CONNECT_CLIECKED(acceptBasePath, updateBasePath);
     CONNECT_CLIECKED(clean, removeFiles);
     CONNECT_CLIECKED(saveChanges, saveChanges);
+    CONNECT_CLIECKED(build, build);
+    CONNECT_CLIECKED(rebuild, rebuild);
 
     connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
 
@@ -230,6 +232,100 @@ void MainWindow::changedMenu(QAction *menuAction)
     } else if (menuAction->text() == "Зависимости проекта")
     {
         ui->stackedWidget->setCurrentIndex(1);
+    }
+}
+
+void MainWindow::build()
+{
+    QString target;
+    if (ui->debugTarget_radioButton->isChecked())
+    {
+        target = "debug";
+    } else if (ui->releaseTarget_radioButton->isChecked())
+    {
+        target = "release";
+    }
+
+    if (ui->buildAll_radioButton->isChecked())
+    {
+        const int projectCount = ui->projects_listWidget->count();
+        QString projectName;
+
+        for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
+        {
+            projectName = ui->projects_listWidget->item(i)->text();
+            PRINT(QString("Собирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
+            m_fileInterface.build(projectName, target);
+        }
+        PRINT("Проекты собраны");
+    }
+    else if (ui->buildCurrent_radioButton->isChecked())
+    {
+        auto pItem = ui->projects_listWidget->currentItem();
+
+        if (!pItem)
+        {
+            PRINT("Проект не выбран");
+            return;
+        }
+
+        QString projectName = pItem->text();
+        PRINT(QString("Проект %1 собирается...").arg(projectName));
+        if (m_fileInterface.build(projectName, target))
+        {
+            PRINT("Проект собран");
+        }
+        else
+        {
+            PRINT("Ошибка сборки. Более полная информация в файле buildLog.txt");
+        }
+    }
+}
+
+void MainWindow::rebuild()
+{
+    QString target;
+    if (ui->debugTarget_radioButton->isChecked())
+    {
+        target = "debug";
+    } else if (ui->releaseTarget_radioButton->isChecked())
+    {
+        target = "release";
+    }
+
+    if (ui->buildAll_radioButton->isChecked())
+    {
+        const int projectCount = ui->projects_listWidget->count();
+        QString projectName;
+
+        for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
+        {
+            projectName = ui->projects_listWidget->item(i)->text();
+            PRINT(QString("Пересобирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
+            m_fileInterface.rebuild(projectName, target);
+        }
+        PRINT("Проекты пересобраны");
+    }
+    else if (ui->buildCurrent_radioButton->isChecked())
+    {
+        auto pItem = ui->projects_listWidget->currentItem();
+
+        if (!pItem)
+        {
+            PRINT("Проект не выбран");
+            return;
+        }
+
+        QString projectName = pItem->text();
+        PRINT(QString("Проект %1 собирается...").arg(projectName));
+        if (m_fileInterface.rebuild(projectName, target))
+        {
+            PRINT("Проект пересобран");
+        }
+        else
+        {
+            PRINT("Ошибка пересборки. Более полная информация в файле buildLog.txt");
+        }
     }
 }
 
