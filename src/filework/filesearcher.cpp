@@ -40,6 +40,7 @@ QString FileSearcher::basePath() const
 bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
 {
     QDir searchDir(basePath);
+    QDir projectDir;
 
     QStringList entries = searchDir.entryList();
     entries.removeOne(".");
@@ -53,9 +54,33 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
     else
         libs.clear();
 
+    int projectFilePos = -1;
+    QStringList projectContents;
     for (QString & entry : entries)
     {
         foundProj.name = entry;
+
+        projectDir.setPath( searchDir.absoluteFilePath(entry) );
+        projectContents = projectDir.entryList();
+
+        projectFilePos = projectContents.indexOf(entry + ".pro");
+
+        if (projectFilePos > 0)
+            foundProj.projectProFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
+
+        projectFilePos = projectContents.indexOf("deps.pri");
+
+        if (projectFilePos > 0)
+            foundProj.dependFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
+
+        if (isLibs)
+        {
+            projectFilePos = projectContents.indexOf("use.pri");
+
+            if (projectFilePos > 0)
+                foundProj.useFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
+        }
+
         if (!isLibs)
             apps.push_back(foundProj);
         else
@@ -65,39 +90,39 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
     return (((apps.size() > 0) && !isLibs) || ((libs.size() > 0) && isLibs));
 }
 
-bool FileSearcher::searchForFiles(const QString &basePath)
-{
-    QStringList findArgs;
-    findArgs << basePath << "-name" << "*.pri";
+//bool FileSearcher::searchForFiles(const QString &basePath)
+//{
+//    QStringList findArgs;
+//    findArgs << basePath << "-name" << "*.pri";
 
-    QProcess findProcess;
+//    QProcess findProcess;
 
-    findProcess.setProgram("find");
-    findProcess.setArguments(findArgs);
+//    findProcess.setProgram("find");
+//    findProcess.setArguments(findArgs);
 
-    findProcess.start();
-    if (!findProcess.waitForStarted(FIND_START_TIMEOUT))
-    {
-        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] Start error, args:"  << findArgs.join(" ");
-        return false;
-    }
+//    findProcess.start();
+//    if (!findProcess.waitForStarted(FIND_START_TIMEOUT))
+//    {
+//        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] Start error, args:"  << findArgs.join(" ");
+//        return false;
+//    }
 
-    if (!findProcess.waitForFinished(FIND_FINISH_TIMEOUT))
-    {
-        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] Finish error, args:" << findArgs.join(" ");
-        return false;
-    }
+//    if (!findProcess.waitForFinished(FIND_FINISH_TIMEOUT))
+//    {
+//        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] Finish error, args:" << findArgs.join(" ");
+//        return false;
+//    }
 
-    findOutput = findProcess.readAllStandardOutput();
+//    findOutput = findProcess.readAllStandardOutput();
 
-    if (findOutput.size() < 1)
-    {
-        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] No files found, args:"  << findArgs.join(" ");
-        return false;
-    }
+//    if (findOutput.size() < 1)
+//    {
+//        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] No files found, args:"  << findArgs.join(" ");
+//        return false;
+//    }
 
-    return true;
-}
+//    return true;
+//}
 
 void FileSearcher::findFiles()
 {
@@ -112,67 +137,61 @@ void FileSearcher::findFiles()
         return;
     }
 
-    int copyFrom, copyTo;
-    QString buffer;
-    for (Project & app : apps)
-    {
-        if (!searchForFiles(appDirBasePath + "/" + app.name))
-            continue;
+//    int copyFrom, copyTo;
+//    QString buffer;
+//    for (Project & app : apps)
+//    {
+//        if (!searchForFiles(appDirBasePath + "/" + app.name))
+//            continue;
 
-        copyFrom = 0;
-        copyTo = 0;
-        for (; copyTo < findOutput.size(); copyTo++)
-        {
-            copyTo = findOutput.indexOf(QChar(0x0A), copyFrom);
-            if (copyTo != copyFrom)
-            {
-                buffer.clear();
-                buffer.resize(copyTo - copyFrom);
-                std::copy(findOutput.data() + copyFrom, findOutput.data() + copyTo, buffer.begin());
-                copyFrom = copyTo + 1;
+//        copyFrom = 0;
+//        copyTo = 0;
+//        for (; copyTo < findOutput.size(); copyTo++)
+//        {
+//            copyTo = findOutput.indexOf(QChar(0x0A), copyFrom);
+//            if (copyTo != copyFrom)
+//            {
+//                buffer.clear();
+//                buffer.resize(copyTo - copyFrom);
+//                std::copy(findOutput.data() + copyFrom, findOutput.data() + copyTo, buffer.begin());
+//                copyFrom = copyTo + 1;
 
-                if (buffer.contains("deps.pri"))
-                {
-                    app.dependFilePath = buffer;
-                } else if (buffer.contains("use.pri"))
-                {
-                    app.useFilePath = buffer;
-                } else if (buffer.contains("src.pri"))
-                {
-                    app.srcFilePath = buffer;
-                }
-            }
-        }
-    }
+//                if (buffer.contains("deps.pri"))
+//                {
+//                    app.dependFilePath = buffer;
+//                } else if (buffer.contains("use.pri"))
+//                {
+//                    app.useFilePath = buffer;
+//                }
+//            }
+//        }
+//    }
 
-    for (Project & lib : libs)
-    {
-        if (!searchForFiles(libDirBasePath + "/" + lib.name))
-            continue;
+//    for (Project & lib : libs)
+//    {
+//        if (!searchForFiles(libDirBasePath + "/" + lib.name))
+//            continue;
 
-        copyFrom = 0;
-        copyTo = 0;
-        for (; copyTo < findOutput.size(); copyTo++)
-        {
-            copyTo = findOutput.indexOf(QChar(0x0A), copyFrom);
-            if (copyTo != copyFrom)
-            {
-                buffer.clear();
-                buffer.resize(copyTo - copyFrom);
-                std::copy(findOutput.data() + copyFrom, findOutput.data() + copyTo, buffer.begin());
-                copyFrom = copyTo + 1;
+//        copyFrom = 0;
+//        copyTo = 0;
+//        for (; copyTo < findOutput.size(); copyTo++)
+//        {
+//            copyTo = findOutput.indexOf(QChar(0x0A), copyFrom);
+//            if (copyTo != copyFrom)
+//            {
+//                buffer.clear();
+//                buffer.resize(copyTo - copyFrom);
+//                std::copy(findOutput.data() + copyFrom, findOutput.data() + copyTo, buffer.begin());
+//                copyFrom = copyTo + 1;
 
-                if (buffer.contains("deps.pri"))
-                {
-                    lib.dependFilePath = buffer;
-                } else if (buffer.contains("use.pri"))
-                {
-                    lib.useFilePath = buffer;
-                } else if (buffer.contains("src.pri"))
-                {
-                    lib.srcFilePath = buffer;
-                }
-            }
-        }
-    }
+//                if (buffer.contains("deps.pri"))
+//                {
+//                    lib.dependFilePath = buffer;
+//                } else if (buffer.contains("use.pri"))
+//                {
+//                    lib.useFilePath = buffer;
+//                }
+//            }
+//        }
+//    }
 }

@@ -11,9 +11,9 @@ struct Project
 {
     bool isLibrary {false};
     QString name;
+    QString projectProFilePath;
     QString dependFilePath;
     QString useFilePath;
-    QString srcFilePath;
     QStringList depends;
 };
 
@@ -35,7 +35,7 @@ private:
     QVector<Project> & libs;
 
     bool searchForProjects(const QString & basePath, bool isLibs);
-    bool searchForFiles(const QString & basePath);
+//    bool searchForFiles(const QString & basePath);
 };
 
 }

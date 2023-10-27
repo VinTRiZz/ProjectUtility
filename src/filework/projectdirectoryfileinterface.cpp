@@ -40,7 +40,7 @@ struct ProjectDirectoryFileInterface::Impl
         {
             qDebug() << "\033[33mAPP N:" << currentIteration++ << "\033[0m"   << endl
                      << "NAME:  " << app.name                                 << endl
-                     << "SRC:   " << app.srcFilePath                          << endl
+                     << "PRO:   " << app.projectProFilePath                   << endl
                      << "DEPS:  " << app.dependFilePath                       << endl
                      << "DEPON: " << app.depends.join(", ")                   << endl
                         ;
@@ -53,10 +53,10 @@ struct ProjectDirectoryFileInterface::Impl
         for (Project & lib : libs)
         {
             qDebug() << "\033[33mLIBRARY N:" << currentIteration++ << "\033[0m" << endl
-                     << "NAME:" << lib.name                                     << endl
-                     << "SRC: " << lib.srcFilePath                              << endl
-                     << "DEPS:" << lib.dependFilePath                           << endl
-                     << "USE: " << lib.useFilePath
+                     << "NAME: " << lib.name                                    << endl
+                     << "PRO:  " << lib.projectProFilePath                      << endl
+                     << "DEPS: " << lib.dependFilePath                          << endl
+                     << "USE:  " << lib.useFilePath
                         ;
         }
         qDebug() << "--------------------------------------------------------------------------------------------------------";
@@ -81,15 +81,13 @@ struct ProjectDirectoryFileInterface::Impl
         bool result = true;
         for (Project & app : apps)
         {
-            if (!m_backupManager.backup(app.name, app.srcFilePath) ||
-                !m_backupManager.backup(app.name, app.dependFilePath))
+            if (!m_backupManager.backup(app.name, app.dependFilePath))
                 result = false;
         }
 
         for (Project & lib : libs)
         {
-            if (!m_backupManager.backup(lib.name, lib.srcFilePath) ||
-                !m_backupManager.backup(lib.name, lib.useFilePath) ||
+            if (!m_backupManager.backup(lib.name, lib.useFilePath) ||
                 !m_backupManager.backup(lib.name, lib.dependFilePath))
                 result = false;
         }

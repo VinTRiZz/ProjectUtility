@@ -53,6 +53,7 @@ OBJECTS_DIR   = BUILD/
 SOURCES       = src/main.cpp \
 		src/gui/mainwindow.cpp \
 		src/filework/backupmanager.cpp \
+		src/filework/buildmanager.cpp \
 		src/filework/cleaner.cpp \
 		src/filework/dependencyparser.cpp \
 		src/filework/dependsworker.cpp \
@@ -61,6 +62,7 @@ SOURCES       = src/main.cpp \
 OBJECTS       = BUILD/main.o \
 		BUILD/mainwindow.o \
 		BUILD/backupmanager.o \
+		BUILD/buildmanager.o \
 		BUILD/cleaner.o \
 		BUILD/dependencyparser.o \
 		BUILD/dependsworker.o \
@@ -151,6 +153,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		DepsSearcher.pro src/gui/mainwindow.h \
 		src/filework/backupmanager.h \
+		src/filework/buildmanager.h \
 		src/filework/cleaner.h \
 		src/filework/dependencyparser.h \
 		src/filework/dependsworker.h \
@@ -158,6 +161,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/filework/projectdirectoryfileinterface.h src/main.cpp \
 		src/gui/mainwindow.cpp \
 		src/filework/backupmanager.cpp \
+		src/filework/buildmanager.cpp \
 		src/filework/cleaner.cpp \
 		src/filework/dependencyparser.cpp \
 		src/filework/dependsworker.cpp \
@@ -363,8 +367,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/backupmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/dependsworker.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/backupmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/dependsworker.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/backupmanager.h src/filework/buildmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/dependsworker.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/backupmanager.cpp src/filework/buildmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/dependsworker.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents src/gui/mainwindow.ui $(DISTDIR)/
 
 
@@ -441,6 +445,10 @@ BUILD/mainwindow.o: src/gui/mainwindow.cpp src/gui/mainwindow.h \
 
 BUILD/backupmanager.o: src/filework/backupmanager.cpp src/filework/backupmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/backupmanager.o src/filework/backupmanager.cpp
+
+BUILD/buildmanager.o: src/filework/buildmanager.cpp src/filework/buildmanager.h \
+		src/filework/filesearcher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/buildmanager.o src/filework/buildmanager.cpp
 
 BUILD/cleaner.o: src/filework/cleaner.cpp src/filework/cleaner.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/cleaner.o src/filework/cleaner.cpp

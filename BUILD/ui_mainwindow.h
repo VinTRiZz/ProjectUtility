@@ -98,7 +98,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(1214, 572);
-        MainWindow->setCursor(QCursor(Qt::BlankCursor));
+        MainWindow->setCursor(QCursor(Qt::ArrowCursor));
         projectControl_action = new QAction(MainWindow);
         projectControl_action->setObjectName(QStringLiteral("projectControl_action"));
         depends_action = new QAction(MainWindow);
