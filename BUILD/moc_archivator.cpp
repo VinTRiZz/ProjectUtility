@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'projectdirectoryfileinterface.h'
+** Meta object code from reading C++ file 'archivator.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../src/filework/projectdirectoryfileinterface.h"
+#include "../src/filework/archivator.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'projectdirectoryfileinterface.h' doesn't include <QObject>."
+#error "The header file 'archivator.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.11.0. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -20,28 +20,28 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_FileWork__ProjectDirectoryFileInterface_t {
+struct qt_meta_stringdata_FileWork__Archivator_t {
     QByteArrayData data[3];
-    char stringdata0[57];
+    char stringdata0[38];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_FileWork__ProjectDirectoryFileInterface_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_FileWork__Archivator_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_FileWork__ProjectDirectoryFileInterface_t qt_meta_stringdata_FileWork__ProjectDirectoryFileInterface = {
+static const qt_meta_stringdata_FileWork__Archivator_t qt_meta_stringdata_FileWork__Archivator = {
     {
-QT_MOC_LITERAL(0, 0, 39), // "FileWork::ProjectDirectoryFil..."
-QT_MOC_LITERAL(1, 40, 15), // "archiveComplete"
-QT_MOC_LITERAL(2, 56, 0) // ""
+QT_MOC_LITERAL(0, 0, 20), // "FileWork::Archivator"
+QT_MOC_LITERAL(1, 21, 15), // "archiveComplete"
+QT_MOC_LITERAL(2, 37, 0) // ""
 
     },
-    "FileWork::ProjectDirectoryFileInterface\0"
-    "archiveComplete\0"
+    "FileWork::Archivator\0archiveComplete\0"
+    ""
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_FileWork__ProjectDirectoryFileInterface[] = {
+static const uint qt_meta_data_FileWork__Archivator[] = {
 
  // content:
        7,       // revision
@@ -63,10 +63,10 @@ static const uint qt_meta_data_FileWork__ProjectDirectoryFileInterface[] = {
        0        // eod
 };
 
-void FileWork::ProjectDirectoryFileInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void FileWork::Archivator::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        ProjectDirectoryFileInterface *_t = static_cast<ProjectDirectoryFileInterface *>(_o);
+        Archivator *_t = static_cast<Archivator *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->archiveComplete(); break;
@@ -75,8 +75,8 @@ void FileWork::ProjectDirectoryFileInterface::qt_static_metacall(QObject *_o, QM
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            using _t = void (ProjectDirectoryFileInterface::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ProjectDirectoryFileInterface::archiveComplete)) {
+            using _t = void (Archivator::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Archivator::archiveComplete)) {
                 *result = 0;
                 return;
             }
@@ -85,26 +85,26 @@ void FileWork::ProjectDirectoryFileInterface::qt_static_metacall(QObject *_o, QM
     Q_UNUSED(_a);
 }
 
-QT_INIT_METAOBJECT const QMetaObject FileWork::ProjectDirectoryFileInterface::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_FileWork__ProjectDirectoryFileInterface.data,
-      qt_meta_data_FileWork__ProjectDirectoryFileInterface,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject FileWork::Archivator::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_FileWork__Archivator.data,
+      qt_meta_data_FileWork__Archivator,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *FileWork::ProjectDirectoryFileInterface::metaObject() const
+const QMetaObject *FileWork::Archivator::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *FileWork::ProjectDirectoryFileInterface::qt_metacast(const char *_clname)
+void *FileWork::Archivator::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_FileWork__ProjectDirectoryFileInterface.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_FileWork__Archivator.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
 
-int FileWork::ProjectDirectoryFileInterface::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int FileWork::Archivator::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -122,7 +122,7 @@ int FileWork::ProjectDirectoryFileInterface::qt_metacall(QMetaObject::Call _c, i
 }
 
 // SIGNAL 0
-void FileWork::ProjectDirectoryFileInterface::archiveComplete()
+void FileWork::Archivator::archiveComplete()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }

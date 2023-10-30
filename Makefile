@@ -60,6 +60,7 @@ SOURCES       = src/main.cpp \
 		src/filework/dependsworker.cpp \
 		src/filework/filesearcher.cpp \
 		src/filework/projectdirectoryfileinterface.cpp BUILD/moc_mainwindow.cpp \
+		BUILD/moc_archivator.cpp \
 		BUILD/moc_buildmanager.cpp \
 		BUILD/moc_projectdirectoryfileinterface.cpp
 OBJECTS       = BUILD/main.o \
@@ -73,6 +74,7 @@ OBJECTS       = BUILD/main.o \
 		BUILD/filesearcher.o \
 		BUILD/projectdirectoryfileinterface.o \
 		BUILD/moc_mainwindow.o \
+		BUILD/moc_archivator.o \
 		BUILD/moc_buildmanager.o \
 		BUILD/moc_projectdirectoryfileinterface.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -409,15 +411,20 @@ compiler_moc_predefs_clean:
 BUILD/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -Wall -W -dM -E -o BUILD/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: BUILD/moc_mainwindow.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+compiler_moc_header_make_all: BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) BUILD/moc_mainwindow.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+	-$(DEL_FILE) BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
 BUILD/moc_mainwindow.cpp: src/filework/projectdirectoryfileinterface.h \
 		src/filework/cleaner.h \
 		src/gui/mainwindow.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Документы/Projects/Qt/DepsSearcher/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/gui/mainwindow.h -o BUILD/moc_mainwindow.cpp
+
+BUILD/moc_archivator.cpp: src/filework/archivator.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Документы/Projects/Qt/DepsSearcher/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/filework/archivator.h -o BUILD/moc_archivator.cpp
 
 BUILD/moc_buildmanager.cpp: src/filework/filesearcher.h \
 		src/filework/buildmanager.h \
@@ -492,11 +499,15 @@ BUILD/projectdirectoryfileinterface.o: src/filework/projectdirectoryfileinterfac
 		src/filework/backupmanager.h \
 		src/filework/dependsworker.h \
 		src/filework/dependencyparser.h \
-		src/filework/buildmanager.h
+		src/filework/buildmanager.h \
+		src/filework/archivator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/projectdirectoryfileinterface.o src/filework/projectdirectoryfileinterface.cpp
 
 BUILD/moc_mainwindow.o: BUILD/moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_mainwindow.o BUILD/moc_mainwindow.cpp
+
+BUILD/moc_archivator.o: BUILD/moc_archivator.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_archivator.o BUILD/moc_archivator.cpp
 
 BUILD/moc_buildmanager.o: BUILD/moc_buildmanager.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_buildmanager.o BUILD/moc_buildmanager.cpp

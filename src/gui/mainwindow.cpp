@@ -6,8 +6,6 @@
 
 #include <QDebug>
 
-#define PRINT(what)     ui->statusBar->showMessage(what, 3000)
-
 #define REMOVE_BUTTON_FOCUS(buttonName)                     ui->buttonName##_pushButton->setFocusPolicy(Qt::NoFocus)
 #define CONNECT_CLIECKED(buttonName, mainWindowFunction)    connect(ui->buttonName##_pushButton, &QPushButton::clicked, this, &MainWindow::mainWindowFunction)
 
@@ -34,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     REMOVE_BUTTON_FOCUS(saveChanges);
     REMOVE_BUTTON_FOCUS(build);
     REMOVE_BUTTON_FOCUS(rebuild);
+    REMOVE_BUTTON_FOCUS(archive);
 
     CONNECT_CLIECKED(add, addSelectedLibrary);
     CONNECT_CLIECKED(remove, removeSelectedLibrary);
@@ -45,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CONNECT_CLIECKED(saveChanges, saveChanges);
     CONNECT_CLIECKED(build, build);
     CONNECT_CLIECKED(rebuild, rebuild);
+    CONNECT_CLIECKED(archive, archive);
 
     connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
 
@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->apps_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
     connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
+
+    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
 }
 
 MainWindow::~MainWindow()
@@ -78,7 +80,7 @@ void MainWindow::addSelectedLibrary()
     const QString currentProjectName = pProjectItem->text();
     if (currentProjectName == pItem->text())
     {
-        PRINT("Нельзя зависеть от себя!");
+        emit printInfo("Нельзя зависеть от себя!");
         return;
     }
 
@@ -91,7 +93,7 @@ void MainWindow::removeSelectedLibrary()
     auto pItem = ui->addedLibs_listWidget->currentItem();
     if (!pItem)
     {
-        PRINT("Не выбрана библиотека");
+        emit printInfo("Не выбрана библиотека");
         return;
     }
 
@@ -107,7 +109,7 @@ void MainWindow::loadDependencyList(const QString & projectName)
 {
     if (projectName.size() == 0)
     {
-        PRINT("Не выбран проект");
+        emit printInfo("Не выбран проект");
         return;
     }
 
@@ -121,23 +123,23 @@ void MainWindow::loadDependencyList(const QString & projectName)
 void MainWindow::saveChanges()
 {
     m_fileInterface.saveChanges();
-    PRINT("Изменения сохранены");
+    emit printInfo("Изменения сохранены");
 }
 
 void MainWindow::createBackup()
 {
     // if (m_fileInterface.backupAll(ui->backupDir_lineEdit->text()))
-        PRINT("Бэкап создан");
+        emit printInfo("Бэкап создан");
     // else
-        PRINT("Бэкап создан частично или не создан (проверьте путь до директории с бэкапами)");
+        emit printInfo("Бэкап создан частично или не создан (проверьте путь до директории с бэкапами)");
 }
 
 void MainWindow::loadBackup()
 {
     // if (m_fileInterface.loadBackup(ui->backupDir_lineEdit->text()))
-        PRINT("Бэкап загружен");
+        emit printInfo("Бэкап загружен");
     // else
-        PRINT("Бэкап загружен частично или не загружен (проверьте путь до директории с бэкапами)");
+        emit printInfo("Бэкап загружен частично или не загружен (проверьте путь до директории с бэкапами)");
 }
 
 void MainWindow::updateBasePath()
@@ -145,7 +147,7 @@ void MainWindow::updateBasePath()
     basePath = ui->basePath_lineEdit->text();
     if (basePath.size() < 1)
     {
-        PRINT("Пустой путь");
+        emit printInfo("Пустой путь");
         return;
     }
 
@@ -153,7 +155,7 @@ void MainWindow::updateBasePath()
     if (!pathTester.exists() || !pathTester.isDir())
     {
         basePath.clear();
-        PRINT("Или это не директория, или такой не существует");
+        emit printInfo("Или это не директория, или такой не существует");
         return;
     }
     updateProjectList();
@@ -192,7 +194,7 @@ void MainWindow::removeFiles()
         )
         {
             qDebug() << "[REMOVE CHECK] Invalid file:[" << file << "]";
-            PRINT("Ошибка в списке файлов на удаление. Ничего не удалено");
+            emit printInfo("Ошибка в списке файлов на удаление. Ничего не удалено");
             return;
         }
     }
@@ -254,10 +256,14 @@ void MainWindow::build()
         for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
         {
             projectName = ui->projects_listWidget->item(i)->text();
-            PRINT(QString("Собирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
-            m_fileInterface.build(projectName, target);
+            emit printInfo(QString("Собирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
+            if (!m_fileInterface.build(projectName, target))
+            {
+                emit printInfo(QString("Ошибка сборки проекта: %1. Более полная информация в файле buildLog.txt").arg(projectName));
+                return;
+            }
         }
-        PRINT("Проекты собраны");
+        emit printInfo("Проекты собраны");
     }
     else if (ui->buildCurrent_radioButton->isChecked())
     {
@@ -265,19 +271,19 @@ void MainWindow::build()
 
         if (!pItem)
         {
-            PRINT("Проект не выбран");
+            emit printInfo("Проект не выбран");
             return;
         }
 
         QString projectName = pItem->text();
-        PRINT(QString("Проект %1 собирается...").arg(projectName));
+        emit printInfo(QString("Проект %1 собирается...").arg(projectName));
         if (m_fileInterface.build(projectName, target))
         {
-            PRINT("Проект собран");
+            emit printInfo("Проект собран");
         }
         else
         {
-            PRINT("Ошибка сборки. Более полная информация в файле buildLog.txt");
+            emit printInfo("Ошибка сборки. Более полная информация в файле buildLog.txt");
         }
     }
 }
@@ -301,10 +307,14 @@ void MainWindow::rebuild()
         for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
         {
             projectName = ui->projects_listWidget->item(i)->text();
-            PRINT(QString("Пересобирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
-            m_fileInterface.rebuild(projectName, target);
+            emit printInfo(QString("Пересобирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
+            if (!m_fileInterface.rebuild(projectName, target))
+            {
+                emit printInfo(QString("Ошибка пересборки проекта: %1. Более полная информация в файле buildLog.txt").arg(projectName));
+                return;
+            }
         }
-        PRINT("Проекты пересобраны");
+        emit printInfo("Проекты пересобраны");
     }
     else if (ui->buildCurrent_radioButton->isChecked())
     {
@@ -312,28 +322,62 @@ void MainWindow::rebuild()
 
         if (!pItem)
         {
-            PRINT("Проект не выбран");
+            emit printInfo("Проект не выбран");
             return;
         }
 
         QString projectName = pItem->text();
-        PRINT(QString("Проект %1 собирается...").arg(projectName));
+        emit printInfo(QString("Проект %1 собирается...").arg(projectName));
         if (m_fileInterface.rebuild(projectName, target))
         {
-            PRINT("Проект пересобран");
+            emit printInfo("Проект пересобран");
         }
         else
         {
-            PRINT("Ошибка пересборки. Более полная информация в файле buildLog.txt");
+            emit printInfo("Ошибка пересборки. Более полная информация в файле buildLog.txt");
         }
     }
+}
+
+void MainWindow::printInfo(const QString & what)
+{
+    ui->statusBar->showMessage(what, 3000);
+}
+
+void MainWindow::archiveComplete()
+{
+    if (m_fileInterface.archiveSucceed())
+        emit printInfo("Архив создан");
+    else
+        emit printInfo("Ошибка создания архива");
+}
+
+void MainWindow::archive()
+{
+    auto pItem = ui->projects_listWidget->currentItem();
+
+    if (!pItem)
+    {
+        emit printInfo("Проект не выбран");
+        return;
+    }
+
+    emit printInfo("Архивируется...");
+
+    const QString archivePath = ui->archivePath_lineEdit->text();
+    const QString projectName = pItem->text();
+    QStringList projectNames;
+
+    m_fileInterface.archiveProject(projectName, archivePath);
+    // m_fileInterface.archiveSelectedProjects(projectNames, archivePath);
+    // m_fileInterface.archiveAllProjects(archivePath);
 }
 
 void MainWindow::updateProjectList()
 {
     if (basePath.size() < 1)
     {
-        PRINT("Неправильный путь");
+        emit printInfo("Неправильный путь");
         return;
     }
 
@@ -341,10 +385,10 @@ void MainWindow::updateProjectList()
 
     if (!parsedFilesCount)
     {
-        PRINT("Ничего не найдено");
+        emit printInfo("Ничего не найдено");
         return;
     }
-    PRINT(QString("Найдено %1 объектов").arg(QString::number(parsedFilesCount)));
+    emit printInfo(QString("Найдено %1 объектов").arg(QString::number(parsedFilesCount)));
 
     QStringList projectList;
 
@@ -369,13 +413,13 @@ void MainWindow::setupAvailableLibrariesView()
 void MainWindow::fillProjectList()
 {
     ui->projects_listWidget->clear();
-    if (ui->libs_radioButton->isChecked())
+    if (ui->apps_radioButton->isChecked())
     {
         QStringList appList = m_fileInterface.getAppNameList();
         for (QString & app : appList)
             ui->projects_listWidget->addItem(app);
     }
-    else if (ui->apps_radioButton->isChecked())
+    else if (ui->libs_radioButton->isChecked())
     {
         QStringList libList = m_fileInterface.getLibraryNameList();
         for (QString & lib : libList)

@@ -57,15 +57,18 @@ public:
     QVBoxLayout *verticalLayout_10;
     QWidget *widget_2;
     QVBoxLayout *verticalLayout_11;
+    QLabel *label_7;
     QRadioButton *buildAll_radioButton;
     QRadioButton *buildCurrent_radioButton;
     QWidget *widget_3;
     QVBoxLayout *verticalLayout_8;
+    QLabel *label_8;
     QRadioButton *debugTarget_radioButton;
     QRadioButton *releaseTarget_radioButton;
     QVBoxLayout *verticalLayout_4;
     QPushButton *build_pushButton;
     QPushButton *rebuild_pushButton;
+    QSpacerItem *verticalSpacer_2;
     QLabel *label_4;
     QCheckBox *makeFiles_checkBox;
     QCheckBox *qmakeStash_checkBox;
@@ -74,11 +77,19 @@ public:
     QCheckBox *build_checkBox;
     QPushButton *clean_pushButton;
     QSpacerItem *verticalSpacer_3;
+    QVBoxLayout *verticalLayout_13;
     QWidget *widget;
     QVBoxLayout *verticalLayout_5;
     QLabel *label_5;
     QRadioButton *libs_radioButton;
     QRadioButton *apps_radioButton;
+    QWidget *widget_4;
+    QVBoxLayout *verticalLayout_12;
+    QLabel *label_6;
+    QRadioButton *archiveAll_radioButton;
+    QRadioButton *archiveCurrent_radioButton;
+    QLineEdit *archivePath_lineEdit;
+    QPushButton *archive_pushButton;
     QSpacerItem *horizontalSpacer_4;
     QSpacerItem *verticalSpacer;
     QWidget *page_2;
@@ -107,7 +118,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1214, 596);
+        MainWindow->resize(1090, 657);
         MainWindow->setCursor(QCursor(Qt::ArrowCursor));
         projectControl_action = new QAction(MainWindow);
         projectControl_action->setObjectName(QStringLiteral("projectControl_action"));
@@ -188,7 +199,7 @@ public:
         gridLayout_3->setContentsMargins(11, 11, 11, 11);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         verticalLayout_3 = new QVBoxLayout();
-        verticalLayout_3->setSpacing(2);
+        verticalLayout_3->setSpacing(4);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout_3->setSizeConstraint(QLayout::SetDefaultConstraint);
         verticalLayout_9 = new QVBoxLayout();
@@ -202,20 +213,32 @@ public:
 
         widget_2 = new QWidget(page);
         widget_2->setObjectName(QStringLiteral("widget_2"));
-        sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
-        widget_2->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
+        widget_2->setSizePolicy(sizePolicy2);
         verticalLayout_11 = new QVBoxLayout(widget_2);
         verticalLayout_11->setSpacing(6);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
         verticalLayout_11->setObjectName(QStringLiteral("verticalLayout_11"));
+        label_7 = new QLabel(widget_2);
+        label_7->setObjectName(QStringLiteral("label_7"));
+        sizePolicy.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
+        label_7->setSizePolicy(sizePolicy);
+        label_7->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_11->addWidget(label_7);
+
         buildAll_radioButton = new QRadioButton(widget_2);
         buildAll_radioButton->setObjectName(QStringLiteral("buildAll_radioButton"));
-        buildAll_radioButton->setChecked(true);
+        buildAll_radioButton->setChecked(false);
 
         verticalLayout_11->addWidget(buildAll_radioButton);
 
         buildCurrent_radioButton = new QRadioButton(widget_2);
         buildCurrent_radioButton->setObjectName(QStringLiteral("buildCurrent_radioButton"));
+        buildCurrent_radioButton->setChecked(true);
 
         verticalLayout_11->addWidget(buildCurrent_radioButton);
 
@@ -224,12 +247,20 @@ public:
 
         widget_3 = new QWidget(page);
         widget_3->setObjectName(QStringLiteral("widget_3"));
-        sizePolicy.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
-        widget_3->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
+        widget_3->setSizePolicy(sizePolicy2);
         verticalLayout_8 = new QVBoxLayout(widget_3);
         verticalLayout_8->setSpacing(6);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
         verticalLayout_8->setObjectName(QStringLiteral("verticalLayout_8"));
+        label_8 = new QLabel(widget_3);
+        label_8->setObjectName(QStringLiteral("label_8"));
+        sizePolicy.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
+        label_8->setSizePolicy(sizePolicy);
+        label_8->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_8->addWidget(label_8);
+
         debugTarget_radioButton = new QRadioButton(widget_3);
         debugTarget_radioButton->setObjectName(QStringLiteral("debugTarget_radioButton"));
         debugTarget_radioButton->setChecked(true);
@@ -262,6 +293,10 @@ public:
 
 
         verticalLayout_3->addLayout(verticalLayout_9);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_3->addItem(verticalSpacer_2);
 
         label_4 = new QLabel(page);
         label_4->setObjectName(QStringLiteral("label_4"));
@@ -312,11 +347,11 @@ public:
 
         gridLayout_3->addLayout(verticalLayout_3, 0, 0, 2, 1);
 
+        verticalLayout_13 = new QVBoxLayout();
+        verticalLayout_13->setSpacing(6);
+        verticalLayout_13->setObjectName(QStringLiteral("verticalLayout_13"));
         widget = new QWidget(page);
         widget->setObjectName(QStringLiteral("widget"));
-        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
         widget->setSizePolicy(sizePolicy2);
         verticalLayout_5 = new QVBoxLayout(widget);
@@ -344,7 +379,52 @@ public:
         verticalLayout_5->addWidget(apps_radioButton);
 
 
-        gridLayout_3->addWidget(widget, 0, 1, 1, 1);
+        verticalLayout_13->addWidget(widget);
+
+        widget_4 = new QWidget(page);
+        widget_4->setObjectName(QStringLiteral("widget_4"));
+        sizePolicy2.setHeightForWidth(widget_4->sizePolicy().hasHeightForWidth());
+        widget_4->setSizePolicy(sizePolicy2);
+        verticalLayout_12 = new QVBoxLayout(widget_4);
+        verticalLayout_12->setSpacing(0);
+        verticalLayout_12->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_12->setObjectName(QStringLiteral("verticalLayout_12"));
+        verticalLayout_12->setContentsMargins(0, 0, 0, 0);
+        label_6 = new QLabel(widget_4);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        sizePolicy.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
+        label_6->setSizePolicy(sizePolicy);
+        label_6->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_12->addWidget(label_6);
+
+        archiveAll_radioButton = new QRadioButton(widget_4);
+        archiveAll_radioButton->setObjectName(QStringLiteral("archiveAll_radioButton"));
+
+        verticalLayout_12->addWidget(archiveAll_radioButton);
+
+        archiveCurrent_radioButton = new QRadioButton(widget_4);
+        archiveCurrent_radioButton->setObjectName(QStringLiteral("archiveCurrent_radioButton"));
+        archiveCurrent_radioButton->setChecked(true);
+
+        verticalLayout_12->addWidget(archiveCurrent_radioButton);
+
+        archivePath_lineEdit = new QLineEdit(widget_4);
+        archivePath_lineEdit->setObjectName(QStringLiteral("archivePath_lineEdit"));
+        archivePath_lineEdit->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_12->addWidget(archivePath_lineEdit);
+
+        archive_pushButton = new QPushButton(widget_4);
+        archive_pushButton->setObjectName(QStringLiteral("archive_pushButton"));
+
+        verticalLayout_12->addWidget(archive_pushButton);
+
+
+        verticalLayout_13->addWidget(widget_4);
+
+
+        gridLayout_3->addLayout(verticalLayout_13, 0, 1, 1, 1);
 
         horizontalSpacer_4 = new QSpacerItem(231, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -463,7 +543,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1214, 23));
+        menuBar->setGeometry(QRect(0, 0, 1090, 23));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         MainWindow->setMenuBar(menuBar);
@@ -497,8 +577,10 @@ public:
         update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
         label->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\265\320\272\321\202\321\213", nullptr));
         searchProject_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
+        label_7->setText(QApplication::translate("MainWindow", "\320\241\320\261\320\276\321\200\320\272\320\260", nullptr));
         buildAll_radioButton->setText(QApplication::translate("MainWindow", "\320\222\321\201\320\265", nullptr));
         buildCurrent_radioButton->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\320\275\320\275\321\213\320\271", nullptr));
+        label_8->setText(QApplication::translate("MainWindow", "\320\246\320\265\320\273\321\214 \321\201\320\261\320\276\321\200\320\272\320\270", nullptr));
         debugTarget_radioButton->setText(QApplication::translate("MainWindow", "Debug", nullptr));
         releaseTarget_radioButton->setText(QApplication::translate("MainWindow", "Release", nullptr));
         build_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\261\320\276\321\200\320\272\320\260", nullptr));
@@ -513,6 +595,12 @@ public:
         label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
         libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
+        label_6->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265", nullptr));
+        archiveAll_radioButton->setText(QApplication::translate("MainWindow", "\320\222\321\201\320\265", nullptr));
+        archiveCurrent_radioButton->setText(QApplication::translate("MainWindow", "\320\242\320\265\320\272\321\203\321\211\320\270\320\271", nullptr));
+        archivePath_lineEdit->setText(QApplication::translate("MainWindow", "ProjectsArchive", nullptr));
+        archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
+        archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
         add_pushButton->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", nullptr));
         remove_pushButton->setText(QApplication::translate("MainWindow", "\320\243\320\261\321\200\320\260\321\202\321\214", nullptr));
         saveChanges_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));

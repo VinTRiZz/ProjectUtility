@@ -42,25 +42,6 @@ struct ProjectDirectoryFileInterface::Impl
         m_buildManager{parent}
     {
         m_buildManager.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
-
-        const QString projectPath = "/home/lazarev_as/Документы/Projects/Qt/DepsSearcher";
-        qDebug() << "[\033[34mDEBUG\033[0m] ADDING PROJECT:" << projectPath;
-        if (m_archivator.addProject(projectPath))
-        {
-            qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADDED";
-
-            // Archive
-            if (m_archivator.archive())
-            {
-                qDebug() << "[\033[34mDEBUG\033[0m] ARCHIVED";
-            }
-            else
-            {
-                qDebug() << "[\033[34mDEBUG\033[0m] ARCHIVE ERROR";
-            }
-        }
-        else
-            qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADD ERROR";
     }
 
     Project * getProject(const QString & projectName)
@@ -169,7 +150,7 @@ ProjectDirectoryFileInterface::ProjectDirectoryFileInterface(QObject * parent) :
     QObject(parent),
     m_pImpl {new Impl(parent) }
 {
-
+    connect(&m_pImpl->m_archivator, &Archivator::archiveComplete, this, &ProjectDirectoryFileInterface::archiveComplete);
 }
 
 ProjectDirectoryFileInterface::~ProjectDirectoryFileInterface()
@@ -259,4 +240,36 @@ bool ProjectDirectoryFileInterface::build(const QString &projectName, const QStr
 bool ProjectDirectoryFileInterface::rebuild(const QString &projectName, const QString &target)
 {
     return m_pImpl->m_buildManager.rebuild(*m_pImpl->getProject(projectName), target);
+}
+
+void ProjectDirectoryFileInterface::archiveProject(const QString &projectName, const QString &resultPath)
+{
+    const QString projectPath = QFileInfo(m_pImpl->getProject(projectName)->projectProFilePath).absolutePath();
+    qDebug() << "[\033[34mDEBUG\033[0m] ADDING PROJECT BY PATH:" << projectPath;
+    if (m_pImpl->m_archivator.addProject(projectPath))
+    {
+        qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADDED";
+
+        // Archive
+        m_pImpl->m_archivator.archive(resultPath);
+        m_pImpl->m_archivator.poll();
+        qDebug() << "[\033[34mDEBUG\033[0m] ARCHIVED";
+    }
+    else
+        qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADD ERROR";
+}
+
+void ProjectDirectoryFileInterface::archiveSelectedProject(const QStringList &projectNames, const QString &resultPath)
+{
+
+}
+
+void ProjectDirectoryFileInterface::archiveAllProjects(const QString & resultPath)
+{
+
+}
+
+bool ProjectDirectoryFileInterface::archiveSucceed() const
+{
+    return m_pImpl->m_archivator.archived();
 }

@@ -41,6 +41,11 @@ public slots:
     void build();
     void rebuild();
 
+    void printInfo(const QString & what);
+
+    void archiveComplete();
+    void archive();
+
 private:
     Ui::MainWindow *ui;
 

@@ -3,22 +3,31 @@
 
 #include <memory>
 #include <QString>
+#include <QObject>
 
 namespace FileWork
 {
 
-class Archivator
+class Archivator : public QObject
 {
+    Q_OBJECT
 public:
-    Archivator();
+    Archivator(QObject * parent = nullptr);
     ~Archivator();
 
     bool addFile(const QString & path);
     bool addProject(const QString & projectDirPath);
 
-    bool archive();
+    void archive(const QString & resultPath);
 
     void poll();
+
+    void clear();
+
+    bool archived() const;
+
+signals:
+    void archiveComplete();
 
 private:
     struct Impl;
