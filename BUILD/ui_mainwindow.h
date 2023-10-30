@@ -202,6 +202,8 @@ public:
 
         widget_2 = new QWidget(page);
         widget_2->setObjectName(QStringLiteral("widget_2"));
+        sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
+        widget_2->setSizePolicy(sizePolicy);
         verticalLayout_11 = new QVBoxLayout(widget_2);
         verticalLayout_11->setSpacing(6);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
@@ -222,6 +224,8 @@ public:
 
         widget_3 = new QWidget(page);
         widget_3->setObjectName(QStringLiteral("widget_3"));
+        sizePolicy.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
+        widget_3->setSizePolicy(sizePolicy);
         verticalLayout_8 = new QVBoxLayout(widget_3);
         verticalLayout_8->setSpacing(6);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -310,10 +314,16 @@ public:
 
         widget = new QWidget(page);
         widget->setObjectName(QStringLiteral("widget"));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy2);
         verticalLayout_5 = new QVBoxLayout(widget);
-        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setSpacing(0);
         verticalLayout_5->setContentsMargins(11, 11, 11, 11);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        verticalLayout_5->setContentsMargins(0, 0, 0, 0);
         label_5 = new QLabel(widget);
         label_5->setObjectName(QStringLiteral("label_5"));
         sizePolicy.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
@@ -405,11 +415,11 @@ public:
 
         addedLibs_listWidget = new QListWidget(page_2);
         addedLibs_listWidget->setObjectName(QStringLiteral("addedLibs_listWidget"));
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Preferred);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(addedLibs_listWidget->sizePolicy().hasHeightForWidth());
-        addedLibs_listWidget->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(addedLibs_listWidget->sizePolicy().hasHeightForWidth());
+        addedLibs_listWidget->setSizePolicy(sizePolicy3);
 
         verticalLayout_2->addWidget(addedLibs_listWidget);
 
@@ -421,19 +431,19 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         label_3 = new QLabel(page_2);
         label_3->setObjectName(QStringLiteral("label_3"));
-        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
-        label_3->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
+        label_3->setSizePolicy(sizePolicy4);
         label_3->setAlignment(Qt::AlignCenter);
 
         verticalLayout->addWidget(label_3);
 
         avaliableLibs_listWidget = new QListWidget(page_2);
         avaliableLibs_listWidget->setObjectName(QStringLiteral("avaliableLibs_listWidget"));
-        sizePolicy2.setHeightForWidth(avaliableLibs_listWidget->sizePolicy().hasHeightForWidth());
-        avaliableLibs_listWidget->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(avaliableLibs_listWidget->sizePolicy().hasHeightForWidth());
+        avaliableLibs_listWidget->setSizePolicy(sizePolicy3);
 
         verticalLayout->addWidget(avaliableLibs_listWidget);
 

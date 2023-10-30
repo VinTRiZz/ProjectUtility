@@ -4,6 +4,7 @@
 #include "backupmanager.h"
 #include "dependsworker.h"
 #include "buildmanager.h"
+#include "archivator.h"
 
 #include <QDebug>
 
@@ -33,6 +34,7 @@ struct ProjectDirectoryFileInterface::Impl
     DependsWorker m_dependsWorker {apps, libs };
 
     BuildManager m_buildManager;
+    Archivator m_archivator;
 
     BackupManager m_backupManager;
 
@@ -40,6 +42,13 @@ struct ProjectDirectoryFileInterface::Impl
         m_buildManager{parent}
     {
         m_buildManager.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
+
+        const QString projectPath = "/home/lazarev_as/workspace/project/Apps/MainApp";
+        qDebug() << "[\033[34mDEBUG\033[0m] ADDING PROJECT:" << projectPath;
+        if (m_archivator.addProject(projectPath))
+            qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADDED";
+        else
+            qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADD ERROR";
     }
 
     Project * getProject(const QString & projectName)

@@ -52,6 +52,7 @@ OBJECTS_DIR   = BUILD/
 
 SOURCES       = src/main.cpp \
 		src/gui/mainwindow.cpp \
+		src/filework/archivator.cpp \
 		src/filework/backupmanager.cpp \
 		src/filework/buildmanager.cpp \
 		src/filework/cleaner.cpp \
@@ -63,6 +64,7 @@ SOURCES       = src/main.cpp \
 		BUILD/moc_projectdirectoryfileinterface.cpp
 OBJECTS       = BUILD/main.o \
 		BUILD/mainwindow.o \
+		BUILD/archivator.o \
 		BUILD/backupmanager.o \
 		BUILD/buildmanager.o \
 		BUILD/cleaner.o \
@@ -156,6 +158,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		DepsSearcher.pro src/gui/mainwindow.h \
+		src/filework/archivator.h \
 		src/filework/backupmanager.h \
 		src/filework/buildmanager.h \
 		src/filework/cleaner.h \
@@ -164,6 +167,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/filework/filesearcher.h \
 		src/filework/projectdirectoryfileinterface.h src/main.cpp \
 		src/gui/mainwindow.cpp \
+		src/filework/archivator.cpp \
 		src/filework/backupmanager.cpp \
 		src/filework/buildmanager.cpp \
 		src/filework/cleaner.cpp \
@@ -371,8 +375,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/backupmanager.h src/filework/buildmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/dependsworker.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/backupmanager.cpp src/filework/buildmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/dependsworker.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/archivator.h src/filework/backupmanager.h src/filework/buildmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/dependsworker.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/archivator.cpp src/filework/backupmanager.cpp src/filework/buildmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/dependsworker.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents src/gui/mainwindow.ui $(DISTDIR)/
 
 
@@ -457,6 +461,9 @@ BUILD/mainwindow.o: src/gui/mainwindow.cpp src/gui/mainwindow.h \
 		src/filework/cleaner.h \
 		BUILD/ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/mainwindow.o src/gui/mainwindow.cpp
+
+BUILD/archivator.o: src/filework/archivator.cpp src/filework/archivator.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/archivator.o src/filework/archivator.cpp
 
 BUILD/backupmanager.o: src/filework/backupmanager.cpp src/filework/backupmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/backupmanager.o src/filework/backupmanager.cpp
