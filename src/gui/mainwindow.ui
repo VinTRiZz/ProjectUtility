@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1090</width>
-    <height>657</height>
+    <height>667</height>
    </rect>
   </property>
   <property name="cursor">
@@ -457,6 +457,13 @@
                </property>
                <property name="checked">
                 <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="autoName_checkBox">
+               <property name="text">
+                <string>Автозаполнение</string>
                </property>
               </widget>
              </item>

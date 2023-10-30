@@ -88,6 +88,7 @@ public:
     QLabel *label_6;
     QRadioButton *archiveAll_radioButton;
     QRadioButton *archiveCurrent_radioButton;
+    QCheckBox *autoName_checkBox;
     QLineEdit *archivePath_lineEdit;
     QPushButton *archive_pushButton;
     QSpacerItem *horizontalSpacer_4;
@@ -118,7 +119,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1090, 657);
+        MainWindow->resize(1090, 667);
         MainWindow->setCursor(QCursor(Qt::ArrowCursor));
         projectControl_action = new QAction(MainWindow);
         projectControl_action->setObjectName(QStringLiteral("projectControl_action"));
@@ -409,6 +410,11 @@ public:
 
         verticalLayout_12->addWidget(archiveCurrent_radioButton);
 
+        autoName_checkBox = new QCheckBox(widget_4);
+        autoName_checkBox->setObjectName(QStringLiteral("autoName_checkBox"));
+
+        verticalLayout_12->addWidget(autoName_checkBox);
+
         archivePath_lineEdit = new QLineEdit(widget_4);
         archivePath_lineEdit->setObjectName(QStringLiteral("archivePath_lineEdit"));
         archivePath_lineEdit->setAlignment(Qt::AlignCenter);
@@ -598,6 +604,7 @@ public:
         label_6->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265", nullptr));
         archiveAll_radioButton->setText(QApplication::translate("MainWindow", "\320\222\321\201\320\265", nullptr));
         archiveCurrent_radioButton->setText(QApplication::translate("MainWindow", "\320\242\320\265\320\272\321\203\321\211\320\270\320\271", nullptr));
+        autoName_checkBox->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\267\320\260\320\277\320\276\320\273\320\275\320\265\320\275\320\270\320\265", nullptr));
         archivePath_lineEdit->setText(QApplication::translate("MainWindow", "ProjectsArchive", nullptr));
         archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
         archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));

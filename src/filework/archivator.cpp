@@ -24,6 +24,7 @@ namespace FileWork
 
 struct ArchiveDirectory
 {
+    QString archivePath;
     QString dirName;
     QStringList filesToPack;
     QVector<ArchiveDirectory> children;
@@ -40,6 +41,7 @@ struct Archivator::Impl
     Impl()
     {
         mainArchiveDir.dirName = "Projects";
+        mainArchiveDir.archivePath = "Projects";
     }
 
     void poll()
@@ -82,7 +84,6 @@ struct Archivator::Impl
             )
         )
         {
-            qDebug() << "[ARCHIVATOR] \033[33mIgnoring\033[0m file:" << fileName;
             return false;
         }
 
@@ -105,25 +106,34 @@ struct Archivator::Impl
             {
                 ArchiveDirectory dir;
                 dir.dirName = entry;
-                currentArchiveDir.children.push_back(dir);
-                searchRecursive( QDir(entryPath), currentArchiveDir.children[currentArchiveDir.children.size() - 1] );
+                dir.archivePath = currentArchiveDir.archivePath + "/" + entry;
+                searchRecursive( QDir(entryPath), dir );
+                if ((dir.children.size() > 0) || (dir.filesToPack.size() > 0))
+                    currentArchiveDir.children.push_back(dir);
+                else
+                    qDebug() << "[ARCHIVATOR] \033[33mSkipped\033[0m directory:" << entry;
 
-            } else if (mustPackThisFile(entry))
+            } else if (currentArchiveDir.archivePath.contains("/include/"))
             {
                 currentArchiveDir.filesToPack << entryPath;
+            }
+            else if (mustPackThisFile(entry))
+            {
+                 currentArchiveDir.filesToPack << entryPath;
+            } else
+            {
+                qDebug() << "[ARCHIVATOR] \033[33mSkipped\033[0m file:" << entry;
             }
         }
     }
 
-    void searchForProjectFiles(const QDir & currentDir, ArchiveDirectory & currentArchiveDir)
+    void copyRecursive(const QDir & currentDir, ArchiveDirectory & currentArchiveDir)
     {
         QStringList entries = currentDir.entryList();
 
         // Ignore useless entries
         entries.removeOne(".");
         entries.removeOne("..");
-//        entries.removeOne("BIN");
-//        entries.removeOne("BUILD");
 
         QString entryPath;
         for (QString & entry : entries)
@@ -131,10 +141,9 @@ struct Archivator::Impl
             entryPath = currentDir.absoluteFilePath(entry);
             if ( QFileInfo( entryPath ).isDir() )
             {
-                ArchiveDirectory dir;
-                dir.dirName = entry;
-                currentArchiveDir.children.push_back(dir);
-                searchRecursive( QDir(entryPath), currentArchiveDir.children[currentArchiveDir.children.size() - 1] );
+                const QString mkdirCommand = QString("mkdir %1 &> /dev/null").arg(currentArchiveDir.archivePath);
+                system(mkdirCommand.toUtf8().data());
+                copyRecursive( QDir(entryPath), currentArchiveDir.children[currentArchiveDir.children.size() - 1] );
 
             } else if (mustPackThisFile(entry))
             {
@@ -196,7 +205,7 @@ bool Archivator::addProject(const QString &projectDirPath)
 
     QDir projectDir(projectDirPath);
 
-    m_pImpl->searchForProjectFiles(projectDir, m_pImpl->mainArchiveDir);
+    m_pImpl->searchRecursive(projectDir, m_pImpl->mainArchiveDir);
 
     return true;
 }
@@ -277,7 +286,83 @@ void Archivator::clear()
     m_pImpl->mainArchiveDir.filesToPack.clear();
 }
 
+void Archivator::archive(const QString &projectDirPath, const QString &resultPath)
+{
+    if (resultPath.size() < 1)
+        return;
+
+    m_pImpl->poll();
+
+    m_pImpl->processThread = QThread::create(
+        [this, projectDirPath, resultPath]()
+        {
+            m_pImpl->isArchived = false;
+
+            // Search for project files
+            QDir projectDir(projectDirPath);
+
+            ArchiveDirectory projectArhiveDir;
+            projectArhiveDir.dirName = projectDir.dirName();
+            projectArhiveDir.archivePath = projectDir.dirName();
+
+            m_pImpl->searchRecursive(QDir(projectDirPath), projectArhiveDir);
+
+            // Create temporary directory for them
+            const QString mkdirCommand = "mkdir " + projectArhiveDir.dirName + " &> /dev/null";
+            system(mkdirCommand.toUtf8().data());
+
+            if (!QFileInfo(projectArhiveDir.dirName).exists())
+            {
+                qDebug() << "[ARCHIVATOR] Error: directory not created";
+                emit this->archiveComplete();
+                return;
+            }
+
+            // Archive them
+            QProcess packProcess;
+            packProcess.setProgram("zip");
+
+            QStringList zipArgs;
+            const QString zipRecursivelyArg = "-r", zipUpdateExistArg = "-u";
+            zipArgs << zipRecursivelyArg
+                    << zipUpdateExistArg
+                    << resultPath
+                    << projectArhiveDir.dirName
+            ;
+            qDebug() << "[ARCHIVATOR] Archivator command: [" << "zip" << zipArgs.join(" ") << "]";
+
+            packProcess.setArguments(zipArgs);
+
+            packProcess.start();
+
+            if (packProcess.waitForStarted(ZIP_PROCESS_TIMEOUT))
+            {
+                if (!packProcess.waitForFinished(ZIP_PROCESS_TIMEOUT))
+                {
+                    packProcess.kill();
+                }
+                if (!packProcess.exitCode())
+                {
+                    qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
+                    m_pImpl->isArchived = true;
+                }
+                else
+                {
+                    qDebug() << "[ARCHIVATOR] Error creating archive: [\033[32mSTDOUT\033[0m" << packProcess.readAllStandardOutput() << "] | [\033[31mSTDERR\033[0m" << packProcess.readAllStandardOutput() << "]";
+                }
+            }
+            else
+            {
+                qDebug() << "[ARCHIVATOR] Archive command start error";
+            }
+            emit this->archiveComplete();
+        }
+    );
+
+    m_pImpl->processThread->start();
+}
+
 bool Archivator::archived() const
 {
-
+    return m_pImpl->isArchived;
 }

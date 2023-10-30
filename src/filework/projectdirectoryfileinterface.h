@@ -40,7 +40,7 @@ public:
     bool rebuild(const QString & projectName, const QString & target);
 
     void archiveProject(const QString & projectName, const QString & resultPath);
-    void archiveSelectedProject(const QStringList & projectNames, const QString & resultPath);
+    void archiveSelectedProjects(const QStringList & projectNames, const QString & resultPath);
     void archiveAllProjects(const QString & resultPath);
 
     bool archiveSucceed() const;

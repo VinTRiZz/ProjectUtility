@@ -245,28 +245,35 @@ bool ProjectDirectoryFileInterface::rebuild(const QString &projectName, const QS
 void ProjectDirectoryFileInterface::archiveProject(const QString &projectName, const QString &resultPath)
 {
     const QString projectPath = QFileInfo(m_pImpl->getProject(projectName)->projectProFilePath).absolutePath();
-    qDebug() << "[\033[34mDEBUG\033[0m] ADDING PROJECT BY PATH:" << projectPath;
-    if (m_pImpl->m_archivator.addProject(projectPath))
-    {
-        qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADDED";
 
-        // Archive
-        m_pImpl->m_archivator.archive(resultPath);
-        m_pImpl->m_archivator.poll();
-        qDebug() << "[\033[34mDEBUG\033[0m] ARCHIVED";
-    }
-    else
-        qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADD ERROR";
+    m_pImpl->m_archivator.archive(projectPath, resultPath);
 }
 
-void ProjectDirectoryFileInterface::archiveSelectedProject(const QStringList &projectNames, const QString &resultPath)
+void ProjectDirectoryFileInterface::archiveSelectedProjects(const QStringList &projectNames, const QString &resultPath)
 {
-
+    m_pImpl->m_archivator.clear();
+    for (auto & projectName : projectNames)
+    {
+        m_pImpl->m_archivator.addFile(QFileInfo(m_pImpl->getProject(projectName)->projectProFilePath).absolutePath());
+    }
+    m_pImpl->m_archivator.archive(resultPath);
 }
 
 void ProjectDirectoryFileInterface::archiveAllProjects(const QString & resultPath)
 {
+    m_pImpl->m_archivator.clear();
 
+    for (auto & app : m_pImpl->apps)
+    {
+        m_pImpl->m_archivator.addFile(QFileInfo(app.projectProFilePath).absolutePath());
+    }
+
+    for (auto & lib : m_pImpl->libs)
+    {
+        m_pImpl->m_archivator.addFile(QFileInfo(lib.projectProFilePath).absolutePath());
+    }
+
+    m_pImpl->m_archivator.archive(resultPath);
 }
 
 bool ProjectDirectoryFileInterface::archiveSucceed() const

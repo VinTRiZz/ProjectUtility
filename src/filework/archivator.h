@@ -17,12 +17,12 @@ public:
 
     bool addFile(const QString & path);
     bool addProject(const QString & projectDirPath);
+    void clear();
 
+    void archive(const QString & projectDirPath, const QString & resultPath);
     void archive(const QString & resultPath);
 
     void poll();
-
-    void clear();
 
     bool archived() const;
 

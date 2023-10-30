@@ -45,6 +45,7 @@ public slots:
 
     void archiveComplete();
     void archive();
+    void projectSelected();
 
 private:
     Ui::MainWindow *ui;

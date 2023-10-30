@@ -57,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
 
     connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
+
+    connect(ui->projects_listWidget, &QListWidget::clicked, this, &MainWindow::projectSelected);
 }
 
 MainWindow::~MainWindow()
@@ -371,6 +373,17 @@ void MainWindow::archive()
     m_fileInterface.archiveProject(projectName, archivePath);
     // m_fileInterface.archiveSelectedProjects(projectNames, archivePath);
     // m_fileInterface.archiveAllProjects(archivePath);
+}
+
+void MainWindow::projectSelected()
+{
+    auto pItem = ui->projects_listWidget->currentItem();
+
+    if (!pItem)
+        return;
+
+    if (ui->autoName_checkBox->isChecked())
+        ui->archivePath_lineEdit->setText(pItem->text());
 }
 
 void MainWindow::updateProjectList()
