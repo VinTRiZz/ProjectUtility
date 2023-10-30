@@ -16,6 +16,8 @@ public:
     bool addFile(const QString & path);
     bool addProject(const QString & projectDirPath);
 
+    bool archive();
+
     void poll();
 
 private:

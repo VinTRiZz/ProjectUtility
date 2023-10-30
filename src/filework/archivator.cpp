@@ -51,19 +51,21 @@ struct Archivator::Impl
         if (fileName.contains("/")) // Input must be only names
             return false;
 
-        if (fileName.contains(QRegExp("ui_[A-Za-z0-9]+\\.h")) ||
-            fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.h")) ||
-            fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.cpp")) ||
+        if (fileName.contains(QRegExp("ui_[A-Za-z0-9]+\\.h"))     ||
+            fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.h"))    ||
+            fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.cpp"))  ||
             fileName.contains(QRegExp("[A-Za-z0-9]+\\.pro.user")) ||
-            (fileName == "Makefile") ||
+            (fileName == "Makefile")                              ||
             (
                 !fileName.contains(QRegExp("[A-Za-z0-9]+\\.h"))   &&
                 !fileName.contains(QRegExp("[A-Za-z0-9]+\\.cpp")) &&
-                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pri")) &&
-                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pro"))
+                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.ui"))  &&
+                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pro")) &&
+                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pri"))
             )
         )
         {
+            qDebug() << "[ARCHIVATOR] \033[33mIgnoring\033[0m file:" << fileName;
             return false;
         }
 
@@ -100,11 +102,6 @@ struct Archivator::Impl
                 currentArchiveDir.filesToPack << entryPath;
             }
         }
-
-        for (QString & file : currentArchiveDir.filesToPack)
-        {
-            qDebug() << "[\033[34mARCHIVATOR\033[0m] File added:" << file;
-        }
     }
 
     void searchForProjectFiles(const QDir & currentDir, ArchiveDirectory & currentArchiveDir)
@@ -133,11 +130,6 @@ struct Archivator::Impl
                 currentArchiveDir.filesToPack << entryPath;
             }
         }
-
-        for (QString & file : currentArchiveDir.filesToPack)
-        {
-            qDebug() << "[\033[34mARCHIVATOR\033[0m] (MAIN DIR) File added:" << file;
-        }
     }
 };
 
@@ -154,6 +146,8 @@ Archivator::~Archivator()
 
 bool Archivator::addFile(const QString & path)
 {
+    m_pImpl->poll();
+
     QFileInfo fileTester(path);
 
     if ((!fileTester.exists()) || (fileTester.isDir()))
@@ -178,6 +172,8 @@ bool Archivator::addFile(const QString & path)
 
 bool Archivator::addProject(const QString &projectDirPath)
 {
+    m_pImpl->poll();
+
     QFileInfo fileTester(projectDirPath);
 
     if ((!fileTester.exists()) || (!fileTester.isDir()))
@@ -191,6 +187,13 @@ bool Archivator::addProject(const QString &projectDirPath)
     m_pImpl->searchForProjectFiles(projectDir, m_pImpl->mainArchiveDir);
 
     return true;
+}
+
+bool Archivator::archive()
+{
+    m_pImpl->poll();
+
+    // TODO: Setup process
 }
 
 void Archivator::poll()

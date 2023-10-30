@@ -43,10 +43,22 @@ struct ProjectDirectoryFileInterface::Impl
     {
         m_buildManager.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
 
-        const QString projectPath = "/home/lazarev_as/workspace/project/Apps/MainApp";
+        const QString projectPath = "/home/lazarev_as/Документы/Projects/Qt/DepsSearcher";
         qDebug() << "[\033[34mDEBUG\033[0m] ADDING PROJECT:" << projectPath;
         if (m_archivator.addProject(projectPath))
+        {
             qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADDED";
+
+            // Archive
+            if (m_archivator.archive())
+            {
+                qDebug() << "[\033[34mDEBUG\033[0m] ARCHIVED";
+            }
+            else
+            {
+                qDebug() << "[\033[34mDEBUG\033[0m] ARCHIVE ERROR";
+            }
+        }
         else
             qDebug() << "[\033[34mDEBUG\033[0m] PROJECT ADD ERROR";
     }
