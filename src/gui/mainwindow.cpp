@@ -269,7 +269,7 @@ void MainWindow::build()
         for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
         {
             projectName = ui->projects_listWidget->item(i)->text();
-            emit printInfo(QString("Собирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
+            emit printInfo(QString("Собирается проект %1 (%2 из %3)").arg(projectName, QString::number(i + 1), QString::number(projectCount)));
             if (!m_fileInterface.build(projectName, target))
             {
                 emit printInfo(QString("Ошибка сборки проекта: %1. Более полная информация в файле buildLog.txt").arg(projectName));

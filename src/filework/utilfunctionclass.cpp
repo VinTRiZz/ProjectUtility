@@ -24,6 +24,37 @@ UtilFunctionClass::UtilFunctionClass()
 
 }
 
+void UtilFunctionClass::logParsedProjects()
+{
+    int currentIteration = 1;
+    qDebug() << "--------------------------------------------------------------------------------------------------------";
+    qDebug() << "\033[32mFound apps:\033[0m";
+    for (Project & app : *apps)
+    {
+        qDebug() << "\033[33mAPP N:" << currentIteration++ << "\033[0m"   << endl
+                 << "NAME:  " << app.name                                 << endl
+                 << "PRO:   " << app.projectProFilePath                   << endl
+                 << "DEPS:  " << app.dependFilePath                       << endl
+                 << "DEPON: " << app.depends.join(", ")                   << endl
+                    ;
+    }
+
+    qDebug() << "--------------------------------------------------------------------------------------------------------";
+
+    currentIteration = 1;
+    qDebug() << "\033[32mFound libraries:\033[0m";
+    for (Project & lib : *libs)
+    {
+        qDebug() << "\033[33mLIBRARY N:" << currentIteration++ << "\033[0m" << endl
+                 << "NAME: " << lib.name                                    << endl
+                 << "PRO:  " << lib.projectProFilePath                      << endl
+                 << "DEPS: " << lib.dependFilePath                          << endl
+                 << "USE:  " << lib.useFilePath
+                    ;
+    }
+    qDebug() << "--------------------------------------------------------------------------------------------------------";
+}
+
 bool UtilFunctionClass::invoke(const QString &program, const QStringList args, const int timeout)
 {
     QProcess invokingProcess;
@@ -57,6 +88,43 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, c
         return false;
     }
 
+    return true;
+}
+
+bool UtilFunctionClass::invoke(const QString &program, const QStringList args, QString &outputBuffer, const int timeout)
+{
+    QProcess invokingProcess;
+
+    invokingProcess.setProgram(program);
+    invokingProcess.setArguments(args);
+
+    invokingProcess.start();
+    if (!invokingProcess.waitForStarted(PROCESS_START_TIMEOUT))
+    {
+        qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+        writeLog("Invoke timeout");
+        return false;
+    }
+
+    if (!invokingProcess.waitForFinished(timeout))
+    {
+        qDebug() << "[UTIL CLASS] Invoke finish timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+
+        writeLog(invokingProcess.readAllStandardError());
+        writeLog(invokingProcess.readAllStandardOutput());
+        return false;
+    }
+
+    if (invokingProcess.exitCode())
+    {
+        qDebug() << "[UTIL CLASS] Invoke error (exit code" << invokingProcess.exitCode() << "), program: [" << program << "] args: [" << args.join(" ") << "]";
+
+        writeLog(invokingProcess.readAllStandardError());
+        writeLog(invokingProcess.readAllStandardOutput());
+        return false;
+    }
+
+    outputBuffer = invokingProcess.readAllStandardOutput();
     return true;
 }
 
@@ -113,6 +181,41 @@ bool UtilFunctionClass::hasRecurseDepend(QStringList &dependQuery, Project *pPar
         }
     }
     return false;
+}
+
+Project *UtilFunctionClass::getProject(const QString &projectName)
+{
+    auto projectPos = std::find_if(apps->begin(), apps->end(), [&projectName](Project & app){ return (app.name == projectName); });
+
+    if (projectPos == apps->end())
+    {
+        projectPos = std::find_if(libs->begin(), libs->end(), [&projectName](Project & app){ return (app.name == projectName); });
+
+        if (projectPos == libs->end())
+            return nullptr;
+    }
+
+    return projectPos;
+}
+
+QStringList UtilFunctionClass::getLibraryNameList()
+{
+    QStringList result;
+    for (const Project & lib : *libs)
+    {
+        result << lib.name;
+    }
+    return result;
+}
+
+QStringList UtilFunctionClass::getAppNameList()
+{
+    QStringList result;
+    for (const Project & app : *apps)
+    {
+        result << app.name;
+    }
+    return result;
 }
 
 UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> * initApps, QVector<Project> * initLibs)

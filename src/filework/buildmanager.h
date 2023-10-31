@@ -28,9 +28,6 @@ signals:
 
 private:
     bool m_isWorking {false};
-
-    QFile m_logFile;
-
     UtilFunctionClass & m_utilClass;
 };
 

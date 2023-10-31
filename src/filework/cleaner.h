@@ -1,6 +1,9 @@
 #ifndef CLEANER_H
 #define CLEANER_H
+
 #include <QString>
+
+#include "utilfunctionclass.h"
 
 namespace FileWork
 {
@@ -28,6 +31,8 @@ public:
 private:
     bool searchForFiles(const QString &basePath, QStringList & resultList, const QString & filesToFind, const QString & searchType = "-name");
     void addFiles(const QString &findOutput, QStringList & resultList);
+
+    UtilFunctionClass & m_utilClass;
 };
 
 }

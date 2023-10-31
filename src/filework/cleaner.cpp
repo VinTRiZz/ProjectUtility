@@ -9,7 +9,8 @@
 
 using namespace FileWork;
 
-Cleaner::Cleaner()
+Cleaner::Cleaner() :
+    m_utilClass( UtilFunctionClass::getInstance() )
 {
 
 }
@@ -23,20 +24,65 @@ QStringList Cleaner::getFileList(const QString &basePath, int fileType)
 {
     QStringList result;
 
+    QStringList args;
+    QString findOutput;
+
     if (fileType & FILE_REMOVE_TYPE::MAKEFILE)
-        searchForFiles(basePath, result, "Makefile");
+    {
+        args << basePath << "-name" << "Makefile";
+        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+            addFiles(findOutput, result);
+
+        // searchForFiles(basePath, result, "Makefile");
+    }
 
     if (fileType & FILE_REMOVE_TYPE::BUILD)
-        searchForFiles(basePath + "/BUILD", result, "f", "-type");
+    {
+        if (args.size())
+            args.clear();
+
+        args << basePath + "/BUILD" << "-type" << "f";
+        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+            addFiles(findOutput, result);
+
+//        searchForFiles(basePath + "/BUILD", result, "f", "-type");
+    }
 
     if (fileType & FILE_REMOVE_TYPE::BIN)
-        searchForFiles(basePath + "/BIN", result, "f", "-type");
+    {
+        if (args.size())
+            args.clear();
+
+        args << basePath + "/BIN" << "-type" << "f";
+        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+            addFiles(findOutput, result);
+
+//        searchForFiles(basePath + "/BIN", result, "f", "-type");
+    }
 
     if (fileType & FILE_REMOVE_TYPE::LIB)
-        searchForFiles(basePath + "/LIB", result, "f", "-type");
+    {
+        if (args.size())
+            args.clear();
+
+        args << basePath + "/LIB" << "-type" << "f";
+        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+            addFiles(findOutput, result);
+
+//        searchForFiles(basePath + "/LIB", result, "f", "-type");
+    }
 
     if (fileType & FILE_REMOVE_TYPE::QMAKE_STASH)
-        searchForFiles(basePath, result, ".qmake.stash");
+    {
+        if (args.size())
+            args.clear();
+
+        args << basePath << "-name" << ".qmake.stash";
+        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+            addFiles(findOutput, result);
+
+//        searchForFiles(basePath, result, ".qmake.stash");
+    }
 
     return result;
 }

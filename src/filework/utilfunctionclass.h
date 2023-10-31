@@ -21,15 +21,23 @@ struct Project
 class UtilFunctionClass
 {
 public:
+    void logParsedProjects();
+
     bool invoke(const QString & program, const QStringList args, const int timeout);
+    bool invoke(const QString & program, const QStringList args, QString & outputBuffer, const int timeout);
 
     void setLogFile(const QString &logPath);
+
     void writeLog(const QByteArray & what);
 
     bool hasRecurseDepend(QStringList & dependQuery, Project * pParent);
 
-    static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr);
+    Project * getProject(const QString & projectName);
 
+    QStringList getLibraryNameList();
+    QStringList getAppNameList();
+
+    static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr);
     ~UtilFunctionClass();
 private:
     QVector<Project> * apps;

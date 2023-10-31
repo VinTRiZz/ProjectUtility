@@ -47,54 +47,6 @@ struct ProjectDirectoryFileInterface::Impl
         m_utilClass.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
     }
 
-    Project * getProject(const QString & projectName)
-    {
-        auto projectPos = std::find_if(apps.begin(), apps.end(), [&projectName](Project & app){ return (app.name == projectName); });
-
-        if (projectPos == apps.end())
-        {
-            projectPos = std::find_if(libs.begin(), libs.end(), [&projectName](Project & app){ return (app.name == projectName); });
-
-            if (projectPos == libs.end())
-                return nullptr;
-        }
-
-        return projectPos;
-    }
-
-    void logParsedProjects()
-    {
-        m_dependsWorker.poll();
-
-        int currentIteration = 1;
-        qDebug() << "--------------------------------------------------------------------------------------------------------";
-        qDebug() << "\033[32mFound apps:\033[0m";
-        for (Project & app : apps)
-        {
-            qDebug() << "\033[33mAPP N:" << currentIteration++ << "\033[0m"   << endl
-                     << "NAME:  " << app.name                                 << endl
-                     << "PRO:   " << app.projectProFilePath                   << endl
-                     << "DEPS:  " << app.dependFilePath                       << endl
-                     << "DEPON: " << app.depends.join(", ")                   << endl
-                        ;
-        }
-
-        qDebug() << "--------------------------------------------------------------------------------------------------------";
-
-        currentIteration = 1;
-        qDebug() << "\033[32mFound libraries:\033[0m";
-        for (Project & lib : libs)
-        {
-            qDebug() << "\033[33mLIBRARY N:" << currentIteration++ << "\033[0m" << endl
-                     << "NAME: " << lib.name                                    << endl
-                     << "PRO:  " << lib.projectProFilePath                      << endl
-                     << "DEPS: " << lib.dependFilePath                          << endl
-                     << "USE:  " << lib.useFilePath
-                        ;
-        }
-        qDebug() << "--------------------------------------------------------------------------------------------------------";
-    }
-
     void setPath(const QString & path)
     {
         m_searcher.setPath(path);
@@ -169,7 +121,8 @@ int ProjectDirectoryFileInterface::processDirectory(const QString path)
 
     m_pImpl->m_searcher.findFiles();
     m_pImpl->m_dependsWorker.parseFiles();
-    m_pImpl->logParsedProjects();
+    m_pImpl->m_dependsWorker.poll();
+    m_pImpl->m_utilClass.logParsedProjects();
 
     m_pImpl->m_dependsWorker.poll();
 
@@ -179,40 +132,30 @@ int ProjectDirectoryFileInterface::processDirectory(const QString path)
 QStringList ProjectDirectoryFileInterface::getLibraryNameList()
 {
     m_pImpl->m_dependsWorker.poll();
-    QStringList result;
-    for (const Project & lib : m_pImpl->libs)
-    {
-        result << lib.name;
-    }
-    return result;
+    return m_pImpl->m_utilClass.getLibraryNameList();
 }
 
 QStringList ProjectDirectoryFileInterface::getAppNameList()
 {
     m_pImpl->m_dependsWorker.poll();
-    QStringList result;
-    for (const Project & app : m_pImpl->apps)
-    {
-        result << app.name;
-    }
-    return result;
+    return m_pImpl->m_utilClass.getAppNameList();
 }
 
 QString ProjectDirectoryFileInterface::currentDirectory() const { return m_pImpl->m_searcher.basePath(); }
 
 bool ProjectDirectoryFileInterface::addLibrary(const QString &projectName, const QString &libraryName)
 {
-    return m_pImpl->m_dependsWorker.addLibrary(m_pImpl->getProject(projectName), libraryName);
+    return m_pImpl->m_dependsWorker.addLibrary(m_pImpl->m_utilClass.getProject(projectName), libraryName);
 }
 
 void ProjectDirectoryFileInterface::removeLibrary(const QString &projectName, const QString &libraryName)
 {
-    m_pImpl->m_dependsWorker.removeLibrary(m_pImpl->getProject(projectName), libraryName);
+    m_pImpl->m_dependsWorker.removeLibrary(m_pImpl->m_utilClass.getProject(projectName), libraryName);
 }
 
 QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
 {
-    auto pProj = m_pImpl->getProject(appName);
+    auto pProj = m_pImpl->m_utilClass.getProject(appName);
 
     if (pProj)
         return pProj->depends;
@@ -237,17 +180,17 @@ bool ProjectDirectoryFileInterface::loadBackup(const QString & backupDirectory) 
 
 bool ProjectDirectoryFileInterface::build(const QString &projectName, const QString &target)
 {
-    return m_pImpl->m_buildManager.build(*m_pImpl->getProject(projectName), target);
+    return m_pImpl->m_buildManager.build(*m_pImpl->m_utilClass.getProject(projectName), target);
 }
 
 bool ProjectDirectoryFileInterface::rebuild(const QString &projectName, const QString &target)
 {
-    return m_pImpl->m_buildManager.rebuild(*m_pImpl->getProject(projectName), target);
+    return m_pImpl->m_buildManager.rebuild(*m_pImpl->m_utilClass.getProject(projectName), target);
 }
 
 void ProjectDirectoryFileInterface::archiveProject(const QString &projectName, const QString &resultPath)
 {
-    const QString projectPath = QFileInfo(m_pImpl->getProject(projectName)->projectProFilePath).absolutePath();
+    const QString projectPath = QFileInfo(m_pImpl->m_utilClass.getProject(projectName)->projectProFilePath).absolutePath();
 
     m_pImpl->m_archivator.archive(projectPath, resultPath);
 }
@@ -257,7 +200,7 @@ void ProjectDirectoryFileInterface::archiveSelectedProjects(const QStringList &p
     m_pImpl->m_archivator.clear();
     for (auto & projectName : projectNames)
     {
-        m_pImpl->m_archivator.addProject(QFileInfo(m_pImpl->getProject(projectName)->projectProFilePath).absolutePath());
+        m_pImpl->m_archivator.addProject(QFileInfo(m_pImpl->m_utilClass.getProject(projectName)->projectProFilePath).absolutePath());
     }
     m_pImpl->m_archivator.archive(resultPath);
 }
