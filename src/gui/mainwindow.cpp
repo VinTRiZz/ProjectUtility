@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CONNECT_CLIECKED(archive, archive);
 
     connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
+    connect(ui->basePath_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::updateProjectList);
 
     connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForLibrary);
     connect(ui->searchProject_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForProject);
@@ -171,6 +172,12 @@ void MainWindow::updateBasePath()
 
 void MainWindow::removeFiles()
 {
+    if (ui->projects_listWidget->count() == 0)
+    {
+        emit printInfo("Негде чистить");
+        return;
+    }
+
     int filesToRemove = FileWork::FILE_REMOVE_TYPE::NO_FILE;
 
     if (ui->bin_checkBox->isChecked())
@@ -422,6 +429,9 @@ void MainWindow::updateProjectList()
 
     if (!parsedFilesCount)
     {
+        ui->avaliableLibs_listWidget->clear();
+        ui->projects_listWidget->clear();
+        ui->addedLibs_listWidget->clear();
         emit printInfo("Ничего не найдено");
         return;
     }

@@ -49,11 +49,6 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
     Project foundProj;
     foundProj.isLibrary = isLibs;
 
-    if (!isLibs)
-        apps.clear();
-    else
-        libs.clear();
-
     int projectFilePos = -1;
     QStringList projectContents;
     for (QString & entry : entries)
@@ -130,6 +125,9 @@ void FileSearcher::findFiles()
             appDirBasePath = currentBasePath + APP_PROJECTS_BASE_DIRECTORY,
             libDirBasePath = currentBasePath + LIBRARY_PROJECTS_BASE_DIRECTORY
             ;
+
+    apps.clear();
+    libs.clear();
 
     if (!searchForProjects(appDirBasePath, false) || !searchForProjects(libDirBasePath, true))
     {
