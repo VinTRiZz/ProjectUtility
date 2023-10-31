@@ -1,7 +1,7 @@
 #ifndef DEPENDSWORKER_H
 #define DEPENDSWORKER_H
 
-#include "filesearcher.h"
+#include "utilfunctionclass.h"
 #include "dependencyparser.h"
 
 #include <QString>
@@ -16,7 +16,7 @@ public:
     DependsWorker(QVector<Project> & apps, QVector<Project> & libs);
     ~DependsWorker();
 
-    void addLibrary(Project * proj, const QString &libraryName);
+    bool addLibrary(Project * proj, const QString &libraryName);
     void removeLibrary(Project * proj, const QString &libraryName);
 
     void updateDepends();
@@ -41,6 +41,8 @@ private:
     QString currentDirectory;
 
     std::atomic<float> processPercent {0};
+
+    bool hasRecurseDepend(QStringList & dependQuery, Project * pParent);
 };
 
 }

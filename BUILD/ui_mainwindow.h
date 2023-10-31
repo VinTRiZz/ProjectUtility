@@ -41,6 +41,13 @@ public:
     QAction *depends_action;
     QWidget *centralWidget;
     QGridLayout *gridLayout_2;
+    QSpacerItem *horizontalSpacer_5;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout_5;
+    QLabel *label_5;
+    QRadioButton *libs_radioButton;
+    QRadioButton *apps_radioButton;
+    QSpacerItem *horizontalSpacer_6;
     QVBoxLayout *verticalLayout_7;
     QHBoxLayout *horizontalLayout_3;
     QLineEdit *basePath_lineEdit;
@@ -54,11 +61,6 @@ public:
     QGridLayout *gridLayout_3;
     QSpacerItem *verticalSpacer;
     QVBoxLayout *verticalLayout_13;
-    QWidget *widget;
-    QVBoxLayout *verticalLayout_5;
-    QLabel *label_5;
-    QRadioButton *libs_radioButton;
-    QRadioButton *apps_radioButton;
     QWidget *widget_4;
     QVBoxLayout *verticalLayout_12;
     QLabel *label_6;
@@ -133,6 +135,51 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_5, 0, 2, 1, 1);
+
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy);
+        verticalLayout_5 = new QVBoxLayout(widget);
+        verticalLayout_5->setSpacing(0);
+        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        verticalLayout_5->setContentsMargins(0, 0, 0, 0);
+        label_5 = new QLabel(widget);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
+        label_5->setSizePolicy(sizePolicy1);
+        label_5->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_5->addWidget(label_5);
+
+        libs_radioButton = new QRadioButton(widget);
+        libs_radioButton->setObjectName(QStringLiteral("libs_radioButton"));
+        libs_radioButton->setChecked(true);
+
+        verticalLayout_5->addWidget(libs_radioButton);
+
+        apps_radioButton = new QRadioButton(widget);
+        apps_radioButton->setObjectName(QStringLiteral("apps_radioButton"));
+
+        verticalLayout_5->addWidget(apps_radioButton);
+
+
+        gridLayout_2->addWidget(widget, 0, 1, 1, 1);
+
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_6, 0, 0, 1, 1);
+
         verticalLayout_7 = new QVBoxLayout();
         verticalLayout_7->setSpacing(6);
         verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
@@ -154,19 +201,16 @@ public:
 
         update_pushButton = new QPushButton(centralWidget);
         update_pushButton->setObjectName(QStringLiteral("update_pushButton"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(update_pushButton->sizePolicy().hasHeightForWidth());
-        update_pushButton->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(update_pushButton->sizePolicy().hasHeightForWidth());
+        update_pushButton->setSizePolicy(sizePolicy1);
         update_pushButton->setMinimumSize(QSize(0, 0));
 
         verticalLayout_7->addWidget(update_pushButton);
 
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy1);
         label->setLayoutDirection(Qt::LeftToRight);
         label->setAlignment(Qt::AlignCenter);
 
@@ -187,15 +231,15 @@ public:
         verticalLayout_7->addWidget(searchProject_lineEdit);
 
 
-        gridLayout_2->addLayout(verticalLayout_7, 0, 0, 1, 1);
+        gridLayout_2->addLayout(verticalLayout_7, 1, 0, 1, 3);
 
         stackedWidget = new QStackedWidget(centralWidget);
         stackedWidget->setObjectName(QStringLiteral("stackedWidget"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(stackedWidget->sizePolicy().hasHeightForWidth());
-        stackedWidget->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(stackedWidget->sizePolicy().hasHeightForWidth());
+        stackedWidget->setSizePolicy(sizePolicy2);
         page = new QWidget();
         page->setObjectName(QStringLiteral("page"));
         gridLayout_3 = new QGridLayout(page);
@@ -209,44 +253,10 @@ public:
         verticalLayout_13 = new QVBoxLayout();
         verticalLayout_13->setSpacing(6);
         verticalLayout_13->setObjectName(QStringLiteral("verticalLayout_13"));
-        widget = new QWidget(page);
-        widget->setObjectName(QStringLiteral("widget"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
-        widget->setSizePolicy(sizePolicy2);
-        verticalLayout_5 = new QVBoxLayout(widget);
-        verticalLayout_5->setSpacing(0);
-        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        verticalLayout_5->setContentsMargins(0, 0, 0, 0);
-        label_5 = new QLabel(widget);
-        label_5->setObjectName(QStringLiteral("label_5"));
-        sizePolicy.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
-        label_5->setSizePolicy(sizePolicy);
-        label_5->setAlignment(Qt::AlignCenter);
-
-        verticalLayout_5->addWidget(label_5);
-
-        libs_radioButton = new QRadioButton(widget);
-        libs_radioButton->setObjectName(QStringLiteral("libs_radioButton"));
-        libs_radioButton->setChecked(true);
-
-        verticalLayout_5->addWidget(libs_radioButton);
-
-        apps_radioButton = new QRadioButton(widget);
-        apps_radioButton->setObjectName(QStringLiteral("apps_radioButton"));
-
-        verticalLayout_5->addWidget(apps_radioButton);
-
-
-        verticalLayout_13->addWidget(widget);
-
         widget_4 = new QWidget(page);
         widget_4->setObjectName(QStringLiteral("widget_4"));
-        sizePolicy2.setHeightForWidth(widget_4->sizePolicy().hasHeightForWidth());
-        widget_4->setSizePolicy(sizePolicy2);
+        sizePolicy.setHeightForWidth(widget_4->sizePolicy().hasHeightForWidth());
+        widget_4->setSizePolicy(sizePolicy);
         verticalLayout_12 = new QVBoxLayout(widget_4);
         verticalLayout_12->setSpacing(0);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -254,8 +264,8 @@ public:
         verticalLayout_12->setContentsMargins(0, 0, 0, 0);
         label_6 = new QLabel(widget_4);
         label_6->setObjectName(QStringLiteral("label_6"));
-        sizePolicy.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
-        label_6->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
+        label_6->setSizePolicy(sizePolicy1);
         label_6->setAlignment(Qt::AlignCenter);
 
         verticalLayout_12->addWidget(label_6);
@@ -313,16 +323,16 @@ public:
 
         widget_2 = new QWidget(page);
         widget_2->setObjectName(QStringLiteral("widget_2"));
-        sizePolicy2.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
-        widget_2->setSizePolicy(sizePolicy2);
+        sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
+        widget_2->setSizePolicy(sizePolicy);
         verticalLayout_11 = new QVBoxLayout(widget_2);
         verticalLayout_11->setSpacing(6);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
         verticalLayout_11->setObjectName(QStringLiteral("verticalLayout_11"));
         label_7 = new QLabel(widget_2);
         label_7->setObjectName(QStringLiteral("label_7"));
-        sizePolicy.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
-        label_7->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
+        label_7->setSizePolicy(sizePolicy1);
         label_7->setAlignment(Qt::AlignCenter);
 
         verticalLayout_11->addWidget(label_7);
@@ -344,16 +354,16 @@ public:
 
         widget_3 = new QWidget(page);
         widget_3->setObjectName(QStringLiteral("widget_3"));
-        sizePolicy2.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
-        widget_3->setSizePolicy(sizePolicy2);
+        sizePolicy.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
+        widget_3->setSizePolicy(sizePolicy);
         verticalLayout_8 = new QVBoxLayout(widget_3);
         verticalLayout_8->setSpacing(6);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
         verticalLayout_8->setObjectName(QStringLiteral("verticalLayout_8"));
         label_8 = new QLabel(widget_3);
         label_8->setObjectName(QStringLiteral("label_8"));
-        sizePolicy.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
-        label_8->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
+        label_8->setSizePolicy(sizePolicy1);
         label_8->setAlignment(Qt::AlignCenter);
 
         verticalLayout_8->addWidget(label_8);
@@ -397,8 +407,8 @@ public:
 
         label_4 = new QLabel(page);
         label_4->setObjectName(QStringLiteral("label_4"));
-        sizePolicy.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
-        label_4->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
+        label_4->setSizePolicy(sizePolicy1);
         label_4->setAlignment(Qt::AlignCenter);
 
         verticalLayout_3->addWidget(label_4);
@@ -505,8 +515,8 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         label_2 = new QLabel(page_2);
         label_2->setObjectName(QStringLiteral("label_2"));
-        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
-        label_2->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy1);
         label_2->setAlignment(Qt::AlignCenter);
 
         verticalLayout_2->addWidget(label_2);
@@ -556,7 +566,7 @@ public:
 
         stackedWidget->addWidget(page_2);
 
-        gridLayout_2->addWidget(stackedWidget, 0, 1, 1, 1);
+        gridLayout_2->addWidget(stackedWidget, 0, 3, 2, 1);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -589,15 +599,15 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         projectControl_action->setText(QApplication::translate("MainWindow", "\320\243\320\277\321\200\320\260\320\262\320\273\320\265\320\275\320\270\320\265 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\274", nullptr));
         depends_action->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\270 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
+        label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
+        libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
+        apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
         basePath_lineEdit->setText(QApplication::translate("MainWindow", "/home/lazarev_as/workspace/project", nullptr));
         basePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
         acceptBasePath_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\272", nullptr));
         update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
         label->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\265\320\272\321\202\321\213", nullptr));
         searchProject_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
-        label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
-        libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
-        apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
         label_6->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265", nullptr));
         archiveAll_radioButton->setText(QApplication::translate("MainWindow", "\320\222\321\201\320\265", nullptr));
         archiveSelected_radioButton->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\320\275\320\275\321\213\320\265", nullptr));

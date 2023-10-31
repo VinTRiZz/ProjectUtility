@@ -1,7 +1,7 @@
 #ifndef BUILDMANAGER_H
 #define BUILDMANAGER_H
 
-#include "filesearcher.h"
+#include "utilfunctionclass.h"
 
 #include <QObject>
 #include <QFile>

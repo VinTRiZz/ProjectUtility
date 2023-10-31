@@ -22,7 +22,7 @@ public:
     QStringList getLibraryNameList();
     QStringList getAppNameList();
 
-    void addLibrary(const QString & projectName, const QString & libraryName);
+    bool addLibrary(const QString & projectName, const QString & libraryName);
     void removeLibrary(const QString & projectName, const QString & libraryName);
 
     void saveChanges();

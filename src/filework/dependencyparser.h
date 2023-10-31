@@ -1,7 +1,7 @@
 #ifndef DEPENDENCYPARSER_H
 #define DEPENDENCYPARSER_H
 
-#include "filesearcher.h"
+#include "utilfunctionclass.h"
 
 namespace FileWork
 {

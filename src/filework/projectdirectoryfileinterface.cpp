@@ -197,7 +197,7 @@ QStringList ProjectDirectoryFileInterface::getAppNameList()
 
 QString ProjectDirectoryFileInterface::currentDirectory() const { return m_pImpl->m_searcher.basePath(); }
 
-void ProjectDirectoryFileInterface::addLibrary(const QString &projectName, const QString &libraryName)
+bool ProjectDirectoryFileInterface::addLibrary(const QString &projectName, const QString &libraryName)
 {
     m_pImpl->m_dependsWorker.addLibrary(m_pImpl->getProject(projectName), libraryName);
 }

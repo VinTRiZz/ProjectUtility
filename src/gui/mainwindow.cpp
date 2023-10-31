@@ -69,12 +69,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::addSelectedLibrary()
 {
-    if (ui->apps_radioButton->isChecked())
-    {
-        emit printInfo("Нельзя добавить зависимость от проекта");
-        return;
-    }
-
     auto pItem = ui->avaliableLibs_listWidget->currentItem();
     if (!pItem)
         return;
@@ -93,7 +87,11 @@ void MainWindow::addSelectedLibrary()
         return;
     }
 
-    m_fileInterface.addLibrary(currentProjectName, pItem->text());
+    if (!m_fileInterface.addLibrary(currentProjectName, pItem->text()))
+    {
+        emit printInfo("Обнаружена рекурсивная зависимость! Библиотека не добавлена.");
+        return;
+    }
     ui->addedLibs_listWidget->addItem( pItem->text() );
 }
 

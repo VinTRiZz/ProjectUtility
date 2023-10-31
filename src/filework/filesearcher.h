@@ -4,18 +4,10 @@
 #include <QString>
 #include <QVector>
 
+#include "utilfunctionclass.h"
+
 namespace FileWork
 {
-
-struct Project
-{
-    bool isLibrary {false};
-    QString name;
-    QString projectProFilePath;
-    QString dependFilePath;
-    QString useFilePath;
-    QStringList depends;
-};
 
 class FileSearcher
 {

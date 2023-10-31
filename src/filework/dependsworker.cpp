@@ -16,27 +16,39 @@ DependsWorker::~DependsWorker()
 }
 
 
-void DependsWorker::addLibrary(Project * proj, const QString &libraryName)
+bool DependsWorker::addLibrary(Project * proj, const QString &libraryName)
 {
     poll();
 
-    auto libraryPos = std::find_if(libs.begin(), libs.end(), [&libraryName](Project & libs){ return (libs.name == libraryName); });
-
-    if (libraryPos == libs.end())
-        return;
+    bool libraryExist = false;
+    for (const Project & lib : libs)
+    {
+        libraryExist = (lib.name == libraryName);
+        if (libraryExist)
+            break;
+    }
+    if (!libraryExist)
+        return false;
 
     proj->depends << libraryName;
 
-    qDebug() << "[Dependency \033[32madded\033[0m]: " << proj->name << "--->" << libraryName;
+    QStringList dependQuery;
+    if (hasRecurseDepend(dependQuery, proj))
+    {
+        qDebug() << "[DEPENDS WORKER] Found recursive in project" << proj->name << "depends:" << dependQuery.join("-->");
+        proj->depends.removeOne(libraryName);
+        return false;
+    }
+
+    qDebug() << "[DEPENDS WORKER] [\033[32mAdded\033[0m]: " << proj->name << "--->" << libraryName;
+    return true;
 }
 
 void DependsWorker::removeLibrary(Project * proj, const QString &libraryName)
 {
     poll();
-
     proj->depends.removeOne(libraryName);
-
-    qDebug() << "[Dependency \033[31mremoved\033[0m]: " << proj->name << "-X->" << libraryName;
+    qDebug() << "[DEPENDS WORKER] [\033[31mRemoved\033[0m]: " << proj->name << "-X->" << libraryName;
 }
 
 void DependsWorker::updateDepends()
@@ -138,4 +150,35 @@ void DependsWorker::saveChanges()
 int DependsWorker::progressPercent() const
 {
     return processPercent.load();
+}
+
+
+bool DependsWorker::hasRecurseDepend(QStringList & dependQuery, Project * pParent)
+{
+    Project * depProj {nullptr};
+    for (QString & depName : pParent->depends)
+    {
+        if (dependQuery.contains(depName))
+        {
+            dependQuery << depName;
+            return true;
+        }
+        dependQuery << depName;
+
+        for (Project & lib : libs)
+        {
+            if (lib.name == depName)
+            {
+                depProj = &lib;
+                break;
+            }
+        }
+
+        if (depProj)
+        {
+            if (hasRecurseDepend(dependQuery, depProj))
+                return true;
+        }
+    }
+    return false;
 }

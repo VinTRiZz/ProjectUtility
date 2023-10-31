@@ -145,11 +145,18 @@ void DependencyParser::writeDepends(Project &proj)
         return;
     }
 
+//    QStringList dependQuery;
+//    while (hasRecurseDepend(dependQuery, proj))
+//    {
+//        qDebug() << "[DEPENDS WORKER] Found recurse in project" << proj->name << "depends:" << dependQuery.join("-->");
+//        qDebug() << "[DEPENDS WORKER] Removing recursive depend on project:" << dependQuery[0];
+//        proj->depends.removeOne(dependQuery[0]);
+//        dependQuery.clear();
+//    }
+
     QTextStream depsStream(&deps);
 
-    QStringList depends = proj.depends;
-
-    for (QString & dep : depends)
+    for (QString & dep : proj.depends)
     {
         for (const Project & lib : libs)
         {
@@ -160,7 +167,7 @@ void DependencyParser::writeDepends(Project &proj)
         }
     }
 
-    for (QString & dep : depends)
+    for (QString & dep : proj.depends)
     {
         dep.remove(0, currentBasePath.size());
         dep = "include($$PWD/../.." + dep + ")";

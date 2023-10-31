@@ -51,6 +51,7 @@ OBJECTS_DIR   = BUILD/
 ####### Files
 
 SOURCES       = src/main.cpp \
+		src/gui/dependencygraphwidget.cpp \
 		src/gui/mainwindow.cpp \
 		src/filework/archivator.cpp \
 		src/filework/backupmanager.cpp \
@@ -59,11 +60,14 @@ SOURCES       = src/main.cpp \
 		src/filework/dependencyparser.cpp \
 		src/filework/dependsworker.cpp \
 		src/filework/filesearcher.cpp \
-		src/filework/projectdirectoryfileinterface.cpp BUILD/moc_mainwindow.cpp \
+		src/filework/projectdirectoryfileinterface.cpp \
+		src/filework/utilfunctionclass.cpp BUILD/moc_dependencygraphwidget.cpp \
+		BUILD/moc_mainwindow.cpp \
 		BUILD/moc_archivator.cpp \
 		BUILD/moc_buildmanager.cpp \
 		BUILD/moc_projectdirectoryfileinterface.cpp
 OBJECTS       = BUILD/main.o \
+		BUILD/dependencygraphwidget.o \
 		BUILD/mainwindow.o \
 		BUILD/archivator.o \
 		BUILD/backupmanager.o \
@@ -73,6 +77,8 @@ OBJECTS       = BUILD/main.o \
 		BUILD/dependsworker.o \
 		BUILD/filesearcher.o \
 		BUILD/projectdirectoryfileinterface.o \
+		BUILD/utilfunctionclass.o \
+		BUILD/moc_dependencygraphwidget.o \
 		BUILD/moc_mainwindow.o \
 		BUILD/moc_archivator.o \
 		BUILD/moc_buildmanager.o \
@@ -159,7 +165,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		DepsSearcher.pro src/gui/mainwindow.h \
+		DepsSearcher.pro src/gui/dependencygraphwidget.h \
+		src/gui/mainwindow.h \
 		src/filework/archivator.h \
 		src/filework/backupmanager.h \
 		src/filework/buildmanager.h \
@@ -167,7 +174,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/filework/dependencyparser.h \
 		src/filework/dependsworker.h \
 		src/filework/filesearcher.h \
-		src/filework/projectdirectoryfileinterface.h src/main.cpp \
+		src/filework/projectdirectoryfileinterface.h \
+		src/filework/utilfunctionclass.h src/main.cpp \
+		src/gui/dependencygraphwidget.cpp \
 		src/gui/mainwindow.cpp \
 		src/filework/archivator.cpp \
 		src/filework/backupmanager.cpp \
@@ -176,7 +185,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/filework/dependencyparser.cpp \
 		src/filework/dependsworker.cpp \
 		src/filework/filesearcher.cpp \
-		src/filework/projectdirectoryfileinterface.cpp
+		src/filework/projectdirectoryfileinterface.cpp \
+		src/filework/utilfunctionclass.cpp
 QMAKE_TARGET  = DepsSearcher
 DESTDIR       = BIN/
 TARGET        = BIN/DepsSearcher
@@ -185,7 +195,7 @@ TARGET        = BIN/DepsSearcher
 first: all
 ####### Build rules
 
-$(TARGET): BUILD/ui_mainwindow.h $(OBJECTS)  
+$(TARGET): BUILD/ui_dependencygraphwidget.h BUILD/ui_mainwindow.h $(OBJECTS)  
 	@test -d BIN/ || mkdir -p BIN/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -377,9 +387,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/gui/mainwindow.h src/filework/archivator.h src/filework/backupmanager.h src/filework/buildmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/dependsworker.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/gui/mainwindow.cpp src/filework/archivator.cpp src/filework/backupmanager.cpp src/filework/buildmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/dependsworker.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/gui/mainwindow.ui $(DISTDIR)/
+	$(COPY_FILE) --parents src/gui/dependencygraphwidget.h src/gui/mainwindow.h src/filework/archivator.h src/filework/backupmanager.h src/filework/buildmanager.h src/filework/cleaner.h src/filework/dependencyparser.h src/filework/dependsworker.h src/filework/filesearcher.h src/filework/projectdirectoryfileinterface.h src/filework/utilfunctionclass.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/gui/dependencygraphwidget.cpp src/gui/mainwindow.cpp src/filework/archivator.cpp src/filework/backupmanager.cpp src/filework/buildmanager.cpp src/filework/cleaner.cpp src/filework/dependencyparser.cpp src/filework/dependsworker.cpp src/filework/filesearcher.cpp src/filework/projectdirectoryfileinterface.cpp src/filework/utilfunctionclass.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/gui/dependencygraphwidget.ui src/gui/mainwindow.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -411,9 +421,14 @@ compiler_moc_predefs_clean:
 BUILD/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -Wall -W -dM -E -o BUILD/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+compiler_moc_header_make_all: BUILD/moc_dependencygraphwidget.cpp BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+	-$(DEL_FILE) BUILD/moc_dependencygraphwidget.cpp BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+BUILD/moc_dependencygraphwidget.cpp: src/gui/dependencygraphwidget.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Документы/Projects/Qt/DepsSearcher/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/gui/dependencygraphwidget.h -o BUILD/moc_dependencygraphwidget.cpp
+
 BUILD/moc_mainwindow.cpp: src/filework/projectdirectoryfileinterface.h \
 		src/filework/cleaner.h \
 		src/gui/mainwindow.h \
@@ -427,6 +442,7 @@ BUILD/moc_archivator.cpp: src/filework/archivator.h \
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Документы/Projects/Qt/DepsSearcher/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/filework/archivator.h -o BUILD/moc_archivator.cpp
 
 BUILD/moc_buildmanager.cpp: src/filework/filesearcher.h \
+		src/filework/utilfunctionclass.h \
 		src/filework/buildmanager.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -441,9 +457,13 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: BUILD/ui_mainwindow.h
+compiler_uic_make_all: BUILD/ui_dependencygraphwidget.h BUILD/ui_mainwindow.h
 compiler_uic_clean:
-	-$(DEL_FILE) BUILD/ui_mainwindow.h
+	-$(DEL_FILE) BUILD/ui_dependencygraphwidget.h BUILD/ui_mainwindow.h
+BUILD/ui_dependencygraphwidget.h: src/gui/dependencygraphwidget.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic src/gui/dependencygraphwidget.ui -o BUILD/ui_dependencygraphwidget.h
+
 BUILD/ui_mainwindow.h: src/gui/mainwindow.ui \
 		/usr/lib/qt5/bin/uic
 	/usr/lib/qt5/bin/uic src/gui/mainwindow.ui -o BUILD/ui_mainwindow.h
@@ -463,6 +483,10 @@ BUILD/main.o: src/main.cpp src/gui/mainwindow.h \
 		src/filework/cleaner.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main.o src/main.cpp
 
+BUILD/dependencygraphwidget.o: src/gui/dependencygraphwidget.cpp src/gui/dependencygraphwidget.h \
+		BUILD/ui_dependencygraphwidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependencygraphwidget.o src/gui/dependencygraphwidget.cpp
+
 BUILD/mainwindow.o: src/gui/mainwindow.cpp src/gui/mainwindow.h \
 		src/filework/projectdirectoryfileinterface.h \
 		src/filework/cleaner.h \
@@ -476,32 +500,43 @@ BUILD/backupmanager.o: src/filework/backupmanager.cpp src/filework/backupmanager
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/backupmanager.o src/filework/backupmanager.cpp
 
 BUILD/buildmanager.o: src/filework/buildmanager.cpp src/filework/buildmanager.h \
-		src/filework/filesearcher.h
+		src/filework/filesearcher.h \
+		src/filework/utilfunctionclass.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/buildmanager.o src/filework/buildmanager.cpp
 
 BUILD/cleaner.o: src/filework/cleaner.cpp src/filework/cleaner.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/cleaner.o src/filework/cleaner.cpp
 
 BUILD/dependencyparser.o: src/filework/dependencyparser.cpp src/filework/dependencyparser.h \
-		src/filework/filesearcher.h
+		src/filework/filesearcher.h \
+		src/filework/utilfunctionclass.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependencyparser.o src/filework/dependencyparser.cpp
 
 BUILD/dependsworker.o: src/filework/dependsworker.cpp src/filework/dependsworker.h \
 		src/filework/filesearcher.h \
+		src/filework/utilfunctionclass.h \
 		src/filework/dependencyparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependsworker.o src/filework/dependsworker.cpp
 
-BUILD/filesearcher.o: src/filework/filesearcher.cpp src/filework/filesearcher.h
+BUILD/filesearcher.o: src/filework/filesearcher.cpp src/filework/filesearcher.h \
+		src/filework/utilfunctionclass.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/filesearcher.o src/filework/filesearcher.cpp
 
 BUILD/projectdirectoryfileinterface.o: src/filework/projectdirectoryfileinterface.cpp src/filework/projectdirectoryfileinterface.h \
 		src/filework/filesearcher.h \
+		src/filework/utilfunctionclass.h \
 		src/filework/backupmanager.h \
 		src/filework/dependsworker.h \
 		src/filework/dependencyparser.h \
 		src/filework/buildmanager.h \
 		src/filework/archivator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/projectdirectoryfileinterface.o src/filework/projectdirectoryfileinterface.cpp
+
+BUILD/utilfunctionclass.o: src/filework/utilfunctionclass.cpp src/filework/utilfunctionclass.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/utilfunctionclass.o src/filework/utilfunctionclass.cpp
+
+BUILD/moc_dependencygraphwidget.o: BUILD/moc_dependencygraphwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_dependencygraphwidget.o BUILD/moc_dependencygraphwidget.cpp
 
 BUILD/moc_mainwindow.o: BUILD/moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_mainwindow.o BUILD/moc_mainwindow.cpp
