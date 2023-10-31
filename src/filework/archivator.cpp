@@ -119,7 +119,7 @@ struct Archivator::Impl
             }
             else if (mustPackThisFile(entry))
             {
-                 currentArchiveDir.filesToPack << entryPath;
+                currentArchiveDir.filesToPack << entryPath;
             } else
             {
                 qDebug() << "[ARCHIVATOR] \033[33mSkipped\033[0m file:" << entry;
@@ -127,29 +127,23 @@ struct Archivator::Impl
         }
     }
 
-    void copyRecursive(const QDir & currentDir, ArchiveDirectory & currentArchiveDir)
+    void setupDirsRecursive(ArchiveDirectory & currentArchiveDir)
     {
-        QStringList entries = currentDir.entryList();
-
-        // Ignore useless entries
-        entries.removeOne(".");
-        entries.removeOne("..");
-
-        QString entryPath;
-        for (QString & entry : entries)
+        for (ArchiveDirectory & dir : currentArchiveDir.children)
         {
-            entryPath = currentDir.absoluteFilePath(entry);
-            if ( QFileInfo( entryPath ).isDir() )
-            {
-                const QString mkdirCommand = QString("mkdir %1 &> /dev/null").arg(currentArchiveDir.archivePath);
-                system(mkdirCommand.toUtf8().data());
-                copyRecursive( QDir(entryPath), currentArchiveDir.children[currentArchiveDir.children.size() - 1] );
-
-            } else if (mustPackThisFile(entry))
-            {
-                currentArchiveDir.filesToPack << entryPath;
-            }
+            const QString mkdirCommand = QString("mkdir %1 &> /dev/null").arg(dir.archivePath);
+            system(mkdirCommand.toUtf8().data());
+            setupDirsRecursive( dir );
         }
+    }
+
+    void copyFilesRecursive(ArchiveDirectory & currentArchiveDir)
+    {
+        for (QString & path : currentArchiveDir.filesToPack)
+            QFile::copy(path, currentArchiveDir.archivePath + "/" + QFileInfo(path).fileName());
+
+        for (ArchiveDirectory & dir : currentArchiveDir.children)
+            copyFilesRecursive( dir );
     }
 };
 
@@ -205,7 +199,13 @@ bool Archivator::addProject(const QString &projectDirPath)
 
     QDir projectDir(projectDirPath);
 
-    m_pImpl->searchRecursive(projectDir, m_pImpl->mainArchiveDir);
+    ArchiveDirectory projectArchiveDir;
+    projectArchiveDir.dirName = fileTester.baseName();
+    projectArchiveDir.archivePath = m_pImpl->mainArchiveDir.archivePath + "/" + projectArchiveDir.dirName;
+
+    m_pImpl->searchRecursive(projectDir, projectArchiveDir);
+
+    m_pImpl->mainArchiveDir.children.push_back(projectArchiveDir);
 
     return true;
 }
@@ -222,16 +222,29 @@ void Archivator::archive(const QString & resultPath)
         {
             m_pImpl->isArchived = false;
 
-            const QString mkdirCommand = "mkdir " + m_pImpl->mainArchiveDir.dirName + " &> /dev/null";
+            const QString basePathInTmp = QString("./%1").arg(m_pImpl->mainArchiveDir.dirName);
+
+            // Create temporary directory for them
+            const QString mkdirCommand = "mkdir " + basePathInTmp + " &> /dev/null";
             system(mkdirCommand.toUtf8().data());
 
-            if (!QFileInfo(m_pImpl->mainArchiveDir.dirName).exists())
+            if (!QFileInfo(basePathInTmp).exists())
             {
                 qDebug() << "[ARCHIVATOR] Error: directory not created";
-                emit this->archiveComplete();
                 return;
             }
 
+            QString mkProjectDirCommand;
+            for (auto child : m_pImpl->mainArchiveDir.children)
+            {
+                mkProjectDirCommand = QString("mkdir %1/%2 &> /dev/null").arg(m_pImpl->mainArchiveDir.archivePath, child.dirName);
+                system(mkdirCommand.toUtf8().data());
+            }
+
+            m_pImpl->setupDirsRecursive(m_pImpl->mainArchiveDir);
+            m_pImpl->copyFilesRecursive(m_pImpl->mainArchiveDir);
+
+            // Archive them
             QProcess packProcess;
             packProcess.setProgram("zip");
 
@@ -240,7 +253,7 @@ void Archivator::archive(const QString & resultPath)
             zipArgs << zipRecursivelyArg
                     << zipUpdateExistArg
                     << resultPath
-                    << m_pImpl->mainArchiveDir.dirName
+                    << basePathInTmp
             ;
             qDebug() << "[ARCHIVATOR] Archivator command: [" << "zip" << zipArgs.join(" ") << "]";
 
@@ -257,16 +270,14 @@ void Archivator::archive(const QString & resultPath)
                 if (!packProcess.exitCode())
                 {
                     qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
+                    const QString rmCommand = QString("rm %1 -R").arg(basePathInTmp);
+                    system(rmCommand.toUtf8().data());
                     m_pImpl->isArchived = true;
                 }
                 else
                 {
                     qDebug() << "[ARCHIVATOR] Error creating archive: [\033[32mSTDOUT\033[0m" << packProcess.readAllStandardOutput() << "] | [\033[31mSTDERR\033[0m" << packProcess.readAllStandardOutput() << "]";
                 }
-            }
-            else
-            {
-                qDebug() << "[ARCHIVATOR] Archive command start error";
             }
             emit this->archiveComplete();
         }
@@ -301,22 +312,26 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
             // Search for project files
             QDir projectDir(projectDirPath);
 
+            const QString basePathInTmp = QString("./%1").arg(projectDir.dirName());
+
             ArchiveDirectory projectArhiveDir;
             projectArhiveDir.dirName = projectDir.dirName();
-            projectArhiveDir.archivePath = projectDir.dirName();
+            projectArhiveDir.archivePath = basePathInTmp;
 
             m_pImpl->searchRecursive(QDir(projectDirPath), projectArhiveDir);
 
             // Create temporary directory for them
-            const QString mkdirCommand = "mkdir " + projectArhiveDir.dirName + " &> /dev/null";
+            const QString mkdirCommand = "mkdir " + basePathInTmp + " &> /dev/null";
             system(mkdirCommand.toUtf8().data());
 
-            if (!QFileInfo(projectArhiveDir.dirName).exists())
+            if (!QFileInfo(basePathInTmp).exists())
             {
                 qDebug() << "[ARCHIVATOR] Error: directory not created";
-                emit this->archiveComplete();
                 return;
             }
+
+            m_pImpl->setupDirsRecursive(projectArhiveDir);
+            m_pImpl->copyFilesRecursive(projectArhiveDir);
 
             // Archive them
             QProcess packProcess;
@@ -327,7 +342,7 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
             zipArgs << zipRecursivelyArg
                     << zipUpdateExistArg
                     << resultPath
-                    << projectArhiveDir.dirName
+                    << basePathInTmp
             ;
             qDebug() << "[ARCHIVATOR] Archivator command: [" << "zip" << zipArgs.join(" ") << "]";
 
@@ -344,16 +359,14 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
                 if (!packProcess.exitCode())
                 {
                     qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
+                    const QString rmCommand = QString("rm %1 -R").arg(basePathInTmp);
+                    system(rmCommand.toUtf8().data());
                     m_pImpl->isArchived = true;
                 }
                 else
                 {
                     qDebug() << "[ARCHIVATOR] Error creating archive: [\033[32mSTDOUT\033[0m" << packProcess.readAllStandardOutput() << "] | [\033[31mSTDERR\033[0m" << packProcess.readAllStandardOutput() << "]";
                 }
-            }
-            else
-            {
-                qDebug() << "[ARCHIVATOR] Archive command start error";
             }
             emit this->archiveComplete();
         }

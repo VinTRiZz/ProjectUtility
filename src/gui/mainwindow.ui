@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1090</width>
-    <height>667</height>
+    <height>691</height>
    </rect>
   </property>
   <property name="cursor">
@@ -86,6 +86,9 @@
        <widget class="QListWidget" name="projects_listWidget">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
         </property>
         <property name="sortingEnabled">
          <bool>true</bool>
@@ -447,6 +450,13 @@
               <widget class="QRadioButton" name="archiveAll_radioButton">
                <property name="text">
                 <string>Все</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="archiveSelected_radioButton">
+               <property name="text">
+                <string>Выбранные</string>
                </property>
               </widget>
              </item>

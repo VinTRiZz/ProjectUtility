@@ -254,7 +254,7 @@ void ProjectDirectoryFileInterface::archiveSelectedProjects(const QStringList &p
     m_pImpl->m_archivator.clear();
     for (auto & projectName : projectNames)
     {
-        m_pImpl->m_archivator.addFile(QFileInfo(m_pImpl->getProject(projectName)->projectProFilePath).absolutePath());
+        m_pImpl->m_archivator.addProject(QFileInfo(m_pImpl->getProject(projectName)->projectProFilePath).absolutePath());
     }
     m_pImpl->m_archivator.archive(resultPath);
 }
@@ -265,12 +265,12 @@ void ProjectDirectoryFileInterface::archiveAllProjects(const QString & resultPat
 
     for (auto & app : m_pImpl->apps)
     {
-        m_pImpl->m_archivator.addFile(QFileInfo(app.projectProFilePath).absolutePath());
+        m_pImpl->m_archivator.addProject(QFileInfo(app.projectProFilePath).absolutePath());
     }
 
     for (auto & lib : m_pImpl->libs)
     {
-        m_pImpl->m_archivator.addFile(QFileInfo(lib.projectProFilePath).absolutePath());
+        m_pImpl->m_archivator.addProject(QFileInfo(lib.projectProFilePath).absolutePath());
     }
 
     m_pImpl->m_archivator.archive(resultPath);

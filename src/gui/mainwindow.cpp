@@ -356,23 +356,41 @@ void MainWindow::archiveComplete()
 
 void MainWindow::archive()
 {
-    auto pItem = ui->projects_listWidget->currentItem();
-
-    if (!pItem)
+    if (ui->archiveAll_radioButton->isChecked())
     {
-        emit printInfo("Проект не выбран");
-        return;
+        const QString archivePath = ui->archivePath_lineEdit->text();
+
+        m_fileInterface.archiveAllProjects(archivePath);
+
+    } else if (ui->archiveSelected_radioButton->isChecked())
+    {
+        const QString archivePath = ui->archivePath_lineEdit->text();
+
+        QStringList projectNames;
+        auto selectedItems = ui->projects_listWidget->selectedItems();
+
+        for (auto * pItem : selectedItems)
+            projectNames << pItem->text();
+
+        m_fileInterface.archiveSelectedProjects(projectNames, archivePath);
+
+    } else if (ui->archiveCurrent_radioButton->isChecked())
+    {
+        auto pItem = ui->projects_listWidget->currentItem();
+
+        if (!pItem)
+        {
+            emit printInfo("Проект не выбран");
+            return;
+        }
+
+        emit printInfo("Архивируется...");
+
+        const QString archivePath = ui->archivePath_lineEdit->text();
+        const QString projectName = pItem->text();
+
+        m_fileInterface.archiveProject(projectName, archivePath);
     }
-
-    emit printInfo("Архивируется...");
-
-    const QString archivePath = ui->archivePath_lineEdit->text();
-    const QString projectName = pItem->text();
-    QStringList projectNames;
-
-    m_fileInterface.archiveProject(projectName, archivePath);
-    // m_fileInterface.archiveSelectedProjects(projectNames, archivePath);
-    // m_fileInterface.archiveAllProjects(archivePath);
 }
 
 void MainWindow::projectSelected()
