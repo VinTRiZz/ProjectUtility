@@ -26,8 +26,9 @@ public:
     void setLogFile(const QString &logPath);
     void writeLog(const QByteArray & what);
 
-    static UtilFunctionClass & getInstance();
-    static UtilFunctionClass & getInstance(QVector<Project> & initApps, QVector<Project> & initLibs);
+    bool hasRecurseDepend(QStringList & dependQuery, Project * pParent);
+
+    static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr);
 
     ~UtilFunctionClass();
 private:
@@ -37,7 +38,7 @@ private:
     QFile m_logFile;
 
     UtilFunctionClass();
-    UtilFunctionClass(QVector<Project> & initApps, QVector<Project> & initLibs);
+    UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs);
 };
 
 }

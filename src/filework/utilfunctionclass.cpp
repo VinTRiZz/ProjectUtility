@@ -7,9 +7,9 @@
 
 using namespace FileWork;
 
-UtilFunctionClass::UtilFunctionClass(QVector<Project> &initApps, QVector<Project> &initLibs) :
-    apps(&initApps),
-    libs(&initLibs)
+UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs) :
+    apps(initApps),
+    libs(initLibs)
 {
 
 }
@@ -34,14 +34,14 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, c
     invokingProcess.start();
     if (!invokingProcess.waitForStarted(PROCESS_START_TIMEOUT))
     {
-        qDebug() << "[BUILD MANAGER] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+        qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog("Invoke timeout");
         return false;
     }
 
     if (!invokingProcess.waitForFinished(timeout))
     {
-        qDebug() << "[BUILD MANAGER] Invoke finish timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+        qDebug() << "[UTIL CLASS] Invoke finish timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
 
         writeLog(invokingProcess.readAllStandardError());
         writeLog(invokingProcess.readAllStandardOutput());
@@ -50,7 +50,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, c
 
     if (invokingProcess.exitCode())
     {
-        qDebug() << "[BUILD MANAGER] Invoke error (exit code" << invokingProcess.exitCode() << "), program: [" << program << "] args: [" << args.join(" ") << "]";
+        qDebug() << "[UTIL CLASS] Invoke error (exit code" << invokingProcess.exitCode() << "), program: [" << program << "] args: [" << args.join(" ") << "]";
 
         writeLog(invokingProcess.readAllStandardError());
         writeLog(invokingProcess.readAllStandardOutput());
@@ -85,13 +85,37 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
     m_logFile.close();
 }
 
-UtilFunctionClass &UtilFunctionClass::getInstance()
+bool UtilFunctionClass::hasRecurseDepend(QStringList &dependQuery, Project *pParent)
 {
-    static UtilFunctionClass instance;
-    return instance;
+    Project * depProj {nullptr};
+    for (QString & depName : pParent->depends)
+    {
+        if (dependQuery.contains(depName))
+        {
+            dependQuery << depName;
+            return true;
+        }
+        dependQuery << depName;
+
+        for (Project & lib : *libs)
+        {
+            if (lib.name == depName)
+            {
+                depProj = &lib;
+                break;
+            }
+        }
+
+        if (depProj)
+        {
+            if (hasRecurseDepend(dependQuery, depProj))
+                return true;
+        }
+    }
+    return false;
 }
 
-UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> &initApps, QVector<Project> &initLibs)
+UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> * initApps, QVector<Project> * initLibs)
 {
     static UtilFunctionClass instance(initApps, initLibs);
     return instance;

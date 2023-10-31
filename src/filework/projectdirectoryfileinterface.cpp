@@ -41,7 +41,7 @@ struct ProjectDirectoryFileInterface::Impl
     BackupManager m_backupManager;
 
     Impl(QObject * parent) :
-        m_utilClass( UtilFunctionClass::getInstance(apps, libs) ),
+        m_utilClass( UtilFunctionClass::getInstance(&apps, &libs) ),
         m_buildManager{parent}
     {
         m_utilClass.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );

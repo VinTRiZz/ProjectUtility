@@ -9,7 +9,8 @@
 using namespace FileWork;
 
 DependencyParser::DependencyParser(QVector<Project> & apps, QVector<Project> & libs):
-    apps{apps}, libs{libs}
+    apps{apps}, libs{libs},
+    m_utilClass( UtilFunctionClass::getInstance(&apps, &libs) )
 {
 
 }
@@ -145,14 +146,14 @@ void DependencyParser::writeDepends(Project &proj)
         return;
     }
 
-//    QStringList dependQuery;
-//    while (hasRecurseDepend(dependQuery, proj))
-//    {
-//        qDebug() << "[DEPENDS WORKER] Found recurse in project" << proj->name << "depends:" << dependQuery.join("-->");
-//        qDebug() << "[DEPENDS WORKER] Removing recursive depend on project:" << dependQuery[0];
-//        proj->depends.removeOne(dependQuery[0]);
-//        dependQuery.clear();
-//    }
+    QStringList dependQuery;
+    while (m_utilClass.hasRecurseDepend(dependQuery, &proj))
+    {
+        qDebug() << "[DEPENDS WORKER] Found recurse in project" << proj.name << "depends:" << dependQuery.join("-->");
+        qDebug() << "[DEPENDS WORKER] Removing recursive depend on project:" << dependQuery[0];
+        proj.depends.removeOne(dependQuery[0]);
+        dependQuery.clear();
+    }
 
     QTextStream depsStream(&deps);
 

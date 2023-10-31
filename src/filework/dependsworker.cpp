@@ -5,7 +5,8 @@
 using namespace FileWork;
 
 DependsWorker::DependsWorker(QVector<Project> & apps, QVector<Project> & libs):
-    apps{apps}, libs{libs}, m_depParser { apps, libs }
+    apps{apps}, libs{libs}, m_depParser { apps, libs },
+    m_utilClass( UtilFunctionClass::getInstance(&apps, &libs) )
 {
 
 }
@@ -33,7 +34,7 @@ bool DependsWorker::addLibrary(Project * proj, const QString &libraryName)
     proj->depends << libraryName;
 
     QStringList dependQuery;
-    if (hasRecurseDepend(dependQuery, proj))
+    if (m_utilClass.hasRecurseDepend(dependQuery, proj))
     {
         qDebug() << "[DEPENDS WORKER] Found recursive in project" << proj->name << "depends:" << dependQuery.join("-->");
         proj->depends.removeOne(libraryName);
@@ -150,35 +151,4 @@ void DependsWorker::saveChanges()
 int DependsWorker::progressPercent() const
 {
     return processPercent.load();
-}
-
-
-bool DependsWorker::hasRecurseDepend(QStringList & dependQuery, Project * pParent)
-{
-    Project * depProj {nullptr};
-    for (QString & depName : pParent->depends)
-    {
-        if (dependQuery.contains(depName))
-        {
-            dependQuery << depName;
-            return true;
-        }
-        dependQuery << depName;
-
-        for (Project & lib : libs)
-        {
-            if (lib.name == depName)
-            {
-                depProj = &lib;
-                break;
-            }
-        }
-
-        if (depProj)
-        {
-            if (hasRecurseDepend(dependQuery, depProj))
-                return true;
-        }
-    }
-    return false;
 }

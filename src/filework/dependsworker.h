@@ -42,7 +42,7 @@ private:
 
     std::atomic<float> processPercent {0};
 
-    bool hasRecurseDepend(QStringList & dependQuery, Project * pParent);
+    UtilFunctionClass & m_utilClass;
 };
 
 }

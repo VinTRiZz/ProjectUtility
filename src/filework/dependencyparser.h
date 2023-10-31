@@ -26,6 +26,7 @@ private:
 
     QString currentBasePath;
 
+    UtilFunctionClass & m_utilClass;
 };
 
 }
