@@ -47,14 +47,10 @@ struct Archivator::Impl
     void poll()
     {
         if (!processThread)
-        {
             return;
-        }
 
         if (processThread->isFinished())
-        {
             return;
-        }
 
         if (processThread->isRunning())
         {

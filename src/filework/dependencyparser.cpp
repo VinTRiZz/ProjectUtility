@@ -136,18 +136,16 @@ void DependencyParser::writeDepends(Project &proj)
             proj.dependFilePath = currentBasePath + "/Apps/" + proj.name + "/deps.pri";
     }
 
-    parseDepends(proj);
+    QFile deps(proj.dependFilePath);
+    deps.open(openMode | QIODevice::WriteOnly);
 
-     QFile deps(proj.dependFilePath);
-     deps.open(openMode | QIODevice::WriteOnly);
+    if (!deps.isOpen())
+    {
+        qDebug() << "[DEPENDS PARSER] \033[31mError\033[0m opening depends file:" << proj.dependFilePath;
+        return;
+    }
 
-     if (!deps.isOpen())
-     {
-         qDebug() << "[DEPENDS PARSER] \033[31mError\033[0m opening depends file:" << proj.dependFilePath;
-         return;
-     }
-
-     QTextStream depsStream(&deps);
+    QTextStream depsStream(&deps);
 
     QStringList depends = proj.depends;
 

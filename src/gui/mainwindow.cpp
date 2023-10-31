@@ -68,6 +68,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::addSelectedLibrary()
 {
+    if (ui->apps_radioButton->isChecked())
+    {
+        emit printInfo("Нельзя добавить зависимость от проекта");
+        return;
+    }
+
     auto pItem = ui->avaliableLibs_listWidget->currentItem();
     if (!pItem)
         return;
@@ -423,8 +429,8 @@ void MainWindow::updateProjectList()
 
     QStringList projectList;
 
-    // projectList.append( m_fileInterface.getLibraryNameList() );
-    projectList.append( m_fileInterface.getAppNameList() );
+    projectList.append( m_fileInterface.getLibraryNameList() );
+    // projectList.append( m_fileInterface.getAppNameList() );
 
     ui->avaliableLibs_listWidget->clear();
     for (QString & proj : projectList)
