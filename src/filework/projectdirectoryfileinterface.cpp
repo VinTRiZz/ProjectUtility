@@ -30,6 +30,8 @@ struct ProjectDirectoryFileInterface::Impl
 
     QString currentBasePath;
 
+    UtilFunctionClass & m_utilClass;
+
     FileSearcher m_searcher{ apps, libs };
     DependsWorker m_dependsWorker {apps, libs };
 
@@ -39,9 +41,10 @@ struct ProjectDirectoryFileInterface::Impl
     BackupManager m_backupManager;
 
     Impl(QObject * parent) :
+        m_utilClass( UtilFunctionClass::getInstance(apps, libs) ),
         m_buildManager{parent}
     {
-        m_buildManager.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
+        m_utilClass.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
     }
 
     Project * getProject(const QString & projectName)
@@ -199,7 +202,7 @@ QString ProjectDirectoryFileInterface::currentDirectory() const { return m_pImpl
 
 bool ProjectDirectoryFileInterface::addLibrary(const QString &projectName, const QString &libraryName)
 {
-    m_pImpl->m_dependsWorker.addLibrary(m_pImpl->getProject(projectName), libraryName);
+    return m_pImpl->m_dependsWorker.addLibrary(m_pImpl->getProject(projectName), libraryName);
 }
 
 void ProjectDirectoryFileInterface::removeLibrary(const QString &projectName, const QString &libraryName)

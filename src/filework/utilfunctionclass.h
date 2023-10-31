@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QString>
+#include <QFile>
 
 namespace FileWork
 {
@@ -20,12 +21,23 @@ struct Project
 class UtilFunctionClass
 {
 public:
-    UtilFunctionClass(QVector<Project> & initApps, QVector<Project> & initLibs);
-    ~UtilFunctionClass();
+    bool invoke(const QString & program, const QStringList args, const int timeout);
 
+    void setLogFile(const QString &logPath);
+    void writeLog(const QByteArray & what);
+
+    static UtilFunctionClass & getInstance();
+    static UtilFunctionClass & getInstance(QVector<Project> & initApps, QVector<Project> & initLibs);
+
+    ~UtilFunctionClass();
 private:
-    QVector<Project> & apps;
-    QVector<Project> & libs;
+    QVector<Project> * apps;
+    QVector<Project> * libs;
+
+    QFile m_logFile;
+
+    UtilFunctionClass();
+    UtilFunctionClass(QVector<Project> & initApps, QVector<Project> & initLibs);
 };
 
 }

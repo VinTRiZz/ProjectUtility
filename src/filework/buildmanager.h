@@ -22,22 +22,16 @@ public:
     bool build(const Project &proj, const QString target, const int timeout = BUILD_TIMEOUT);
     bool rebuild(const Project &proj, const QString target, const int timeout = BUILD_TIMEOUT);
 
-    void waitForRebuild();
-
-    bool isWorking() const;
-
-    void setLogFile(const QString & logPath);
-
 signals:
+#warning "Need to write-up signal proceed"
     void buildComplete(const Project & proj, bool buildResult);
 
 private:
     bool m_isWorking {false};
 
-    void writeLog(const QByteArray & what);
-    bool invoke(const QString & program, const QStringList args, const int timeout);
-
     QFile m_logFile;
+
+    UtilFunctionClass & m_utilClass;
 };
 
 }
