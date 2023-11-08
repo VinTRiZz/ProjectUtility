@@ -111,6 +111,8 @@ void DependencyParser::parseDepends(Project &proj)
         proj.depends << QDir(dep).dirName();
         qDebug() << "[DEPENDS PARSER] Parsed dep:" << proj.name << "--->" << proj.depends.last();
     }
+
+    std::sort(proj.depends.begin(), proj.depends.end(), [](QString & dep_1, QString & dep_2){ return (dep_2 > dep_1); });
 }
 
 void DependencyParser::writeDepends(Project &proj)

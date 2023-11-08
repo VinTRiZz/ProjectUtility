@@ -5,6 +5,8 @@
 #include <QString>
 #include <QFile>
 
+#include <atomic>
+
 namespace FileWork
 {
 
@@ -37,11 +39,17 @@ public:
     QStringList getLibraryNameList();
     QStringList getAppNameList();
 
+    void increasePercent(const float value);
+    void setPercent(const float newVal);
+    float currentPercent() const;
+
     static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr);
     ~UtilFunctionClass();
 private:
     QVector<Project> * apps;
     QVector<Project> * libs;
+
+    std::atomic<float> processPercent {0};
 
     QFile m_logFile;
 

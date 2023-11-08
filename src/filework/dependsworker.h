@@ -40,8 +40,6 @@ private:
 
     QString currentDirectory;
 
-    std::atomic<float> processPercent {0};
-
     UtilFunctionClass & m_utilClass;
 };
 

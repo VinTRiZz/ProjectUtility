@@ -50,6 +50,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
 
+    GraphWidget::DependencyGraphWidget * m_depGraphWidget;
+
     FileWork::ProjectDirectoryFileInterface m_fileInterface;
 
     FileWork::Cleaner m_cleaner;

@@ -58,7 +58,7 @@ void DependsWorker::updateDepends()
     processThread = new std::thread(
         [this]()
         {
-            processPercent.store(0);
+            m_utilClass.setPercent(0);
             float progressPart = (float)(apps.size() + libs.size()) / 100.0f;
 
             qDebug() << "[DEPENDS WORKER] Updating depends";
@@ -75,7 +75,7 @@ void DependsWorker::updateDepends()
                 }
                 );
                 m_depParser.writeDepends(app);
-                processPercent.store(processPercent.load() + progressPart);
+                m_utilClass.increasePercent(progressPart);
             }
 
             for (Project & lib : libs)
@@ -87,10 +87,10 @@ void DependsWorker::updateDepends()
                 }
                 );
                 m_depParser.writeDepends(lib);
-                processPercent.store(processPercent.load() + progressPart);
+                m_utilClass.increasePercent(progressPart);
             }
             qDebug() << "[DEPENDS WORKER] Depends updated";
-            processPercent.store(100);
+            m_utilClass.setPercent(100);
         }
     );
 }
@@ -128,27 +128,22 @@ void DependsWorker::saveChanges()
     processThread = new std::thread(
         [this]()
         {
-            processPercent.store(0);
+            m_utilClass.setPercent(0);
             float progressPart = (float)(apps.size() + libs.size()) / 100.0f;
 
             qDebug() << "[DEPENDS WORKER] Saving changes";
             for (Project & app : apps)
             {
                 m_depParser.writeDepends(app);
-                processPercent.store(processPercent.load() + progressPart);
+                m_utilClass.increasePercent(progressPart);
             }
 
             for (Project & lib : libs)
             {
                 m_depParser.writeDepends(lib);
-                processPercent.store(processPercent.load() + progressPart);
+                m_utilClass.increasePercent(progressPart);
             }
             qDebug() << "[DEPENDS WORKER] Saving complete";
-            processPercent.store(100);
+            m_utilClass.setPercent(100);
     });
-}
-
-int DependsWorker::progressPercent() const
-{
-    return processPercent.load();
 }

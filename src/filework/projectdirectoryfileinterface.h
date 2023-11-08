@@ -5,6 +5,8 @@
 #include <QString>
 #include <QObject>
 
+#include "gui/dependencygraphwidget.h"
+
 namespace FileWork
 {
 
@@ -12,7 +14,7 @@ class ProjectDirectoryFileInterface : public QObject
 {
     Q_OBJECT
 public:
-    ProjectDirectoryFileInterface(QObject * parent = nullptr);
+    ProjectDirectoryFileInterface(QObject * parent, GraphWidget::DependencyGraphWidget * pGraphWidget);
     ~ProjectDirectoryFileInterface();
 
     // Returns count of files found
@@ -26,8 +28,6 @@ public:
     void removeLibrary(const QString & projectName, const QString & libraryName);
 
     void saveChanges();
-
-    int progressPercent() const;
 
     QStringList getDepends(const QString & appName);
 

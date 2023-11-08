@@ -29,7 +29,6 @@ public:
     QStringList getFileList(const QString & basePath, int fileType = FILE_REMOVE_TYPE::NO_FILE);
 
 private:
-    bool searchForFiles(const QString &basePath, QStringList & resultList, const QString & filesToFind, const QString & searchType = "-name");
     void addFiles(const QString &findOutput, QStringList & resultList);
 
     UtilFunctionClass & m_utilClass;

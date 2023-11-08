@@ -96,36 +96,6 @@ void Cleaner::removeFiles(const QStringList &  filesToRemove)
     }
 }
 
-
-bool Cleaner::searchForFiles(const QString &basePath, QStringList & resultList, const QString & filesToFind, const QString & searchType)
-{
-    QString findOutput;
-
-    QStringList findArgs;
-    findArgs << basePath << searchType << filesToFind;
-
-    QProcess findProcess;
-
-    findProcess.setProgram("find");
-    findProcess.setArguments(findArgs);
-
-    findProcess.start();
-    if (!findProcess.waitForStarted(FIND_START_TIMEOUT))
-        return false;
-
-    if (!findProcess.waitForFinished(FIND_FINISH_TIMEOUT))
-        return false;
-
-    findOutput = findProcess.readAllStandardOutput();
-
-    if (findOutput.size() < 1)
-        return false;
-
-    addFiles(findOutput, resultList);
-
-    return true;
-}
-
 void Cleaner::addFiles(const QString &findOutput, QStringList & resultList)
 {
     QString buffer;

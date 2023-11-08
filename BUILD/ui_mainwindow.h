@@ -25,6 +25,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
@@ -39,6 +40,7 @@ class Ui_MainWindow
 public:
     QAction *projectControl_action;
     QAction *depends_action;
+    QAction *action;
     QWidget *centralWidget;
     QGridLayout *gridLayout_2;
     QSpacerItem *horizontalSpacer_5;
@@ -114,6 +116,10 @@ public:
     QLabel *label_3;
     QListWidget *avaliableLibs_listWidget;
     QLineEdit *search_lineEdit;
+    QWidget *page_3;
+    QVBoxLayout *verticalLayout_14;
+    QScrollArea *graph_scrollArea;
+    QWidget *scrollAreaWidgetContents;
     QMenuBar *menuBar;
     QMenu *menu;
     QToolBar *mainToolBar;
@@ -129,6 +135,8 @@ public:
         projectControl_action->setObjectName(QStringLiteral("projectControl_action"));
         depends_action = new QAction(MainWindow);
         depends_action->setObjectName(QStringLiteral("depends_action"));
+        action = new QAction(MainWindow);
+        action->setObjectName(QStringLiteral("action"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout_2 = new QGridLayout(centralWidget);
@@ -565,6 +573,27 @@ public:
         gridLayout->addLayout(verticalLayout, 0, 1, 1, 1);
 
         stackedWidget->addWidget(page_2);
+        page_3 = new QWidget();
+        page_3->setObjectName(QStringLiteral("page_3"));
+        verticalLayout_14 = new QVBoxLayout(page_3);
+        verticalLayout_14->setSpacing(6);
+        verticalLayout_14->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_14->setObjectName(QStringLiteral("verticalLayout_14"));
+        graph_scrollArea = new QScrollArea(page_3);
+        graph_scrollArea->setObjectName(QStringLiteral("graph_scrollArea"));
+        graph_scrollArea->viewport()->setProperty("cursor", QVariant(QCursor(Qt::ArrowCursor)));
+        graph_scrollArea->setMouseTracking(false);
+        graph_scrollArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
+        graph_scrollArea->setWidgetResizable(true);
+        graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 349, 614));
+        graph_scrollArea->setWidget(scrollAreaWidgetContents);
+
+        verticalLayout_14->addWidget(graph_scrollArea);
+
+        stackedWidget->addWidget(page_3);
 
         gridLayout_2->addWidget(stackedWidget, 0, 3, 2, 1);
 
@@ -585,10 +614,11 @@ public:
         menuBar->addAction(menu->menuAction());
         menu->addAction(projectControl_action);
         menu->addAction(depends_action);
+        menu->addAction(action);
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -599,6 +629,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         projectControl_action->setText(QApplication::translate("MainWindow", "\320\243\320\277\321\200\320\260\320\262\320\273\320\265\320\275\320\270\320\265 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\274", nullptr));
         depends_action->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\270 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
+        action->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\200\320\265\320\262\320\276 \320\267\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\265\320\271", nullptr));
         label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
         libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));

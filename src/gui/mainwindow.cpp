@@ -11,11 +11,15 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_depGraphWidget(new GraphWidget::DependencyGraphWidget(this)),
+    m_fileInterface(this, m_depGraphWidget)
 {
     ui->setupUi(this);
 
     ui->stackedWidget->setCurrentIndex(0);
+
+    ui->graph_scrollArea->setWidget(m_depGraphWidget);
 
     setupAvailableLibrariesView();
 
@@ -247,6 +251,9 @@ void MainWindow::changedMenu(QAction *menuAction)
     } else if (menuAction->text() == "Зависимости проекта")
     {
         ui->stackedWidget->setCurrentIndex(1);
+    } else if (menuAction->text() == "Дерево зависимостей")
+    {
+        ui->stackedWidget->setCurrentIndex(2);
     }
 }
 

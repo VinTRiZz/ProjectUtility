@@ -40,9 +40,12 @@ struct ProjectDirectoryFileInterface::Impl
 
     BackupManager m_backupManager;
 
-    Impl(QObject * parent) :
+    GraphWidget::DependencyGraphWidget * m_pGraphWidget;
+
+    Impl(QObject * parent, GraphWidget::DependencyGraphWidget * displayWidget) :
         m_utilClass( UtilFunctionClass::getInstance(&apps, &libs) ),
-        m_buildManager{parent}
+        m_buildManager{parent},
+        m_pGraphWidget(displayWidget)
     {
         m_utilClass.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
     }
@@ -99,11 +102,117 @@ struct ProjectDirectoryFileInterface::Impl
 
         return result;
     }
+
+    QVector<GraphWidget::DependencyStruct *> createDependsVector()
+    {
+        QVector<GraphWidget::DependencyStruct *> depsVect;
+        GraphWidget::DependencyStruct * pBufferStruct;
+
+        // Convert all apps
+        for (FileWork::Project & proj : apps)
+        {
+            pBufferStruct = new GraphWidget::DependencyStruct();
+
+            pBufferStruct->isApp = !proj.isLibrary;
+            pBufferStruct->name = proj.name;
+
+            depsVect.push_back(pBufferStruct);
+        }
+
+        // Convert all libs
+        for (FileWork::Project & proj : libs)
+        {
+            pBufferStruct = new GraphWidget::DependencyStruct();
+
+            pBufferStruct->isApp = !proj.isLibrary;
+            pBufferStruct->name = proj.name;
+
+            depsVect.push_back(pBufferStruct);
+        }
+
+        qDebug() << "[FILE INTERFACE] Created deps vect with data:";
+        qDebug() << "[FILE INTERFACE] [\033[33mBEGOF DATA\033[0m]";
+        for (GraphWidget::DependencyStruct * pStruct : depsVect)
+        {
+            qDebug() << pStruct->name;
+        }
+        qDebug() << "[FILE INTERFACE] [\033[33mEOF DATA\033[0m]";
+
+        // Convert depends
+        GraphWidget::DependencyStruct * pDependStruct;
+
+        // Work for apps
+        for (FileWork::Project & proj : apps)
+        {
+            // Find project by name
+            pDependStruct = nullptr;
+            for (GraphWidget::DependencyStruct * dep : depsVect)
+            {
+                if (proj.name == dep->name)
+                {
+                    pDependStruct = dep;
+                }
+            }
+
+            // Check if found
+            if (!pDependStruct)
+                continue;
+
+            // Add depends from strings
+            for (QString & depName : proj.depends)
+            {
+                // Find depend by name
+                for (GraphWidget::DependencyStruct * dep : depsVect)
+                {
+                    // Add depend if exist
+                    if (depName == dep->name)
+                    {
+                        qDebug() << "[FILE INTERFACE] Added dep:" << dep->name;
+                        pDependStruct->dependsFrom.push_back(dep);
+                    }
+                }
+            }
+        }
+
+        // Work for libs
+        for (FileWork::Project & proj : libs)
+        {
+            // Find project by name
+            pDependStruct = nullptr;
+            for (GraphWidget::DependencyStruct * dep : depsVect)
+            {
+                if (proj.name == dep->name)
+                {
+                    pDependStruct = dep;
+                }
+            }
+
+            // Check if found
+            if (!pDependStruct)
+                continue;
+
+            // Add depends from strings
+            for (QString & depName : proj.depends)
+            {
+                // Find depend by name
+                for (GraphWidget::DependencyStruct * dep : depsVect)
+                {
+                    // Add depend if exist
+                    if (depName == dep->name)
+                    {
+                        qDebug() << "[FILE INTERFACE] Added dep:" << dep->name;
+                        pDependStruct->dependsFrom.push_back(dep);
+                    }
+                }
+            }
+        }
+        return depsVect;
+    }
 };
 
-ProjectDirectoryFileInterface::ProjectDirectoryFileInterface(QObject * parent) :
+ProjectDirectoryFileInterface::ProjectDirectoryFileInterface(QObject * parent, GraphWidget::DependencyGraphWidget * pGraphWidget) :
     QObject(parent),
-    m_pImpl {new Impl(parent) }
+    m_pImpl {new Impl(parent, pGraphWidget) }
 {
     connect(&m_pImpl->m_archivator, &Archivator::archiveComplete, this, &ProjectDirectoryFileInterface::archiveComplete);
 }
@@ -125,6 +234,8 @@ int ProjectDirectoryFileInterface::processDirectory(const QString path)
     m_pImpl->m_utilClass.logParsedProjects();
 
     m_pImpl->m_dependsWorker.poll();
+
+    m_pImpl->m_pGraphWidget->setDependsVector( m_pImpl->createDependsVector() );
 
     return (m_pImpl->apps.size() + m_pImpl->libs.size());
 }
@@ -158,7 +269,10 @@ QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
     auto pProj = m_pImpl->m_utilClass.getProject(appName);
 
     if (pProj)
+    {
+        m_pImpl->m_pGraphWidget->setHead(pProj->name);
         return pProj->depends;
+    }
     return QStringList();
 }
 
@@ -166,11 +280,6 @@ void ProjectDirectoryFileInterface::saveChanges()
 {
     // backupAll(SAVE_CHANGES_BACKUP_DIRECTORY);
     m_pImpl->m_dependsWorker.saveChanges();
-}
-
-int ProjectDirectoryFileInterface::progressPercent() const
-{
-    return m_pImpl->m_dependsWorker.progressPercent();
 }
 
 void ProjectDirectoryFileInterface::poll() { m_pImpl->m_dependsWorker.poll(); }

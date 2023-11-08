@@ -135,6 +135,9 @@ void FileSearcher::findFiles()
         return;
     }
 
+    std::sort(apps.begin(), apps.end(), [](Project & proj_1, Project & proj_2){ return (proj_1.name > proj_2.name); });
+    std::sort(libs.begin(), libs.end(), [](Project & proj_1, Project & proj_2){ return (proj_1.name > proj_2.name); });
+
 //    int copyFrom, copyTo;
 //    QString buffer;
 //    for (Project & app : apps)

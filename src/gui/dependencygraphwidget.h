@@ -2,11 +2,44 @@
 #define DEPENDENCYGRAPHWIDGET_H
 
 #include <QWidget>
+#include "utilfunctionclass.h"
 #include <memory>
 
 namespace Ui {
 class DependencyGraphWidget;
 }
+
+namespace GraphWidget
+{
+
+struct DependencyStruct
+{
+    QString name {"Root"};
+    QVector<DependencyStruct *> dependsFrom;
+
+    QRect position;
+    bool isApp {false};
+
+    QPoint centerUp() const
+    {
+        return QPoint(position.left() + position.width() / 2, position.top());
+    }
+
+    QPoint centerDown() const
+    {
+        return QPoint(position.left() + position.width() / 2, position.bottom());
+    }
+
+    QPoint centerLeft() const
+    {
+        return QPoint(position.left(), position.top() + position.height() / 2);
+    }
+
+    QPoint centerRight() const
+    {
+        return QPoint(position.right(), position.top() + position.height() / 2);
+    }
+};
 
 class DependencyGraphWidget : public QWidget
 {
@@ -16,17 +49,30 @@ public:
     explicit DependencyGraphWidget(QWidget *parent = 0);
     ~DependencyGraphWidget();
 
-    void addDependency(const QString & who, const QVector<QString> & from);
+    void setHead(const QString & headName);
 
-    void draw();
+    void setDependsVector(const QVector<DependencyStruct *> & depsVector);
 
-    void clear();
+    void setDefaultSettings();
+
+signals:
+    void updated();
 
 private:
     Ui::DependencyGraphWidget *ui;
 
     struct Impl;
     std::unique_ptr<Impl> m_pImpl;
+
+    void drawGraph(DependencyStruct * head);
+    void drawObject(const DependencyStruct * object);
+    void connectDepends(DependencyStruct * head);
+    void drawHistory();
+
+    void paintEvent(QPaintEvent * e);
+    void mousePressEvent(QMouseEvent * e);
 };
+
+}
 
 #endif // DEPENDENCYGRAPHWIDGET_H

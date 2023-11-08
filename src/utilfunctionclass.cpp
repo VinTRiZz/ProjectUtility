@@ -218,6 +218,21 @@ QStringList UtilFunctionClass::getAppNameList()
     return result;
 }
 
+void UtilFunctionClass::increasePercent(const float value)
+{
+    processPercent.store(processPercent.load() + value);
+}
+
+void UtilFunctionClass::setPercent(const float newVal)
+{
+    processPercent.store(newVal);
+}
+
+float UtilFunctionClass::currentPercent() const
+{
+    return processPercent.load();
+}
+
 UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> * initApps, QVector<Project> * initLibs)
 {
     static UtilFunctionClass instance(initApps, initLibs);
