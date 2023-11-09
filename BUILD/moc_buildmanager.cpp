@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_FileWork__BuildManager_t {
-    QByteArrayData data[6];
-    char stringdata0[63];
+    QByteArrayData data[5];
+    char stringdata0[62];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,13 +34,12 @@ static const qt_meta_stringdata_FileWork__BuildManager_t qt_meta_stringdata_File
 QT_MOC_LITERAL(0, 0, 22), // "FileWork::BuildManager"
 QT_MOC_LITERAL(1, 23, 13), // "buildComplete"
 QT_MOC_LITERAL(2, 37, 0), // ""
-QT_MOC_LITERAL(3, 38, 7), // "Project"
-QT_MOC_LITERAL(4, 46, 4), // "proj"
-QT_MOC_LITERAL(5, 51, 11) // "buildResult"
+QT_MOC_LITERAL(3, 38, 11), // "projectName"
+QT_MOC_LITERAL(4, 50, 11) // "buildResult"
 
     },
     "FileWork::BuildManager\0buildComplete\0"
-    "\0Project\0proj\0buildResult"
+    "\0projectName\0buildResult"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,7 +60,7 @@ static const uint qt_meta_data_FileWork__BuildManager[] = {
        1,    2,   19,    2, 0x06 /* Public */,
 
  // signals: parameters
-    QMetaType::Void, 0x80000000 | 3, QMetaType::Bool,    4,    5,
+    QMetaType::Void, QMetaType::QString, QMetaType::Bool,    3,    4,
 
        0        // eod
 };
@@ -72,13 +71,13 @@ void FileWork::BuildManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
         BuildManager *_t = static_cast<BuildManager *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->buildComplete((*reinterpret_cast< const Project(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 0: _t->buildComplete((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            using _t = void (BuildManager::*)(const Project & , bool );
+            using _t = void (BuildManager::*)(const QString & , const bool );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&BuildManager::buildComplete)) {
                 *result = 0;
                 return;
@@ -124,7 +123,7 @@ int FileWork::BuildManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a
 }
 
 // SIGNAL 0
-void FileWork::BuildManager::buildComplete(const Project & _t1, bool _t2)
+void FileWork::BuildManager::buildComplete(const QString & _t1, const bool _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

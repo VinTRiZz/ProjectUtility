@@ -159,7 +159,9 @@ void DependencyParser::writeDepends(Project &proj)
 
     QTextStream depsStream(&deps);
 
-    for (QString & dep : proj.depends)
+    QStringList depList = proj.depends;
+
+    for (QString & dep : depList)
     {
         for (const Project & lib : libs)
         {
@@ -170,7 +172,7 @@ void DependencyParser::writeDepends(Project &proj)
         }
     }
 
-    for (QString & dep : proj.depends)
+    for (QString & dep : depList)
     {
         dep.remove(0, currentBasePath.size());
         dep = "include($$PWD/../.." + dep + ")";

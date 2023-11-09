@@ -54,7 +54,8 @@ struct Archivator::Impl
 
         if (processThread->isRunning())
         {
-            processThread->wait(PROCESS_THREAD_TIMEOUT);
+            if (!processThread->wait(PROCESS_THREAD_TIMEOUT))
+                processThread->exit(1);
         }
 
         processThread->deleteLater();

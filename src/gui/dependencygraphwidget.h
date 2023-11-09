@@ -55,6 +55,8 @@ public:
 
     void setDefaultSettings();
 
+    void clear();
+
 signals:
     void updated();
 

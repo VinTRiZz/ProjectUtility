@@ -238,9 +238,16 @@ struct DependencyGraphWidget::Impl
 
     void clear()
     {
+        while (areDependsUpdating);
+        areDependsUpdating = true;
+
+        currentHead = nullptr;
         for (auto node : allNodes)
             delete node;
         allNodes.clear();
+        nodeHistory.clear();
+
+        areDependsUpdating = false;
     }
 };
 
@@ -264,17 +271,21 @@ DependencyGraphWidget::~DependencyGraphWidget()
 
 void DependencyGraphWidget::setHead(const QString &headName)
 {
+    while (m_pImpl->areDependsUpdating);
     m_pImpl->areDependsUpdating = true;
+
     m_pImpl->currentHead = m_pImpl->getNode(headName);
+
     m_pImpl->nodeHistory.clear();
+
     m_pImpl->areDependsUpdating = false;
     update();
 }
 
 void DependencyGraphWidget::setDependsVector(const QVector<DependencyStruct *> & depsVector)
 {
-    m_pImpl->areDependsUpdating = true;
     m_pImpl->clear();
+    m_pImpl->areDependsUpdating = true;
     m_pImpl->allNodes = depsVector;
     m_pImpl->areDependsUpdating = false;
     update();
@@ -282,9 +293,16 @@ void DependencyGraphWidget::setDependsVector(const QVector<DependencyStruct *> &
 
 void DependencyGraphWidget::setDefaultSettings()
 {
+    while (m_pImpl->areDependsUpdating);
     m_pImpl->areDependsUpdating = true;
     m_pImpl->m_paintTools.setDefaultSettings();
     m_pImpl->areDependsUpdating = false;
+    update();
+}
+
+void DependencyGraphWidget::clear()
+{
+    m_pImpl->clear();
     update();
 }
 
@@ -375,25 +393,22 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
         m_pImpl->m_paintTools.painter->begin(this);
 
     // Draw depends
-    if (m_pImpl->allNodes.size())
+    if (m_pImpl->allNodes.size() && m_pImpl->currentHead)
     {
-        if (!m_pImpl->currentHead)
-            m_pImpl->currentHead = m_pImpl->allNodes[0];
+        if (!m_pImpl->checkForRecurse(m_pImpl->currentHead))
+        {
+            m_pImpl->m_paintTools.drawBackground(rect());
 
-        if ( m_pImpl->checkForRecurse(m_pImpl->currentHead) )
-            return;
+            setMinimumWidth(m_pImpl->currentHead->dependsFrom.size() * 150);
+            setMinimumHeight((m_pImpl->nodeHistory.size() + 2) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE));
 
-        m_pImpl->m_paintTools.drawBackground(rect());
+            const int HEAD_WIDTH = m_pImpl->currentHead->name.length() * m_pImpl->m_paintTools.appFont.pixelSize();
 
-        setMinimumWidth(m_pImpl->currentHead->dependsFrom.size() * 150);
-        setMinimumHeight((m_pImpl->nodeHistory.size() + 2) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE));
+            m_pImpl->currentHead->position = QRect(rect().center().x() - HEAD_WIDTH / 2, rect().height() - (m_pImpl->nodeHistory.size() + 1) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE), HEAD_WIDTH, BLOCK_HEIGHT);
 
-        const int HEAD_WIDTH = m_pImpl->currentHead->name.length() * m_pImpl->m_paintTools.appFont.pixelSize();
-
-        m_pImpl->currentHead->position = QRect(rect().center().x() - HEAD_WIDTH / 2, rect().height() - (m_pImpl->nodeHistory.size() + 1) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE), HEAD_WIDTH, BLOCK_HEIGHT);
-
-        drawGraph(m_pImpl->currentHead);
-        drawHistory();
+            drawGraph(m_pImpl->currentHead);
+            drawHistory();
+        }
     }
 
     if (m_pImpl->m_paintTools.painter->isActive())
@@ -413,7 +428,7 @@ void DependencyGraphWidget::mousePressEvent(QMouseEvent *e)
         {
             int nodeIndex = m_pImpl->currentHead->dependsFrom.indexOf(pNode);
 
-            if (nodeIndex != -1)
+            if (nodeIndex > -1)
             {
                 for (DependencyStruct * depNode : m_pImpl->currentHead->dependsFrom)
                     depNode->position = QRect();
@@ -426,33 +441,14 @@ void DependencyGraphWidget::mousePressEvent(QMouseEvent *e)
             {
                 nodeIndex = m_pImpl->nodeHistory.indexOf(pNode);
 
-                if (nodeIndex > 0)
+                if (nodeIndex != -1)
                 {
-                    for (int i = 0; i <= (m_pImpl->nodeHistory.size() - nodeIndex); i++)
-                        m_pImpl->nodeHistory.pop_back();
                     m_pImpl->currentHead = pNode;
-                }
-                else if (nodeIndex == 0)
-                {
-                    m_pImpl->currentHead = m_pImpl->nodeHistory[0];
-                    m_pImpl->nodeHistory.clear();
+                    m_pImpl->nodeHistory.remove(nodeIndex, m_pImpl->nodeHistory.size() - nodeIndex);
                 }
 
                 qDebug() << "[DependencyGraphWidget] Returned to node:" << m_pImpl->currentHead->name;
             }
-            update();
-
-            emit updated();
-            return;
-        }
-    }
-
-    for (DependencyStruct * pNode : m_pImpl->currentHead->dependsFrom)
-    {
-        if (pNode->position.contains(clickPos))
-        {
-            m_pImpl->nodeHistory.push_back(m_pImpl->currentHead);
-            m_pImpl->currentHead = pNode;
             update();
 
             emit updated();

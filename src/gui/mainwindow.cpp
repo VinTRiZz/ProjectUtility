@@ -18,12 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->menu_stackedWidget->setCurrentIndex(0);
+    m_progressPercent.store(0);
 
     ui->graph_scrollArea->setWidget(m_depGraphWidget);
 
     setupAvailableLibrariesView();
-
-    updateBasePath(); // For tests
 
     // Remove focus
     REMOVE_BUTTON_FOCUS(add);
@@ -31,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // REMOVE_BUTTON_FOCUS(saveBackup);
     // REMOVE_BUTTON_FOCUS(loadBackup);
     REMOVE_BUTTON_FOCUS(update);
-    REMOVE_BUTTON_FOCUS(acceptBasePath);
     REMOVE_BUTTON_FOCUS(clean);
     REMOVE_BUTTON_FOCUS(saveChanges);
     REMOVE_BUTTON_FOCUS(build);
@@ -43,7 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // CONNECT_CLIECKED(saveBackup, createBackup);
     // CONNECT_CLIECKED(loadBackup, loadBackup);
     CONNECT_CLIECKED(update, updateProjectList);
-    CONNECT_CLIECKED(acceptBasePath, updateBasePath);
     CONNECT_CLIECKED(clean, removeFiles);
     CONNECT_CLIECKED(saveChanges, saveChanges);
     CONNECT_CLIECKED(build, build);
@@ -75,28 +72,39 @@ void MainWindow::addSelectedLibrary()
 {
     auto pItem = ui->avaliableLibs_listWidget->currentItem();
     if (!pItem)
+    {
+        emit printInfo("Выберите библиотеку");
         return;
+    }
 
-    if (ui->addedLibs_listWidget->findItems(pItem->text(), Qt::MatchExactly).size() > 0)
+    QString libraryName = pItem->text();
+
+    if (ui->addedLibs_listWidget->findItems(libraryName, Qt::MatchExactly).size() > 0)
+    {
+        emit printInfo("Уже добавлено");
         return;
+    }
 
     auto pProjectItem = ui->projects_listWidget->currentItem();
-    if (!pItem)
+    if (!pProjectItem)
+    {
+        emit printInfo("Выберите проект");
         return;
+    }
 
     const QString currentProjectName = pProjectItem->text();
-    if (currentProjectName == pItem->text())
+    if (currentProjectName == libraryName)
     {
         emit printInfo("Нельзя зависеть от себя!");
         return;
     }
 
-    if (!m_fileInterface.addLibrary(currentProjectName, pItem->text()))
+    if (!m_fileInterface.addLibrary(currentProjectName, libraryName))
     {
         emit printInfo("Обнаружена рекурсивная зависимость! Библиотека не добавлена.");
         return;
     }
-    ui->addedLibs_listWidget->addItem( pItem->text() );
+    ui->addedLibs_listWidget->addItem( libraryName );
 }
 
 void MainWindow::removeSelectedLibrary()
@@ -151,25 +159,6 @@ void MainWindow::loadBackup()
         emit printInfo("Бэкап загружен");
     // else
         emit printInfo("Бэкап загружен частично или не загружен (проверьте путь до директории с бэкапами)");
-}
-
-void MainWindow::updateBasePath()
-{
-    basePath = ui->basePath_lineEdit->text();
-    if (basePath.size() < 1)
-    {
-        emit printInfo("Пустой путь");
-        return;
-    }
-
-    QFileInfo pathTester(basePath);
-    if (!pathTester.exists() || !pathTester.isDir())
-    {
-        basePath.clear();
-        emit printInfo("Или это не директория, или такой не существует");
-        return;
-    }
-    updateProjectList();
 }
 
 void MainWindow::removeFiles()
@@ -256,6 +245,11 @@ void MainWindow::changedMenu(QAction *menuAction)
 
 void MainWindow::build()
 {
+    if (m_progressPercent.load() != 100)
+        return;
+
+    m_progressPercent.store(0);
+
     QString target;
     if (ui->debugTarget_radioButton->isChecked())
     {
@@ -268,19 +262,9 @@ void MainWindow::build()
     if (ui->buildAll_radioButton->isChecked())
     {
         const int projectCount = ui->projects_listWidget->count();
-        QString projectName;
 
         for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
-        {
-            projectName = ui->projects_listWidget->item(i)->text();
-            emit printInfo(QString("Собирается проект %1 (%2 из %3)").arg(projectName, QString::number(i + 1), QString::number(projectCount)));
-            if (!m_fileInterface.build(projectName, target))
-            {
-                emit printInfo(QString("Ошибка сборки проекта: %1. Более полная информация в файле buildLog.txt").arg(projectName));
-                return;
-            }
-        }
-        emit printInfo("Проекты собраны");
+            m_fileInterface.build(ui->projects_listWidget->item(i)->text(), target);
     }
     else if (ui->buildCurrent_radioButton->isChecked())
     {
@@ -292,17 +276,10 @@ void MainWindow::build()
             return;
         }
 
-        QString projectName = pItem->text();
-        emit printInfo(QString("Проект %1 собирается...").arg(projectName));
-        if (m_fileInterface.build(projectName, target))
-        {
-            emit printInfo("Проект собран");
-        }
-        else
-        {
-            emit printInfo("Ошибка сборки. Более полная информация в файле buildLog.txt");
-        }
+        m_fileInterface.build(pItem->text(), target);
     }
+
+    emit printInfo("Проект(ы) добавлен(ы) в очередь на сборку");
 }
 
 void MainWindow::rebuild()
@@ -358,7 +335,8 @@ void MainWindow::rebuild()
 
 void MainWindow::printInfo(const QString & what)
 {
-    ui->statusBar->showMessage(what, 3000);
+    ui->notifications_listWidget->addItem(what);
+    ui->notifications_listWidget->scrollToBottom();
 }
 
 void MainWindow::archiveComplete()
@@ -419,11 +397,32 @@ void MainWindow::projectSelected()
         ui->archivePath_lineEdit->setText(pItem->text());
 }
 
+void MainWindow::buildComplete(const QString &projectName, const bool result)
+{
+    if (result)
+    {
+        emit printInfo(QString("Собран проект %1").arg(projectName));
+    }
+    else
+    {
+        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле buildLog.txt").arg(projectName));
+    }
+}
+
 void MainWindow::updateProjectList()
 {
+    basePath = ui->basePath_lineEdit->text();
     if (basePath.size() < 1)
     {
-        emit printInfo("Неправильный путь");
+        emit printInfo("Пустой путь");
+        return;
+    }
+
+    QFileInfo pathTester(basePath);
+    if (!pathTester.exists() || !pathTester.isDir())
+    {
+        basePath.clear();
+        emit printInfo("Или это не директория, или такой не существует");
         return;
     }
 

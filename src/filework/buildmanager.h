@@ -12,6 +12,13 @@
 namespace FileWork
 {
 
+struct BuildProjectHandle
+{
+    Project * project;
+    QString target;
+    int timeout {BUILD_TIMEOUT};
+};
+
 class BuildManager : public QObject
 {
     Q_OBJECT
@@ -19,15 +26,22 @@ public:
     BuildManager(QObject * parent);
     ~BuildManager();
 
-    bool build(const Project &proj, const QString target, const int timeout = BUILD_TIMEOUT);
-    bool rebuild(const Project &proj, const QString target, const int timeout = BUILD_TIMEOUT);
+    bool build(const BuildProjectHandle & proj);
+    bool rebuild(const BuildProjectHandle & proj);
+
+    bool startBuilding();
+
+    void poll();
 
 signals:
-#warning "Need to write-up signal proceed"
-    void buildComplete(const Project & proj, bool buildResult);
+    void buildComplete(const QString & projectName, const bool buildResult);
 
 private:
-    bool m_isWorking {false};
+    QThread * m_pProcessThread {nullptr};
+    bool m_startingTask {false};
+
+    QVector<BuildProjectHandle> buildQueue;
+
     UtilFunctionClass & m_utilClass;
 };
 

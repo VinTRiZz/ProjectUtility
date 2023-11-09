@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[25];
-    char stringdata0[310];
+    QByteArrayData data[26];
+    char stringdata0[316];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,32 +41,33 @@ QT_MOC_LITERAL(6, 88, 11), // "projectName"
 QT_MOC_LITERAL(7, 100, 11), // "saveChanges"
 QT_MOC_LITERAL(8, 112, 12), // "createBackup"
 QT_MOC_LITERAL(9, 125, 10), // "loadBackup"
-QT_MOC_LITERAL(10, 136, 14), // "updateBasePath"
-QT_MOC_LITERAL(11, 151, 11), // "removeFiles"
-QT_MOC_LITERAL(12, 163, 16), // "searchForLibrary"
-QT_MOC_LITERAL(13, 180, 11), // "changedText"
-QT_MOC_LITERAL(14, 192, 16), // "searchForProject"
-QT_MOC_LITERAL(15, 209, 11), // "changedMenu"
-QT_MOC_LITERAL(16, 221, 8), // "QAction*"
-QT_MOC_LITERAL(17, 230, 10), // "menuAction"
-QT_MOC_LITERAL(18, 241, 5), // "build"
-QT_MOC_LITERAL(19, 247, 7), // "rebuild"
-QT_MOC_LITERAL(20, 255, 9), // "printInfo"
-QT_MOC_LITERAL(21, 265, 4), // "what"
-QT_MOC_LITERAL(22, 270, 15), // "archiveComplete"
-QT_MOC_LITERAL(23, 286, 7), // "archive"
-QT_MOC_LITERAL(24, 294, 15) // "projectSelected"
+QT_MOC_LITERAL(10, 136, 11), // "removeFiles"
+QT_MOC_LITERAL(11, 148, 16), // "searchForLibrary"
+QT_MOC_LITERAL(12, 165, 11), // "changedText"
+QT_MOC_LITERAL(13, 177, 16), // "searchForProject"
+QT_MOC_LITERAL(14, 194, 11), // "changedMenu"
+QT_MOC_LITERAL(15, 206, 8), // "QAction*"
+QT_MOC_LITERAL(16, 215, 10), // "menuAction"
+QT_MOC_LITERAL(17, 226, 5), // "build"
+QT_MOC_LITERAL(18, 232, 7), // "rebuild"
+QT_MOC_LITERAL(19, 240, 9), // "printInfo"
+QT_MOC_LITERAL(20, 250, 4), // "what"
+QT_MOC_LITERAL(21, 255, 15), // "archiveComplete"
+QT_MOC_LITERAL(22, 271, 7), // "archive"
+QT_MOC_LITERAL(23, 279, 15), // "projectSelected"
+QT_MOC_LITERAL(24, 295, 13), // "buildComplete"
+QT_MOC_LITERAL(25, 309, 6) // "result"
 
     },
     "MainWindow\0addSelectedLibrary\0\0"
     "removeSelectedLibrary\0fillProjectList\0"
     "loadDependencyList\0projectName\0"
     "saveChanges\0createBackup\0loadBackup\0"
-    "updateBasePath\0removeFiles\0searchForLibrary\0"
-    "changedText\0searchForProject\0changedMenu\0"
-    "QAction*\0menuAction\0build\0rebuild\0"
-    "printInfo\0what\0archiveComplete\0archive\0"
-    "projectSelected"
+    "removeFiles\0searchForLibrary\0changedText\0"
+    "searchForProject\0changedMenu\0QAction*\0"
+    "menuAction\0build\0rebuild\0printInfo\0"
+    "what\0archiveComplete\0archive\0"
+    "projectSelected\0buildComplete\0result"
 };
 #undef QT_MOC_LITERAL
 
@@ -92,16 +93,16 @@ static const uint qt_meta_data_MainWindow[] = {
        8,    0,  111,    2, 0x0a /* Public */,
        9,    0,  112,    2, 0x0a /* Public */,
       10,    0,  113,    2, 0x0a /* Public */,
-      11,    0,  114,    2, 0x0a /* Public */,
-      12,    1,  115,    2, 0x0a /* Public */,
-      14,    1,  118,    2, 0x0a /* Public */,
-      15,    1,  121,    2, 0x0a /* Public */,
+      11,    1,  114,    2, 0x0a /* Public */,
+      13,    1,  117,    2, 0x0a /* Public */,
+      14,    1,  120,    2, 0x0a /* Public */,
+      17,    0,  123,    2, 0x0a /* Public */,
       18,    0,  124,    2, 0x0a /* Public */,
-      19,    0,  125,    2, 0x0a /* Public */,
-      20,    1,  126,    2, 0x0a /* Public */,
+      19,    1,  125,    2, 0x0a /* Public */,
+      21,    0,  128,    2, 0x0a /* Public */,
       22,    0,  129,    2, 0x0a /* Public */,
       23,    0,  130,    2, 0x0a /* Public */,
-      24,    0,  131,    2, 0x0a /* Public */,
+      24,    2,  131,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -112,16 +113,16 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   13,
-    QMetaType::Void, QMetaType::QString,   13,
-    QMetaType::Void, 0x80000000 | 16,   17,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   21,
+    QMetaType::Void, QMetaType::QString,   12,
+    QMetaType::Void, QMetaType::QString,   12,
+    QMetaType::Void, 0x80000000 | 15,   16,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   20,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString, QMetaType::Bool,    6,   25,
 
        0        // eod
 };
@@ -139,17 +140,17 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 4: _t->saveChanges(); break;
         case 5: _t->createBackup(); break;
         case 6: _t->loadBackup(); break;
-        case 7: _t->updateBasePath(); break;
-        case 8: _t->removeFiles(); break;
-        case 9: _t->searchForLibrary((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 10: _t->searchForProject((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 11: _t->changedMenu((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
-        case 12: _t->build(); break;
-        case 13: _t->rebuild(); break;
-        case 14: _t->printInfo((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 15: _t->archiveComplete(); break;
-        case 16: _t->archive(); break;
-        case 17: _t->projectSelected(); break;
+        case 7: _t->removeFiles(); break;
+        case 8: _t->searchForLibrary((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 9: _t->searchForProject((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 10: _t->changedMenu((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
+        case 11: _t->build(); break;
+        case 12: _t->rebuild(); break;
+        case 13: _t->printInfo((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 14: _t->archiveComplete(); break;
+        case 15: _t->archive(); break;
+        case 16: _t->projectSelected(); break;
+        case 17: _t->buildComplete((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         default: ;
         }
     }

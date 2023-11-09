@@ -205,6 +205,7 @@ ProjectDirectoryFileInterface::ProjectDirectoryFileInterface(QObject * parent, G
     m_pImpl {new Impl(parent, pGraphWidget) }
 {
     connect(&m_pImpl->m_archivator, &Archivator::archiveComplete, this, &ProjectDirectoryFileInterface::archiveComplete);
+    connect(&m_pImpl->m_buildManager, &BuildManager::buildComplete, this, &ProjectDirectoryFileInterface::buildComplete);
 }
 
 ProjectDirectoryFileInterface::~ProjectDirectoryFileInterface()
@@ -225,6 +226,7 @@ int ProjectDirectoryFileInterface::processDirectory(const QString path)
 
     m_pImpl->m_dependsWorker.poll();
 
+    m_pImpl->m_pGraphWidget->clear();
     m_pImpl->m_pGraphWidget->setDependsVector( m_pImpl->createDependsVector() );
 
     return (m_pImpl->apps.size() + m_pImpl->libs.size());
@@ -260,7 +262,7 @@ QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
 
     if (pProj)
     {
-        m_pImpl->m_pGraphWidget->setHead(pProj->name);
+        m_pImpl->m_pGraphWidget->setHead(appName);
         return pProj->depends;
     }
     return QStringList();
@@ -279,12 +281,22 @@ bool ProjectDirectoryFileInterface::loadBackup(const QString & backupDirectory) 
 
 bool ProjectDirectoryFileInterface::build(const QString &projectName, const QString &target)
 {
-    return m_pImpl->m_buildManager.build(*m_pImpl->m_utilClass.getProject(projectName), target);
+    BuildProjectHandle buildHandle;
+
+    buildHandle.project = m_pImpl->m_utilClass.getProject(projectName);
+    buildHandle.target = target;
+
+    return m_pImpl->m_buildManager.build(buildHandle);
 }
 
 bool ProjectDirectoryFileInterface::rebuild(const QString &projectName, const QString &target)
 {
-    return m_pImpl->m_buildManager.rebuild(*m_pImpl->m_utilClass.getProject(projectName), target);
+    BuildProjectHandle buildHandle;
+
+    buildHandle.project = m_pImpl->m_utilClass.getProject(projectName);
+    buildHandle.target = target;
+
+    return m_pImpl->m_buildManager.rebuild(buildHandle);
 }
 
 void ProjectDirectoryFileInterface::archiveProject(const QString &projectName, const QString &resultPath)

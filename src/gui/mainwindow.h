@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <atomic>
 
 #include "filework/projectdirectoryfileinterface.h"
 #include "filework/cleaner.h"
@@ -29,8 +30,6 @@ public slots:
     void createBackup();
     void loadBackup();
 
-    void updateBasePath();
-
     void removeFiles();
 
     void searchForLibrary(const QString & changedText);
@@ -47,6 +46,8 @@ public slots:
     void archive();
     void projectSelected();
 
+    void buildComplete(const QString & projectName, const bool result);
+
 private:
     Ui::MainWindow *ui;
 
@@ -57,6 +58,8 @@ private:
     FileWork::Cleaner m_cleaner;
 
     QString basePath;
+
+    std::atomic<float> m_progressPercent;
 
     void updateProjectList();
     void setupAvailableLibrariesView();
