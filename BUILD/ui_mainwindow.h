@@ -131,6 +131,7 @@ public:
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(1090, 715);
         MainWindow->setCursor(QCursor(Qt::ArrowCursor));
+        MainWindow->setStyleSheet(QStringLiteral(""));
         projectControl_action = new QAction(MainWindow);
         projectControl_action->setObjectName(QStringLiteral("projectControl_action"));
         depends_action = new QAction(MainWindow);
@@ -139,6 +140,7 @@ public:
         action->setObjectName(QStringLiteral("action"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        centralWidget->setStyleSheet(QStringLiteral(""));
         gridLayout_2 = new QGridLayout(centralWidget);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -618,7 +620,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(2);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

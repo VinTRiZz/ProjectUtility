@@ -105,6 +105,7 @@ struct ProjectDirectoryFileInterface::Impl
 
     QVector<GraphWidget::DependencyStruct *> createDependsVector()
     {
+        qDebug() << "[FILE INTERFACE] Creating depend recursive vector";
         QVector<GraphWidget::DependencyStruct *> depsVect;
         GraphWidget::DependencyStruct * pBufferStruct;
 
@@ -130,13 +131,10 @@ struct ProjectDirectoryFileInterface::Impl
             depsVect.push_back(pBufferStruct);
         }
 
-        qDebug() << "[FILE INTERFACE] Created deps vect with data:";
-        qDebug() << "[FILE INTERFACE] [\033[33mBEGOF DATA\033[0m]";
         for (GraphWidget::DependencyStruct * pStruct : depsVect)
         {
             qDebug() << pStruct->name;
         }
-        qDebug() << "[FILE INTERFACE] [\033[33mEOF DATA\033[0m]";
 
         // Convert depends
         GraphWidget::DependencyStruct * pDependStruct;
@@ -149,9 +147,7 @@ struct ProjectDirectoryFileInterface::Impl
             for (GraphWidget::DependencyStruct * dep : depsVect)
             {
                 if (proj.name == dep->name)
-                {
                     pDependStruct = dep;
-                }
             }
 
             // Check if found
@@ -166,10 +162,7 @@ struct ProjectDirectoryFileInterface::Impl
                 {
                     // Add depend if exist
                     if (depName == dep->name)
-                    {
-                        qDebug() << "[FILE INTERFACE] Added dep:" << dep->name;
                         pDependStruct->dependsFrom.push_back(dep);
-                    }
                 }
             }
         }
@@ -182,9 +175,7 @@ struct ProjectDirectoryFileInterface::Impl
             for (GraphWidget::DependencyStruct * dep : depsVect)
             {
                 if (proj.name == dep->name)
-                {
                     pDependStruct = dep;
-                }
             }
 
             // Check if found
@@ -199,13 +190,12 @@ struct ProjectDirectoryFileInterface::Impl
                 {
                     // Add depend if exist
                     if (depName == dep->name)
-                    {
-                        qDebug() << "[FILE INTERFACE] Added dep:" << dep->name;
                         pDependStruct->dependsFrom.push_back(dep);
-                    }
                 }
             }
         }
+
+        qDebug() << "[FILE INTERFACE] Depend recursive vector \033[32mcreated\033[0m";
         return depsVect;
     }
 };

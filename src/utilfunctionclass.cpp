@@ -156,6 +156,7 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
 bool UtilFunctionClass::hasRecurseDepend(QStringList &dependQuery, Project *pParent)
 {
     Project * depProj {nullptr};
+    int dependQuerySize = dependQuery.size();
     for (QString & depName : pParent->depends)
     {
         if (dependQuery.contains(depName))
@@ -179,6 +180,7 @@ bool UtilFunctionClass::hasRecurseDepend(QStringList &dependQuery, Project *pPar
             if (hasRecurseDepend(dependQuery, depProj))
                 return true;
         }
+        dependQuery.erase(dependQuery.begin() + dependQuerySize, dependQuery.end());
     }
     return false;
 }

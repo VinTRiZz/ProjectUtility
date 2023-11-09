@@ -57,7 +57,7 @@ struct PaintTools
         appFont.setBold(true);
         libFont.setPixelSize(12);
 
-        qDebug() << "\033[32mDefault settings set\033[0m";
+        qDebug() << "[DependencyGraphWidget] Default settings set";
     }
 
     void setupForApp()
@@ -110,6 +110,7 @@ struct DependencyGraphWidget::Impl
     DependencyStruct * checkForRecurse(DependencyStruct * pParent)
     {
         DependencyStruct * result {nullptr};
+        int dependQuerySize = dependQuery.count();
 
         for (DependencyStruct * dep : pParent->dependsFrom)
         {
@@ -123,55 +124,56 @@ struct DependencyGraphWidget::Impl
             result = checkForRecurse(dep);
             if (result)
                 return result;
+            dependQuery.erase(dependQuery.begin() + dependQuerySize, dependQuery.end());
         }
         return nullptr;
     }
 
-    void setupTestDepends()
-    {
-        DependencyStruct * pMainNode {nullptr};
-        DependencyStruct * pHead {nullptr};
-        DependencyStruct * pChild {nullptr};
-        DependencyStruct * pChildChild {nullptr};
+//    void setupTestDepends()
+//    {
+//        DependencyStruct * pMainNode {nullptr};
+//        DependencyStruct * pHead {nullptr};
+//        DependencyStruct * pChild {nullptr};
+//        DependencyStruct * pChildChild {nullptr};
 
-        pMainNode = createNode("Приложение");
-        pMainNode->isApp = true;
-        pMainNode->position = QRect(100, 100, 100, 100);
+//        pMainNode = createNode("Приложение");
+//        pMainNode->isApp = true;
+//        pMainNode->position = QRect(100, 100, 100, 100);
 
-        QString nameBuffer;
-        for (int i = 1; i < 4; i++)
-        {
-            pHead = createNode(QString("Либа %1").arg(i));
-            pMainNode->dependsFrom.push_back(pHead);
+//        QString nameBuffer;
+//        for (int i = 1; i < 4; i++)
+//        {
+//            pHead = createNode(QString("Либа %1").arg(i));
+//            pMainNode->dependsFrom.push_back(pHead);
 
-            for (int j = 5; j < 14; j++)
-            {
-                nameBuffer = QString("Либа %1").arg(j);
+//            for (int j = 5; j < 14; j++)
+//            {
+//                nameBuffer = QString("Либа %1").arg(j);
 
-                pChild = getNode(nameBuffer);
-                if (!pChild)
-                    pChild = createNode(nameBuffer);
+//                pChild = getNode(nameBuffer);
+//                if (!pChild)
+//                    pChild = createNode(nameBuffer);
 
-                if (!pHead->dependsFrom.contains(pChild))
-                    pHead->dependsFrom.push_back(pChild);
+//                if (!pHead->dependsFrom.contains(pChild))
+//                    pHead->dependsFrom.push_back(pChild);
 
-                for (int k = 15; k < 20; k++)
-                {
-                    nameBuffer = QString("Либа %1").arg(k);
+//                for (int k = 15; k < 20; k++)
+//                {
+//                    nameBuffer = QString("Либа %1").arg(k);
 
-                    pChildChild = getNode(nameBuffer);
-                    if (!pChildChild)
-                        pChildChild = createNode(nameBuffer);
+//                    pChildChild = getNode(nameBuffer);
+//                    if (!pChildChild)
+//                        pChildChild = createNode(nameBuffer);
 
-                    if (!pChild->dependsFrom.contains(pChildChild))
-                        pChild->dependsFrom.push_back(pChildChild);
-                }
-            }
-        }
-        currentHead = pMainNode;
+//                    if (!pChild->dependsFrom.contains(pChildChild))
+//                        pChild->dependsFrom.push_back(pChildChild);
+//                }
+//            }
+//        }
+//        currentHead = pMainNode;
 
-        qDebug() << "[\033[33mTEST\033[0m] Setup complete";
-    }
+//        qDebug() << "[\033[33mTEST\033[0m] Setup complete";
+//    }
 
     DependencyStruct * getNode(const QString & name)
     {
@@ -237,7 +239,9 @@ void DependencyGraphWidget::setHead(const QString &headName)
 {
     m_pImpl->areDependsUpdating = true;
     m_pImpl->currentHead = m_pImpl->getNode(headName);
+    m_pImpl->nodeHistory.clear();
     m_pImpl->areDependsUpdating = false;
+    update();
 }
 
 void DependencyGraphWidget::setDependsVector(const QVector<DependencyStruct *> & depsVector)
@@ -246,6 +250,7 @@ void DependencyGraphWidget::setDependsVector(const QVector<DependencyStruct *> &
     m_pImpl->clear();
     m_pImpl->allNodes = depsVector;
     m_pImpl->areDependsUpdating = false;
+    update();
 }
 
 void DependencyGraphWidget::setDefaultSettings()
@@ -253,6 +258,7 @@ void DependencyGraphWidget::setDefaultSettings()
     m_pImpl->areDependsUpdating = true;
     m_pImpl->m_paintTools.setDefaultSettings();
     m_pImpl->areDependsUpdating = false;
+    update();
 }
 
 void DependencyGraphWidget::drawObject(const DependencyStruct * object)
@@ -329,6 +335,8 @@ void DependencyGraphWidget::drawGraph(DependencyStruct * head)
 
 void DependencyGraphWidget::paintEvent(QPaintEvent *e)
 {
+    Q_UNUSED(e)
+
     while (m_pImpl->areDependsUpdating);
 
     if (!m_pImpl->m_paintTools.painter)
@@ -341,10 +349,10 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
     if (m_pImpl->allNodes.size())
     {
         if (!m_pImpl->currentHead)
-        {
             m_pImpl->currentHead = m_pImpl->allNodes[0];
-            m_pImpl->nodeHistory.push_back(m_pImpl->currentHead);
-        }
+
+        if ( m_pImpl->checkForRecurse(m_pImpl->currentHead) )
+            return;
 
         m_pImpl->m_paintTools.drawBackground(rect());
 
@@ -379,11 +387,11 @@ void DependencyGraphWidget::mousePressEvent(QMouseEvent *e)
             if (nodeIndex != -1)
             {
                 for (DependencyStruct * depNode : m_pImpl->currentHead->dependsFrom)
-                {
                     depNode->position = QRect();
-                }
                 m_pImpl->nodeHistory.push_back(m_pImpl->currentHead);
                 m_pImpl->currentHead = pNode;
+
+                qDebug() << "[DependencyGraphWidget] Switched to node:" << m_pImpl->currentHead->name;
             }
             else
             {
@@ -400,6 +408,8 @@ void DependencyGraphWidget::mousePressEvent(QMouseEvent *e)
                     m_pImpl->nodeHistory.clear();
                     m_pImpl->currentHead = m_pImpl->allNodes[0];
                 }
+
+                qDebug() << "[DependencyGraphWidget] Returned to node:" << m_pImpl->currentHead->name;
             }
             update();
 
