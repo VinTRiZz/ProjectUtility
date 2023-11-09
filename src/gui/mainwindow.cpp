@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->stackedWidget->setCurrentIndex(0);
+    ui->menu_stackedWidget->setCurrentIndex(0);
 
     ui->graph_scrollArea->setWidget(m_depGraphWidget);
 
@@ -245,15 +245,12 @@ void MainWindow::searchForProject(const QString &changedText)
 
 void MainWindow::changedMenu(QAction *menuAction)
 {
-    if (menuAction->text() == "Управление проектом")
+    if (menuAction->text() == "Зависимости проекта")
     {
-        ui->stackedWidget->setCurrentIndex(0);
-    } else if (menuAction->text() == "Зависимости проекта")
+        ui->menu_stackedWidget->setCurrentIndex(0);
+    } else if (menuAction->text() == "Сборка, чистка и архивация")
     {
-        ui->stackedWidget->setCurrentIndex(1);
-    } else if (menuAction->text() == "Дерево зависимостей")
-    {
-        ui->stackedWidget->setCurrentIndex(2);
+        ui->menu_stackedWidget->setCurrentIndex(1);
     }
 }
 

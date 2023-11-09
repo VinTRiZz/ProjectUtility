@@ -20,6 +20,7 @@ struct PaintTools
     QBrush lineBrush; // Defines color of lines and outlines
     QBrush appBrush; // Defines color of app font
     QBrush libBrush; // Defines color of lib font
+    QBrush dependsBrush;
 
     QPen focusPen; // To focus on lines
     QPen linesPen; // For lines
@@ -27,6 +28,7 @@ struct PaintTools
 
     QFont appFont; // For text printing
     QFont libFont; // For text printing
+    QFont depFont; // For text printing
 
     void setupPainter(QWidget * parent)
     {
@@ -47,6 +49,7 @@ struct PaintTools
         objectPen = QPen(QColor(0, 0, 0), 3, Qt::PenStyle::SolidLine, Qt::PenCapStyle::RoundCap);
         focusPen = QPen(QColor(230, 0, 0), 2, Qt::PenStyle::SolidLine, Qt::PenCapStyle::RoundCap);
 
+        dependsBrush = QBrush(QColor(250, 250, 0));
         backgroundBrush = QBrush(QColor(120, 120, 120));
         lineBrush = QBrush(QColor(0, 0, 0));
 
@@ -55,7 +58,11 @@ struct PaintTools
 
         appFont.setPixelSize(14);
         appFont.setBold(true);
+
         libFont.setPixelSize(12);
+
+        depFont.setPixelSize(10);
+        depFont.setBold(true);
 
         qDebug() << "[DependencyGraphWidget] Default settings set";
     }
@@ -88,6 +95,23 @@ struct PaintTools
     {
         painter->setPen(objectPen);
         painter->drawText(pos, Qt::AlignCenter, text);
+    }
+
+    void drawDependCount(QRect pos, const int dependCount)
+    {
+        QString dependCountStr = QString::number(dependCount);
+
+        const int newWidth = dependCountStr.length() * painter->font().pixelSize() + 10;
+
+        pos.moveTo(pos.right() - newWidth / 2, pos.bottom() - newWidth / 2);
+        pos.setWidth(newWidth);
+        pos.setHeight(newWidth);
+
+        painter->setPen(objectPen);
+        painter->setBrush(dependsBrush);
+        painter->drawRect(pos);
+        painter->setFont(depFont);
+        painter->drawText(pos, Qt::AlignCenter, dependCountStr);
     }
 };
 
@@ -270,6 +294,8 @@ void DependencyGraphWidget::drawObject(const DependencyStruct * object)
 
     m_pImpl->m_paintTools.painter->drawRect(object->position);
     m_pImpl->m_paintTools.drawText(object->position, object->name);
+
+    m_pImpl->m_paintTools.drawDependCount(object->position, object->dependsFrom.size());
 }
 
 void DependencyGraphWidget::connectDepends(DependencyStruct * head)
@@ -285,7 +311,7 @@ void DependencyGraphWidget::drawHistory()
     if (!m_pImpl->nodeHistory.size())
         return;
 
-    int currentY = rect().height() - BLOCK_HEIGHT;
+    int currentY = rect().height() - BLOCK_HEIGHT - BLOCK_SPACE_SIZE;
     DependencyStruct * pBufferNode {nullptr};
     for (DependencyStruct * pNode : m_pImpl->nodeHistory)
     {
@@ -405,8 +431,8 @@ void DependencyGraphWidget::mousePressEvent(QMouseEvent *e)
                 }
                 else if (nodeIndex == 0)
                 {
+                    m_pImpl->currentHead = m_pImpl->nodeHistory[0];
                     m_pImpl->nodeHistory.clear();
-                    m_pImpl->currentHead = m_pImpl->allNodes[0];
                 }
 
                 qDebug() << "[DependencyGraphWidget] Returned to node:" << m_pImpl->currentHead->name;
