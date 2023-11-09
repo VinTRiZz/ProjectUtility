@@ -17,14 +17,15 @@ struct PaintTools
 {
     QPainter * painter {nullptr};
     QBrush backgroundBrush; // Background color
-    QBrush lineBrush; // Defines color of lines and outlines
-    QBrush appBrush; // Defines color of app font
-    QBrush libBrush; // Defines color of lib font
+    QBrush lineBrush;       // Defines color of lines and outlines
+    QBrush appBrush;        // Defines color of app font
+    QBrush libBrush;        // Defines color of lib font
     QBrush dependsBrush;
 
-    QPen focusPen; // To focus on lines
-    QPen linesPen; // For lines
+    QPen focusPen;  // To focus on lines
+    QPen linesPen;  // For lines
     QPen objectPen; // For figure contures
+    QPen textPen;    // For text write
 
     QFont appFont; // For text printing
     QFont libFont; // For text printing
@@ -45,16 +46,16 @@ struct PaintTools
 
     void setDefaultSettings()
     {
-        linesPen = QPen(QColor(0, 0, 0), 1, Qt::PenStyle::DashLine, Qt::PenCapStyle::RoundCap);
-        objectPen = QPen(QColor(0, 0, 0), 3, Qt::PenStyle::SolidLine, Qt::PenCapStyle::RoundCap);
-        focusPen = QPen(QColor(230, 0, 0), 2, Qt::PenStyle::SolidLine, Qt::PenCapStyle::RoundCap);
+        linesPen = QPen(QColor(210, 200, 170), 3, Qt::PenStyle::DashLine, Qt::PenCapStyle::RoundCap); // 30, 60, 20 // Приятный цвет очень
+        textPen = QPen(QColor(30, 30, 30), 2, Qt::PenStyle::SolidLine, Qt::PenCapStyle::RoundCap);
+        objectPen = QPen(QColor(20, 20, 20), 4, Qt::PenStyle::SolidLine, Qt::PenCapStyle::RoundCap);
+        focusPen = QPen(QColor(190, 50, 0), 3, Qt::PenStyle::SolidLine, Qt::PenCapStyle::RoundCap);
 
-        dependsBrush = QBrush(QColor(250, 250, 0));
-        backgroundBrush = QBrush(QColor(120, 120, 120));
-        lineBrush = QBrush(QColor(0, 0, 0));
+        dependsBrush = QBrush(QColor(190, 180, 0));
+        backgroundBrush = QBrush(QColor(62, 62, 62));
 
-        appBrush = QBrush( QColor(120, 180, 80) );
-        libBrush = QBrush( QColor(200, 180, 100) );
+        appBrush = QBrush( QColor(115, 180, 115) );
+        libBrush = QBrush( QColor(160, 160, 100) );
 
         appFont.setPixelSize(14);
         appFont.setBold(true);
@@ -93,7 +94,7 @@ struct PaintTools
 
     void drawText(const QRect & pos, const QString & text)
     {
-        painter->setPen(objectPen);
+        painter->setPen(textPen);
         painter->drawText(pos, Qt::AlignCenter, text);
     }
 
@@ -101,15 +102,17 @@ struct PaintTools
     {
         QString dependCountStr = QString::number(dependCount);
 
-        const int newWidth = dependCountStr.length() * painter->font().pixelSize() + 10;
+        const int newWidth = dependCountStr.length() * painter->font().pixelSize() + 3;
 
-        pos.moveTo(pos.right() - newWidth / 2, pos.bottom() - newWidth / 2);
+        pos.moveTo(pos.right() - newWidth + 2, pos.bottom() - newWidth + 2);
         pos.setWidth(newWidth);
         pos.setHeight(newWidth);
 
-        painter->setPen(objectPen);
+        painter->setPen(focusPen);
         painter->setBrush(dependsBrush);
         painter->drawRect(pos);
+
+        painter->setPen(textPen);
         painter->setFont(depFont);
         painter->drawText(pos, Qt::AlignCenter, dependCountStr);
     }
@@ -292,7 +295,7 @@ void DependencyGraphWidget::drawObject(const DependencyStruct * object)
     else
         m_pImpl->m_paintTools.setupForLib();
 
-    m_pImpl->m_paintTools.painter->drawRect(object->position);
+    m_pImpl->m_paintTools.painter->drawRoundedRect(object->position, 10, 10);
     m_pImpl->m_paintTools.drawText(object->position, object->name);
 
     m_pImpl->m_paintTools.drawDependCount(object->position, object->dependsFrom.size());

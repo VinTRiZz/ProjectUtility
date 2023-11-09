@@ -29,7 +29,6 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -63,6 +62,7 @@ public:
     QWidget *scrollAreaWidgetContents;
     QWidget *page_2;
     QGridLayout *gridLayout_2;
+    QSpacerItem *horizontalSpacer_3;
     QVBoxLayout *verticalLayout_9;
     QHBoxLayout *horizontalLayout;
     QWidget *widget_3;
@@ -96,9 +96,8 @@ public:
     QCheckBox *autoName_checkBox;
     QLineEdit *archivePath_lineEdit;
     QPushButton *archive_pushButton;
-    QSpacerItem *verticalSpacer_3;
-    QSpacerItem *verticalSpacer;
     QSpacerItem *verticalSpacer_2;
+    QSpacerItem *verticalSpacer;
     QWidget *widget;
     QVBoxLayout *verticalLayout_5;
     QLabel *label_5;
@@ -116,7 +115,6 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QMenuBar *menuBar;
     QMenu *menu;
-    QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -125,7 +123,128 @@ public:
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(1021, 715);
         MainWindow->setCursor(QCursor(Qt::ArrowCursor));
-        MainWindow->setStyleSheet(QStringLiteral(""));
+        MainWindow->setStyleSheet(QLatin1String("QWidget\n"
+"{\n"
+"color: rgb(186, 186, 186);\n"
+"background-color: rgb(58, 58, 58);\n"
+"}\n"
+"\n"
+"QWidget:selected\n"
+"{\n"
+"background-color: rgb(185, 185, 185);\n"
+"color: rgb(41, 41, 41);\n"
+"}\n"
+"\n"
+"QMenu:hover\n"
+"{\n"
+"background-color: rgb(185, 185, 185);\n"
+"color: rgb(41, 41, 41);\n"
+"}\n"
+"\n"
+"QPushButton \n"
+"{\n"
+"	background-color: rgb(58, 58, 58);\n"
+"	color: rgb(242, 242, 242);\n"
+"}\n"
+"\n"
+"QPushButton:clicked\n"
+"{\n"
+"background-color: rgb(10, 70, 6);\n"
+"	color: rgb(242, 242, 242);\n"
+"}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"	background-color: rgb(172, 172, 172);\n"
+"	color: rgb(24, 24, 24);\n"
+"}\n"
+"\n"
+"QLabel\n"
+"{\n"
+"	padding: 1px;\n"
+"	background-color: rgb(52, 52, 52); \n"
+"	color: rgb(193, 198, 110);\n"
+"	border-width: 1px;\n"
+"	border-style: solid;\n"
+"	border-color: rgb(186, 186, 186);\n"
+"}\n"
+"\n"
+"QRadioButton\n"
+"{\n"
+"	background-color: rgb(58, 58, 58);\n"
+"	color: rgb(242, 242, 242);\n"
+"	border-radius:  3;\n"
+"}\n"
+"\n"
+"QRadioButton:hover\n"
+"{\n"
+"	background-color: "
+                        "rgb(146, 146, 146);\n"
+"	color: rgb(26, 26, 26);\n"
+"	border-radius:  3;\n"
+"}\n"
+"\n"
+"QRadioButton:checked\n"
+"{\n"
+"	background-color: rgb(113, 108, 10);\n"
+"	color: rgb(30, 30, 30);\n"
+"	border-radius:  9;	\n"
+"}\n"
+"\n"
+"QCheckBox\n"
+"{\n"
+"	background-color: rgb(58, 58, 58);\n"
+"	color: rgb(242, 242, 242);\n"
+"	border-radius:  3;\n"
+"}\n"
+"\n"
+"QCheckBox:hover\n"
+"{\n"
+"	\n"
+"	background-color: rgb(146, 146, 146);\n"
+"	color: rgb(26, 26, 26);\n"
+"	border-radius:  3;\n"
+"}\n"
+"\n"
+"QCheckBox:checked\n"
+"{\n"
+"	background-color: rgb(113, 108, 10);\n"
+"	color: rgb(30, 30, 30);\n"
+"	border-radius:  9;\n"
+"}\n"
+"\n"
+"QLineEdit\n"
+"{\n"
+"background-color: rgb(58, 58, 58);\n"
+"color: rgb(122, 198, 255);\n"
+"}\n"
+"\n"
+"QLineEdit:hover\n"
+"{\n"
+"background-color: rgb(77, 77, 77);\n"
+"color: rgb(122, 198, 255);\n"
+"}\n"
+"\n"
+"QListWidget\n"
+"{\n"
+"background-color: rgb(58, 58, 58);\n"
+"	color: rgb(221, 221, 221);\n"
+"}\n"
+"\n"
+"QListWidget:item:selected\n"
+"{\n"
+"	background-color: rgb(179, 174, 78);\n"
+"	color: r"
+                        "gb(48, 48, 48);\n"
+"}\n"
+"\n"
+"QListWidget:item:hover\n"
+"{\n"
+"	background-color: rgb(144, 144, 144);\n"
+"	color: rgb(48, 48, 48);\n"
+"}\n"
+"\n"
+""));
         projectControl_action = new QAction(MainWindow);
         projectControl_action->setObjectName(QStringLiteral("projectControl_action"));
         depends_action = new QAction(MainWindow);
@@ -144,9 +263,10 @@ public:
         page = new QWidget();
         page->setObjectName(QStringLiteral("page"));
         horizontalLayout_4 = new QHBoxLayout(page);
-        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setSpacing(3);
         horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
         verticalLayout_6 = new QVBoxLayout();
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
@@ -165,6 +285,9 @@ public:
         verticalLayout->addWidget(label_3);
 
         avaliableLibs_listWidget = new QListWidget(page);
+        new QListWidgetItem(avaliableLibs_listWidget);
+        new QListWidgetItem(avaliableLibs_listWidget);
+        new QListWidgetItem(avaliableLibs_listWidget);
         avaliableLibs_listWidget->setObjectName(QStringLiteral("avaliableLibs_listWidget"));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
@@ -178,6 +301,7 @@ public:
         search_lineEdit->setObjectName(QStringLiteral("search_lineEdit"));
         sizePolicy.setHeightForWidth(search_lineEdit->sizePolicy().hasHeightForWidth());
         search_lineEdit->setSizePolicy(sizePolicy);
+        search_lineEdit->setStyleSheet(QStringLiteral(""));
         search_lineEdit->setAlignment(Qt::AlignCenter);
 
         verticalLayout->addWidget(search_lineEdit);
@@ -224,6 +348,10 @@ public:
         verticalLayout_2->addWidget(label_2);
 
         addedLibs_listWidget = new QListWidget(page);
+        new QListWidgetItem(addedLibs_listWidget);
+        new QListWidgetItem(addedLibs_listWidget);
+        new QListWidgetItem(addedLibs_listWidget);
+        new QListWidgetItem(addedLibs_listWidget);
         addedLibs_listWidget->setObjectName(QStringLiteral("addedLibs_listWidget"));
         sizePolicy1.setHeightForWidth(addedLibs_listWidget->sizePolicy().hasHeightForWidth());
         addedLibs_listWidget->setSizePolicy(sizePolicy1);
@@ -254,7 +382,7 @@ public:
         graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 453, 614));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 474, 649));
         graph_scrollArea->setWidget(scrollAreaWidgetContents);
 
         horizontalLayout_4->addWidget(graph_scrollArea);
@@ -263,19 +391,25 @@ public:
         page_2 = new QWidget();
         page_2->setObjectName(QStringLiteral("page_2"));
         gridLayout_2 = new QGridLayout(page_2);
-        gridLayout_2->setSpacing(6);
+        gridLayout_2->setSpacing(3);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        gridLayout_2->setContentsMargins(0, 0, 0, 0);
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_3, 0, 2, 1, 1);
+
         verticalLayout_9 = new QVBoxLayout();
         verticalLayout_9->setSpacing(6);
         verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
         horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(6);
+        horizontalLayout->setSpacing(3);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         widget_3 = new QWidget(page_2);
         widget_3->setObjectName(QStringLiteral("widget_3"));
         sizePolicy1.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
         widget_3->setSizePolicy(sizePolicy1);
+        widget_3->setStyleSheet(QStringLiteral(""));
         verticalLayout_8 = new QVBoxLayout(widget_3);
         verticalLayout_8->setSpacing(6);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -284,18 +418,21 @@ public:
         label_8->setObjectName(QStringLiteral("label_8"));
         sizePolicy.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
         label_8->setSizePolicy(sizePolicy);
+        label_8->setStyleSheet(QStringLiteral(""));
         label_8->setAlignment(Qt::AlignCenter);
 
         verticalLayout_8->addWidget(label_8);
 
         debugTarget_radioButton = new QRadioButton(widget_3);
         debugTarget_radioButton->setObjectName(QStringLiteral("debugTarget_radioButton"));
+        debugTarget_radioButton->setStyleSheet(QStringLiteral(""));
         debugTarget_radioButton->setChecked(true);
 
         verticalLayout_8->addWidget(debugTarget_radioButton);
 
         releaseTarget_radioButton = new QRadioButton(widget_3);
         releaseTarget_radioButton->setObjectName(QStringLiteral("releaseTarget_radioButton"));
+        releaseTarget_radioButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_8->addWidget(releaseTarget_radioButton);
 
@@ -306,6 +443,7 @@ public:
         widget_2->setObjectName(QStringLiteral("widget_2"));
         sizePolicy1.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
         widget_2->setSizePolicy(sizePolicy1);
+        widget_2->setStyleSheet(QStringLiteral(""));
         verticalLayout_11 = new QVBoxLayout(widget_2);
         verticalLayout_11->setSpacing(6);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
@@ -314,18 +452,21 @@ public:
         label_7->setObjectName(QStringLiteral("label_7"));
         sizePolicy.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
         label_7->setSizePolicy(sizePolicy);
+        label_7->setStyleSheet(QStringLiteral(""));
         label_7->setAlignment(Qt::AlignCenter);
 
         verticalLayout_11->addWidget(label_7);
 
         buildAll_radioButton = new QRadioButton(widget_2);
         buildAll_radioButton->setObjectName(QStringLiteral("buildAll_radioButton"));
+        buildAll_radioButton->setStyleSheet(QStringLiteral(""));
         buildAll_radioButton->setChecked(false);
 
         verticalLayout_11->addWidget(buildAll_radioButton);
 
         buildCurrent_radioButton = new QRadioButton(widget_2);
         buildCurrent_radioButton->setObjectName(QStringLiteral("buildCurrent_radioButton"));
+        buildCurrent_radioButton->setStyleSheet(QStringLiteral(""));
         buildCurrent_radioButton->setChecked(true);
 
         verticalLayout_11->addWidget(buildCurrent_radioButton);
@@ -337,15 +478,17 @@ public:
         verticalLayout_9->addLayout(horizontalLayout);
 
         verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setSpacing(2);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         build_pushButton = new QPushButton(page_2);
         build_pushButton->setObjectName(QStringLiteral("build_pushButton"));
+        build_pushButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_4->addWidget(build_pushButton);
 
         rebuild_pushButton = new QPushButton(page_2);
         rebuild_pushButton->setObjectName(QStringLiteral("rebuild_pushButton"));
+        rebuild_pushButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_4->addWidget(rebuild_pushButton);
 
@@ -357,6 +500,7 @@ public:
 
         widget_5 = new QWidget(page_2);
         widget_5->setObjectName(QStringLiteral("widget_5"));
+        widget_5->setStyleSheet(QStringLiteral(""));
         verticalLayout_3 = new QVBoxLayout(widget_5);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -365,6 +509,7 @@ public:
         label_4->setObjectName(QStringLiteral("label_4"));
         sizePolicy.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
         label_4->setSizePolicy(sizePolicy);
+        label_4->setStyleSheet(QStringLiteral(""));
         label_4->setAlignment(Qt::AlignCenter);
 
         verticalLayout_3->addWidget(label_4);
@@ -372,34 +517,41 @@ public:
         makeFiles_checkBox = new QCheckBox(widget_5);
         makeFiles_checkBox->setObjectName(QStringLiteral("makeFiles_checkBox"));
         makeFiles_checkBox->setFocusPolicy(Qt::NoFocus);
+        makeFiles_checkBox->setStyleSheet(QStringLiteral(""));
+        makeFiles_checkBox->setChecked(true);
 
         verticalLayout_3->addWidget(makeFiles_checkBox);
 
         qmakeStash_checkBox = new QCheckBox(widget_5);
         qmakeStash_checkBox->setObjectName(QStringLiteral("qmakeStash_checkBox"));
+        qmakeStash_checkBox->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_3->addWidget(qmakeStash_checkBox);
 
         lib_checkBox = new QCheckBox(widget_5);
         lib_checkBox->setObjectName(QStringLiteral("lib_checkBox"));
         lib_checkBox->setFocusPolicy(Qt::NoFocus);
+        lib_checkBox->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_3->addWidget(lib_checkBox);
 
         bin_checkBox = new QCheckBox(widget_5);
         bin_checkBox->setObjectName(QStringLiteral("bin_checkBox"));
         bin_checkBox->setFocusPolicy(Qt::NoFocus);
+        bin_checkBox->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_3->addWidget(bin_checkBox);
 
         build_checkBox = new QCheckBox(widget_5);
         build_checkBox->setObjectName(QStringLiteral("build_checkBox"));
         build_checkBox->setFocusPolicy(Qt::NoFocus);
+        build_checkBox->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_3->addWidget(build_checkBox);
 
         clean_pushButton = new QPushButton(widget_5);
         clean_pushButton->setObjectName(QStringLiteral("clean_pushButton"));
+        clean_pushButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_3->addWidget(clean_pushButton);
 
@@ -410,65 +562,73 @@ public:
         widget_4->setObjectName(QStringLiteral("widget_4"));
         sizePolicy1.setHeightForWidth(widget_4->sizePolicy().hasHeightForWidth());
         widget_4->setSizePolicy(sizePolicy1);
+        widget_4->setStyleSheet(QStringLiteral(""));
         verticalLayout_12 = new QVBoxLayout(widget_4);
-        verticalLayout_12->setSpacing(0);
+        verticalLayout_12->setSpacing(2);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
         verticalLayout_12->setObjectName(QStringLiteral("verticalLayout_12"));
-        verticalLayout_12->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_12->setContentsMargins(2, 2, 2, 2);
         label_6 = new QLabel(widget_4);
         label_6->setObjectName(QStringLiteral("label_6"));
         sizePolicy.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
         label_6->setSizePolicy(sizePolicy);
+        label_6->setStyleSheet(QStringLiteral(""));
         label_6->setAlignment(Qt::AlignCenter);
 
         verticalLayout_12->addWidget(label_6);
 
         archiveAll_radioButton = new QRadioButton(widget_4);
         archiveAll_radioButton->setObjectName(QStringLiteral("archiveAll_radioButton"));
+        archiveAll_radioButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_12->addWidget(archiveAll_radioButton);
 
         archiveSelected_radioButton = new QRadioButton(widget_4);
         archiveSelected_radioButton->setObjectName(QStringLiteral("archiveSelected_radioButton"));
+        archiveSelected_radioButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_12->addWidget(archiveSelected_radioButton);
 
         archiveCurrent_radioButton = new QRadioButton(widget_4);
         archiveCurrent_radioButton->setObjectName(QStringLiteral("archiveCurrent_radioButton"));
+        archiveCurrent_radioButton->setStyleSheet(QLatin1String("border-width: 0px;\n"
+"border-style: solid;\n"
+"border-color: rgb(186, 186, 186);"));
         archiveCurrent_radioButton->setChecked(true);
 
         verticalLayout_12->addWidget(archiveCurrent_radioButton);
 
         autoName_checkBox = new QCheckBox(widget_4);
         autoName_checkBox->setObjectName(QStringLiteral("autoName_checkBox"));
+        autoName_checkBox->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_12->addWidget(autoName_checkBox);
 
         archivePath_lineEdit = new QLineEdit(widget_4);
         archivePath_lineEdit->setObjectName(QStringLiteral("archivePath_lineEdit"));
+        sizePolicy.setHeightForWidth(archivePath_lineEdit->sizePolicy().hasHeightForWidth());
+        archivePath_lineEdit->setSizePolicy(sizePolicy);
+        archivePath_lineEdit->setStyleSheet(QStringLiteral("color: rgb(215, 215, 215);"));
         archivePath_lineEdit->setAlignment(Qt::AlignCenter);
 
         verticalLayout_12->addWidget(archivePath_lineEdit);
 
         archive_pushButton = new QPushButton(widget_4);
         archive_pushButton->setObjectName(QStringLiteral("archive_pushButton"));
+        archive_pushButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_12->addWidget(archive_pushButton);
 
 
-        gridLayout_2->addWidget(widget_4, 0, 2, 1, 1);
+        gridLayout_2->addWidget(widget_4, 1, 0, 1, 1);
 
-        verticalSpacer_3 = new QSpacerItem(20, 389, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        gridLayout_2->addItem(verticalSpacer_3, 1, 0, 1, 1);
+        gridLayout_2->addItem(verticalSpacer_2, 2, 0, 1, 1);
 
-        verticalSpacer = new QSpacerItem(20, 389, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(119, 431, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        gridLayout_2->addItem(verticalSpacer, 1, 1, 1, 1);
-
-        verticalSpacer_2 = new QSpacerItem(20, 389, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_2->addItem(verticalSpacer_2, 1, 2, 1, 1);
+        gridLayout_2->addItem(verticalSpacer, 1, 1, 2, 1);
 
         menu_stackedWidget->addWidget(page_2);
 
@@ -478,6 +638,7 @@ public:
         widget->setObjectName(QStringLiteral("widget"));
         sizePolicy1.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
         widget->setSizePolicy(sizePolicy1);
+        widget->setStyleSheet(QStringLiteral(""));
         verticalLayout_5 = new QVBoxLayout(widget);
         verticalLayout_5->setSpacing(0);
         verticalLayout_5->setContentsMargins(11, 11, 11, 11);
@@ -493,12 +654,14 @@ public:
 
         libs_radioButton = new QRadioButton(widget);
         libs_radioButton->setObjectName(QStringLiteral("libs_radioButton"));
+        libs_radioButton->setStyleSheet(QStringLiteral(""));
         libs_radioButton->setChecked(true);
 
         verticalLayout_5->addWidget(libs_radioButton);
 
         apps_radioButton = new QRadioButton(widget);
         apps_radioButton->setObjectName(QStringLiteral("apps_radioButton"));
+        apps_radioButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_5->addWidget(apps_radioButton);
 
@@ -520,6 +683,7 @@ public:
         sizePolicy.setHeightForWidth(basePath_lineEdit->sizePolicy().hasHeightForWidth());
         basePath_lineEdit->setSizePolicy(sizePolicy);
         basePath_lineEdit->setMaximumSize(QSize(350, 16777215));
+        basePath_lineEdit->setStyleSheet(QStringLiteral("color: rgb(167, 167, 167);"));
 
         horizontalLayout_3->addWidget(basePath_lineEdit);
 
@@ -528,6 +692,7 @@ public:
         sizePolicy1.setHeightForWidth(acceptBasePath_pushButton->sizePolicy().hasHeightForWidth());
         acceptBasePath_pushButton->setSizePolicy(sizePolicy1);
         acceptBasePath_pushButton->setMaximumSize(QSize(150, 16777215));
+        acceptBasePath_pushButton->setStyleSheet(QStringLiteral(""));
 
         horizontalLayout_3->addWidget(acceptBasePath_pushButton);
 
@@ -540,6 +705,7 @@ public:
         update_pushButton->setSizePolicy(sizePolicy);
         update_pushButton->setMinimumSize(QSize(0, 0));
         update_pushButton->setMaximumSize(QSize(500, 16777215));
+        update_pushButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_7->addWidget(update_pushButton);
 
@@ -554,6 +720,8 @@ public:
         verticalLayout_7->addWidget(label);
 
         projects_listWidget = new QListWidget(centralWidget);
+        new QListWidgetItem(projects_listWidget);
+        new QListWidgetItem(projects_listWidget);
         projects_listWidget->setObjectName(QStringLiteral("projects_listWidget"));
         QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy3.setHorizontalStretch(0);
@@ -562,6 +730,7 @@ public:
         projects_listWidget->setSizePolicy(sizePolicy3);
         projects_listWidget->setMaximumSize(QSize(500, 16777215));
         projects_listWidget->setFocusPolicy(Qt::NoFocus);
+        projects_listWidget->setStyleSheet(QStringLiteral(""));
         projects_listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
         projects_listWidget->setSortingEnabled(true);
 
@@ -572,6 +741,7 @@ public:
         sizePolicy1.setHeightForWidth(searchProject_lineEdit->sizePolicy().hasHeightForWidth());
         searchProject_lineEdit->setSizePolicy(sizePolicy1);
         searchProject_lineEdit->setMaximumSize(QSize(500, 16777215));
+        searchProject_lineEdit->setStyleSheet(QStringLiteral(""));
         searchProject_lineEdit->setAlignment(Qt::AlignCenter);
 
         verticalLayout_7->addWidget(searchProject_lineEdit);
@@ -590,9 +760,6 @@ public:
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         MainWindow->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(MainWindow);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
@@ -603,7 +770,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        menu_stackedWidget->setCurrentIndex(0);
+        menu_stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -616,11 +783,36 @@ public:
         depends_action->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\270 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
         action->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\200\320\265\320\262\320\276 \320\267\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\265\320\271", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "\320\224\320\276\321\201\321\202\321\203\320\277\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
+
+        const bool __sortingEnabled = avaliableLibs_listWidget->isSortingEnabled();
+        avaliableLibs_listWidget->setSortingEnabled(false);
+        QListWidgetItem *___qlistwidgetitem = avaliableLibs_listWidget->item(0);
+        ___qlistwidgetitem->setText(QApplication::translate("MainWindow", "q3rf3cq23r2", nullptr));
+        QListWidgetItem *___qlistwidgetitem1 = avaliableLibs_listWidget->item(1);
+        ___qlistwidgetitem1->setText(QApplication::translate("MainWindow", "2q3rq23drq2s3q23rs", nullptr));
+        QListWidgetItem *___qlistwidgetitem2 = avaliableLibs_listWidget->item(2);
+        ___qlistwidgetitem2->setText(QApplication::translate("MainWindow", "tvsergvse", nullptr));
+        avaliableLibs_listWidget->setSortingEnabled(__sortingEnabled);
+
+        search_lineEdit->setText(QApplication::translate("MainWindow", "adwadwd", nullptr));
         search_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         add_pushButton->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", nullptr));
         remove_pushButton->setText(QApplication::translate("MainWindow", "\320\243\320\261\321\200\320\260\321\202\321\214", nullptr));
         saveChanges_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\265\320\275\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
+
+        const bool __sortingEnabled1 = addedLibs_listWidget->isSortingEnabled();
+        addedLibs_listWidget->setSortingEnabled(false);
+        QListWidgetItem *___qlistwidgetitem3 = addedLibs_listWidget->item(0);
+        ___qlistwidgetitem3->setText(QApplication::translate("MainWindow", "adavw3rvq23rq2", nullptr));
+        QListWidgetItem *___qlistwidgetitem4 = addedLibs_listWidget->item(1);
+        ___qlistwidgetitem4->setText(QApplication::translate("MainWindow", "q23vc2qt", nullptr));
+        QListWidgetItem *___qlistwidgetitem5 = addedLibs_listWidget->item(2);
+        ___qlistwidgetitem5->setText(QApplication::translate("MainWindow", "5bur6h8o,tm7", nullptr));
+        QListWidgetItem *___qlistwidgetitem6 = addedLibs_listWidget->item(3);
+        ___qlistwidgetitem6->setText(QApplication::translate("MainWindow", "acqwa32", nullptr));
+        addedLibs_listWidget->setSortingEnabled(__sortingEnabled1);
+
         label_8->setText(QApplication::translate("MainWindow", "\320\246\320\265\320\273\321\214 \321\201\320\261\320\276\321\200\320\272\320\270", nullptr));
         debugTarget_radioButton->setText(QApplication::translate("MainWindow", "Debug", nullptr));
         releaseTarget_radioButton->setText(QApplication::translate("MainWindow", "Release", nullptr));
@@ -652,6 +844,16 @@ public:
         acceptBasePath_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\272", nullptr));
         update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
         label->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\265\320\272\321\202\321\213", nullptr));
+
+        const bool __sortingEnabled2 = projects_listWidget->isSortingEnabled();
+        projects_listWidget->setSortingEnabled(false);
+        QListWidgetItem *___qlistwidgetitem7 = projects_listWidget->item(0);
+        ___qlistwidgetitem7->setText(QApplication::translate("MainWindow", "aafawefw", nullptr));
+        QListWidgetItem *___qlistwidgetitem8 = projects_listWidget->item(1);
+        ___qlistwidgetitem8->setText(QApplication::translate("MainWindow", "awfawef", nullptr));
+        projects_listWidget->setSortingEnabled(__sortingEnabled2);
+
+        searchProject_lineEdit->setText(QApplication::translate("MainWindow", "avwbvwcw", nullptr));
         searchProject_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
         menu->setTitle(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\274\320\265\320\275\321\216", nullptr));
     } // retranslateUi
