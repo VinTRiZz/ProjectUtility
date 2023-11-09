@@ -56,6 +56,10 @@ public:
     QRadioButton *libs_radioButton;
     QRadioButton *apps_radioButton;
     QSpacerItem *horizontalSpacer_2;
+    QSpacerItem *horizontalSpacer;
+    QListWidget *notifications_listWidget;
+    QLabel *label_9;
+    QPushButton *cleanOutput_pushButton;
     QStackedWidget *menu_stackedWidget;
     QWidget *page;
     QHBoxLayout *horizontalLayout_4;
@@ -113,9 +117,6 @@ public:
     QPushButton *archive_pushButton;
     QSpacerItem *verticalSpacer_2;
     QSpacerItem *verticalSpacer;
-    QSpacerItem *horizontalSpacer;
-    QListWidget *notifications_listWidget;
-    QLabel *label_9;
     QMenuBar *menuBar;
     QMenu *menu;
     QStatusBar *statusBar;
@@ -370,6 +371,35 @@ public:
         horizontalSpacer_2 = new QSpacerItem(30, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         gridLayout->addItem(horizontalSpacer_2, 0, 0, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer, 0, 2, 1, 1);
+
+        notifications_listWidget = new QListWidget(centralWidget);
+        notifications_listWidget->setObjectName(QStringLiteral("notifications_listWidget"));
+        sizePolicy2.setHeightForWidth(notifications_listWidget->sizePolicy().hasHeightForWidth());
+        notifications_listWidget->setSizePolicy(sizePolicy2);
+        notifications_listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        notifications_listWidget->setProperty("showDropIndicator", QVariant(false));
+        notifications_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
+        notifications_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+        notifications_listWidget->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+        notifications_listWidget->setSpacing(2);
+        notifications_listWidget->setWordWrap(true);
+
+        gridLayout->addWidget(notifications_listWidget, 3, 0, 1, 3);
+
+        label_9 = new QLabel(centralWidget);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(label_9, 2, 0, 1, 3);
+
+        cleanOutput_pushButton = new QPushButton(centralWidget);
+        cleanOutput_pushButton->setObjectName(QStringLiteral("cleanOutput_pushButton"));
+
+        gridLayout->addWidget(cleanOutput_pushButton, 4, 0, 1, 3);
 
         menu_stackedWidget = new QStackedWidget(centralWidget);
         menu_stackedWidget->setObjectName(QStringLiteral("menu_stackedWidget"));
@@ -742,29 +772,7 @@ public:
 
         menu_stackedWidget->addWidget(page_2);
 
-        gridLayout->addWidget(menu_stackedWidget, 0, 3, 4, 1);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer, 0, 2, 1, 1);
-
-        notifications_listWidget = new QListWidget(centralWidget);
-        notifications_listWidget->setObjectName(QStringLiteral("notifications_listWidget"));
-        sizePolicy2.setHeightForWidth(notifications_listWidget->sizePolicy().hasHeightForWidth());
-        notifications_listWidget->setSizePolicy(sizePolicy2);
-        notifications_listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        notifications_listWidget->setProperty("showDropIndicator", QVariant(false));
-        notifications_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-        notifications_listWidget->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-        notifications_listWidget->setWordWrap(true);
-
-        gridLayout->addWidget(notifications_listWidget, 3, 0, 1, 3);
-
-        label_9 = new QLabel(centralWidget);
-        label_9->setObjectName(QStringLiteral("label_9"));
-        label_9->setAlignment(Qt::AlignCenter);
-
-        gridLayout->addWidget(label_9, 2, 0, 1, 3);
+        gridLayout->addWidget(menu_stackedWidget, 0, 3, 5, 1);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -804,6 +812,8 @@ public:
         label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
         libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
+        label_9->setText(QApplication::translate("MainWindow", "\320\241\320\276\320\276\320\261\321\211\320\265\320\275\320\270\321\217 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
+        cleanOutput_pushButton->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214 \320\262\321\213\320\262\320\276\320\264", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "\320\224\320\276\321\201\321\202\321\203\320\277\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         search_lineEdit->setText(QString());
         search_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
@@ -834,7 +844,6 @@ public:
         archivePath_lineEdit->setText(QApplication::translate("MainWindow", "ProjectsArchive", nullptr));
         archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
         archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
-        label_9->setText(QApplication::translate("MainWindow", "\320\241\320\276\320\276\320\261\321\211\320\265\320\275\320\270\321\217 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
         menu->setTitle(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\274\320\265\320\275\321\216", nullptr));
     } // retranslateUi
 

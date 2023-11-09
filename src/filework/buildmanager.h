@@ -14,7 +14,7 @@ namespace FileWork
 
 struct BuildProjectHandle
 {
-    Project * project;
+    Project project;
     QString target;
     int timeout {BUILD_TIMEOUT};
 };

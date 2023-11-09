@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->menu_stackedWidget->setCurrentIndex(0);
-    m_progressPercent.store(0);
+    m_progressPercent.store(100);
 
     ui->graph_scrollArea->setWidget(m_depGraphWidget);
 
@@ -61,6 +61,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
 
     connect(ui->projects_listWidget, &QListWidget::clicked, this, &MainWindow::projectSelected);
+
+    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
+
+    connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
 }
 
 MainWindow::~MainWindow()
@@ -246,7 +250,10 @@ void MainWindow::changedMenu(QAction *menuAction)
 void MainWindow::build()
 {
     if (m_progressPercent.load() != 100)
+    {
+        emit printInfo("Сборка уже ведётся. Проверьте прогресс в меню сборки");
         return;
+    }
 
     m_progressPercent.store(0);
 
@@ -264,7 +271,7 @@ void MainWindow::build()
         const int projectCount = ui->projects_listWidget->count();
 
         for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
-            m_fileInterface.build(ui->projects_listWidget->item(i)->text(), target);
+            m_fileInterface.addBuild(ui->projects_listWidget->item(i)->text(), target);
     }
     else if (ui->buildCurrent_radioButton->isChecked())
     {
@@ -276,10 +283,13 @@ void MainWindow::build()
             return;
         }
 
-        m_fileInterface.build(pItem->text(), target);
+        m_fileInterface.addBuild(pItem->text(), target);
     }
 
-    emit printInfo("Проект(ы) добавлен(ы) в очередь на сборку");
+    if (m_fileInterface.startBuild())
+        emit printInfo("Проект(ы) добавлен(ы) в очередь на сборку");
+    else
+        emit printInfo("Ошибка добавления на сборку");
 }
 
 void MainWindow::rebuild()
@@ -295,23 +305,19 @@ void MainWindow::rebuild()
 
     if (ui->buildAll_radioButton->isChecked())
     {
-        const int projectCount = ui->projects_listWidget->count();
+        projectsToBuild = ui->projects_listWidget->count();
         QString projectName;
 
-        for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
+        for (int i = 0; (i < projectsToBuild) && (i < ui->projects_listWidget->count()); i++)
         {
             projectName = ui->projects_listWidget->item(i)->text();
-            emit printInfo(QString("Пересобирается проект %1 (%2 из %3)").arg(projectName, QString::number(i), QString::number(projectCount)));
-            if (!m_fileInterface.rebuild(projectName, target))
-            {
-                emit printInfo(QString("Ошибка пересборки проекта: %1. Более полная информация в файле buildLog.txt").arg(projectName));
-                return;
-            }
+            m_fileInterface.addRebuild(projectName, target);
         }
-        emit printInfo("Проекты пересобраны");
     }
     else if (ui->buildCurrent_radioButton->isChecked())
     {
+        projectsToBuild = 1;
+
         auto pItem = ui->projects_listWidget->currentItem();
 
         if (!pItem)
@@ -320,17 +326,13 @@ void MainWindow::rebuild()
             return;
         }
 
-        QString projectName = pItem->text();
-        emit printInfo(QString("Проект %1 собирается...").arg(projectName));
-        if (m_fileInterface.rebuild(projectName, target))
-        {
-            emit printInfo("Проект пересобран");
-        }
-        else
-        {
-            emit printInfo("Ошибка пересборки. Более полная информация в файле buildLog.txt");
-        }
+        m_fileInterface.addRebuild(pItem->text(), target);
     }
+
+    if (m_fileInterface.startBuild())
+        emit printInfo("Проект(ы) добавлен(ы) в очередь на пересборку");
+    else
+        emit printInfo("Ошибка добавления на пересборку");
 }
 
 void MainWindow::printInfo(const QString & what)
@@ -402,10 +404,12 @@ void MainWindow::buildComplete(const QString &projectName, const bool result)
     if (result)
     {
         emit printInfo(QString("Собран проект %1").arg(projectName));
+        m_progressPercent.store(m_progressPercent.load() + 100.0f / (float)projectsToBuild);
     }
     else
     {
         emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле buildLog.txt").arg(projectName));
+        m_progressPercent.store(100);
     }
 }
 

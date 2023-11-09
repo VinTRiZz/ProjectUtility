@@ -60,6 +60,7 @@ private:
     QString basePath;
 
     std::atomic<float> m_progressPercent;
+    int projectsToBuild = 0;
 
     void updateProjectList();
     void setupAvailableLibrariesView();

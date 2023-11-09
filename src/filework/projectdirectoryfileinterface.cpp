@@ -279,24 +279,29 @@ void ProjectDirectoryFileInterface::poll() { m_pImpl->m_dependsWorker.poll(); }
 bool ProjectDirectoryFileInterface::backupAll(const QString & backupDirectory) { return m_pImpl->backupAll(backupDirectory); }
 bool ProjectDirectoryFileInterface::loadBackup(const QString & backupDirectory) { return m_pImpl->loadBackup(backupDirectory); }
 
-bool ProjectDirectoryFileInterface::build(const QString &projectName, const QString &target)
+bool ProjectDirectoryFileInterface::addBuild(const QString &projectName, const QString &target)
 {
     BuildProjectHandle buildHandle;
 
-    buildHandle.project = m_pImpl->m_utilClass.getProject(projectName);
+    buildHandle.project = *m_pImpl->m_utilClass.getProject(projectName);
     buildHandle.target = target;
 
     return m_pImpl->m_buildManager.build(buildHandle);
 }
 
-bool ProjectDirectoryFileInterface::rebuild(const QString &projectName, const QString &target)
+bool ProjectDirectoryFileInterface::addRebuild(const QString &projectName, const QString &target)
 {
     BuildProjectHandle buildHandle;
 
-    buildHandle.project = m_pImpl->m_utilClass.getProject(projectName);
+    buildHandle.project = *m_pImpl->m_utilClass.getProject(projectName);
     buildHandle.target = target;
 
     return m_pImpl->m_buildManager.rebuild(buildHandle);
+}
+
+bool ProjectDirectoryFileInterface::startBuild()
+{
+    return m_pImpl->m_buildManager.startBuilding();
 }
 
 void ProjectDirectoryFileInterface::archiveProject(const QString &projectName, const QString &resultPath)

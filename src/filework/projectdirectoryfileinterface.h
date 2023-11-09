@@ -36,8 +36,9 @@ public:
     bool backupAll(const QString & backupDirectory);
     bool loadBackup(const QString & backupDirectory);
 
-    bool build(const QString & projectName, const QString & target);
-    bool rebuild(const QString & projectName, const QString & target);
+    bool addBuild(const QString & projectName, const QString & target);
+    bool addRebuild(const QString & projectName, const QString & target);
+    bool startBuild();
 
     void archiveProject(const QString & projectName, const QString & resultPath);
     void archiveSelectedProjects(const QStringList & projectNames, const QString & resultPath);
