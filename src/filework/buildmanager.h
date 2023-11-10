@@ -3,11 +3,10 @@
 
 #include "utilfunctionclass.h"
 
+#include "projectsettings.h"
+
 #include <QObject>
 #include <QFile>
-
-// 1 hour timeout :)
-#define BUILD_TIMEOUT 3600000
 
 namespace FileWork
 {
@@ -16,7 +15,7 @@ struct BuildProjectHandle
 {
     Project project;
     QString target;
-    int timeout {BUILD_TIMEOUT};
+    int timeout {Configuration::mainProjectConfiguration.BUILD_TIMEOUT};
 };
 
 class BuildManager : public QObject

@@ -4,8 +4,6 @@
 #include <QDir>
 #include <QThread>
 
-#include "projectsettings.h"
-
 using namespace FileWork;
 
 BuildManager::BuildManager(QObject * parent) :
@@ -164,7 +162,7 @@ void BuildManager::poll()
 
     if (m_pProcessThread->isRunning())
     {
-        if (!m_pProcessThread->wait(BUILD_TIMEOUT))
+        if (!m_pProcessThread->wait(Configuration::mainProjectConfiguration.BUILD_TIMEOUT))
             m_pProcessThread->exit(1);
     }
 

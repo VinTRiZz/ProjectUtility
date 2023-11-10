@@ -1,11 +1,10 @@
 #include "cleaner.h"
 
+#include "projectsettings.h"
+
 #include <QProcess>
 
 #include <QDebug>
-
-#define FIND_START_TIMEOUT 1000
-#define FIND_FINISH_TIMEOUT 5000
 
 using namespace FileWork;
 
@@ -30,7 +29,7 @@ QStringList Cleaner::getFileList(const QString &basePath, int fileType)
     if (fileType & FILE_REMOVE_TYPE::MAKEFILE)
     {
         args << basePath << "-name" << "Makefile";
-        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+        if (m_utilClass.invoke("find", args, findOutput, Configuration::mainProjectConfiguration.FIND_FINISH_TIMEOUT))
             addFiles(findOutput, result);
 
         // searchForFiles(basePath, result, "Makefile");
@@ -41,8 +40,8 @@ QStringList Cleaner::getFileList(const QString &basePath, int fileType)
         if (args.size())
             args.clear();
 
-        args << basePath + "/BUILD" << "-type" << "f";
-        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+        args << basePath + Configuration::mainProjectConfiguration.buildDirectory << "-type" << "f";
+        if (m_utilClass.invoke("find", args, findOutput, Configuration::mainProjectConfiguration.FIND_FINISH_TIMEOUT))
             addFiles(findOutput, result);
 
 //        searchForFiles(basePath + "/BUILD", result, "f", "-type");
@@ -53,8 +52,8 @@ QStringList Cleaner::getFileList(const QString &basePath, int fileType)
         if (args.size())
             args.clear();
 
-        args << basePath + "/BIN" << "-type" << "f";
-        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+        args << basePath + Configuration::mainProjectConfiguration.binDirectory << "-type" << "f";
+        if (m_utilClass.invoke("find", args, findOutput, Configuration::mainProjectConfiguration.FIND_FINISH_TIMEOUT))
             addFiles(findOutput, result);
 
 //        searchForFiles(basePath + "/BIN", result, "f", "-type");
@@ -65,8 +64,8 @@ QStringList Cleaner::getFileList(const QString &basePath, int fileType)
         if (args.size())
             args.clear();
 
-        args << basePath + "/LIB" << "-type" << "f";
-        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+        args << basePath + Configuration::mainProjectConfiguration.libDirectory << "-type" << "f";
+        if (m_utilClass.invoke("find", args, findOutput, Configuration::mainProjectConfiguration.FIND_FINISH_TIMEOUT))
             addFiles(findOutput, result);
 
 //        searchForFiles(basePath + "/LIB", result, "f", "-type");
@@ -78,7 +77,7 @@ QStringList Cleaner::getFileList(const QString &basePath, int fileType)
             args.clear();
 
         args << basePath << "-name" << ".qmake.stash";
-        if (m_utilClass.invoke("find", args, findOutput, FIND_FINISH_TIMEOUT))
+        if (m_utilClass.invoke("find", args, findOutput, Configuration::mainProjectConfiguration.FIND_FINISH_TIMEOUT))
             addFiles(findOutput, result);
 
 //        searchForFiles(basePath, result, ".qmake.stash");
