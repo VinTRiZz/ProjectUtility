@@ -30,6 +30,7 @@ SOURCES += \
         src/filework/*.cpp
 
 HEADERS += \
+        src/*.h \
         src/gui/*.h \
         src/filework/*.h
 

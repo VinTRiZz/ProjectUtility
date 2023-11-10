@@ -440,7 +440,7 @@ QListWidget:item:hover
     <item row="0" column="3" rowspan="5">
      <widget class="QStackedWidget" name="menu_stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -596,6 +596,22 @@ QListWidget:item:hover
            </layout>
           </item>
           <item>
+           <widget class="QLineEdit" name="recursiveSearch_lineEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>Рекурсивный поиск</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -638,8 +654,8 @@ QListWidget:item:hover
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>46</width>
-             <height>28</height>
+             <width>474</width>
+             <height>649</height>
             </rect>
            </property>
           </widget>
@@ -1108,6 +1124,7 @@ border-color: rgb(186, 186, 186);</string>
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="page_3"/>
      </widget>
     </item>
    </layout>
@@ -1123,10 +1140,11 @@ border-color: rgb(186, 186, 186);</string>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>Выбрать меню</string>
+     <string>Меню</string>
     </property>
     <addaction name="projectControl_action"/>
     <addaction name="depends_action"/>
+    <addaction name="action_2"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -1144,6 +1162,11 @@ border-color: rgb(186, 186, 186);</string>
   <action name="action">
    <property name="text">
     <string>Дерево зависимостей</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Настройки</string>
    </property>
   </action>
  </widget>

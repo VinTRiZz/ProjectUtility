@@ -48,6 +48,8 @@ public slots:
 
     void buildComplete(const QString & projectName, const bool result);
 
+    void recursiveDependencySearch();
+
 private:
     Ui::MainWindow *ui;
 

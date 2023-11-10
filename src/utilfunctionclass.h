@@ -35,6 +35,7 @@ public:
     bool hasRecurseDepend(QStringList & dependQuery, Project * pParent);
 
     Project * getProject(const QString & projectName);
+    bool hasDepend(const Project * proj, const QString & libName);
 
     QStringList getLibraryNameList();
     QStringList getAppNameList();

@@ -342,3 +342,22 @@ bool ProjectDirectoryFileInterface::archiveSucceed() const
 {
     return m_pImpl->m_archivator.archived();
 }
+
+bool ProjectDirectoryFileInterface::hasDependRecurse(const QString &projName, const QString &depName)
+{
+    Project * pProj = m_pImpl->m_utilClass.getProject(projName);
+
+    if (!pProj)
+    {
+        qDebug() << "[FILE INTERFACE] Error: Project not found:" << projName;
+        return false;
+    }
+
+    if (!m_pImpl->m_utilClass.getProject(depName))
+    {
+        qDebug() << "[FILE INTERFACE] Error: Depend project not found:" << depName;
+        return false;
+    }
+
+    return m_pImpl->m_utilClass.hasDepend(pProj, depName);
+}

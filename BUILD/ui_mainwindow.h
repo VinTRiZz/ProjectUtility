@@ -41,6 +41,7 @@ public:
     QAction *projectControl_action;
     QAction *depends_action;
     QAction *action;
+    QAction *action_2;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout_7;
@@ -75,6 +76,7 @@ public:
     QVBoxLayout *verticalLayout_2;
     QLabel *label_2;
     QListWidget *addedLibs_listWidget;
+    QLineEdit *recursiveSearch_lineEdit;
     QSpacerItem *verticalSpacer_4;
     QScrollArea *graph_scrollArea;
     QWidget *scrollAreaWidgetContents;
@@ -117,6 +119,7 @@ public:
     QPushButton *archive_pushButton;
     QSpacerItem *verticalSpacer_2;
     QSpacerItem *verticalSpacer;
+    QWidget *page_3;
     QMenuBar *menuBar;
     QMenu *menu;
     QStatusBar *statusBar;
@@ -255,6 +258,8 @@ public:
         depends_action->setObjectName(QStringLiteral("depends_action"));
         action = new QAction(MainWindow);
         action->setObjectName(QStringLiteral("action"));
+        action_2 = new QAction(MainWindow);
+        action_2->setObjectName(QStringLiteral("action_2"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral(""));
@@ -491,6 +496,14 @@ public:
 
         verticalLayout_6->addLayout(verticalLayout_2);
 
+        recursiveSearch_lineEdit = new QLineEdit(page);
+        recursiveSearch_lineEdit->setObjectName(QStringLiteral("recursiveSearch_lineEdit"));
+        sizePolicy.setHeightForWidth(recursiveSearch_lineEdit->sizePolicy().hasHeightForWidth());
+        recursiveSearch_lineEdit->setSizePolicy(sizePolicy);
+        recursiveSearch_lineEdit->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_6->addWidget(recursiveSearch_lineEdit);
+
         verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_6->addItem(verticalSpacer_4);
@@ -512,7 +525,7 @@ public:
         graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 46, 28));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 474, 649));
         graph_scrollArea->setWidget(scrollAreaWidgetContents);
 
         horizontalLayout_4->addWidget(graph_scrollArea);
@@ -771,6 +784,9 @@ public:
         gridLayout_2->addItem(verticalSpacer, 1, 1, 2, 1);
 
         menu_stackedWidget->addWidget(page_2);
+        page_3 = new QWidget();
+        page_3->setObjectName(QStringLiteral("page_3"));
+        menu_stackedWidget->addWidget(page_3);
 
         gridLayout->addWidget(menu_stackedWidget, 0, 3, 5, 1);
 
@@ -788,10 +804,11 @@ public:
         menuBar->addAction(menu->menuAction());
         menu->addAction(projectControl_action);
         menu->addAction(depends_action);
+        menu->addAction(action_2);
 
         retranslateUi(MainWindow);
 
-        menu_stackedWidget->setCurrentIndex(1);
+        menu_stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -803,6 +820,7 @@ public:
         projectControl_action->setText(QApplication::translate("MainWindow", "\320\241\320\261\320\276\321\200\320\272\320\260, \321\207\320\270\321\201\321\202\320\272\320\260 \320\270 \320\260\321\200\321\205\320\270\320\262\320\260\321\206\320\270\321\217", nullptr));
         depends_action->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\270 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
         action->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\200\320\265\320\262\320\276 \320\267\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\265\320\271", nullptr));
+        action_2->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
         basePath_lineEdit->setText(QApplication::translate("MainWindow", "/home/lazarev_as/workspace/project", nullptr));
         basePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
         update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
@@ -821,6 +839,7 @@ public:
         remove_pushButton->setText(QApplication::translate("MainWindow", "\320\243\320\261\321\200\320\260\321\202\321\214", nullptr));
         saveChanges_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\265\320\275\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
+        recursiveSearch_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\240\320\265\320\272\321\203\321\200\321\201\320\270\320\262\320\275\321\213\320\271 \320\277\320\276\320\270\321\201\320\272", nullptr));
         label_8->setText(QApplication::translate("MainWindow", "\320\246\320\265\320\273\321\214 \321\201\320\261\320\276\321\200\320\272\320\270", nullptr));
         debugTarget_radioButton->setText(QApplication::translate("MainWindow", "Debug", nullptr));
         releaseTarget_radioButton->setText(QApplication::translate("MainWindow", "Release", nullptr));
@@ -844,7 +863,7 @@ public:
         archivePath_lineEdit->setText(QApplication::translate("MainWindow", "ProjectsArchive", nullptr));
         archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
         archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
-        menu->setTitle(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\274\320\265\320\275\321\216", nullptr));
+        menu->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\320\275\321\216", nullptr));
     } // retranslateUi
 
 };

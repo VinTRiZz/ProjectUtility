@@ -46,6 +46,8 @@ public:
 
     bool archiveSucceed() const;
 
+    bool hasDependRecurse(const QString &projName, const QString &depName);
+
 signals:
     void archiveComplete();
     void buildComplete(const QString & projectName, bool buildResult);

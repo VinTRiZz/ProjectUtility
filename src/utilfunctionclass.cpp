@@ -1,9 +1,9 @@
 #include "utilfunctionclass.h"
 
+#include "projectsettings.h"
+
 #include <QProcess>
 #include <QDebug>
-
-#define PROCESS_START_TIMEOUT 5000
 
 using namespace FileWork;
 
@@ -63,7 +63,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, c
     invokingProcess.setArguments(args);
 
     invokingProcess.start();
-    if (!invokingProcess.waitForStarted(PROCESS_START_TIMEOUT))
+    if (!invokingProcess.waitForStarted(Configuration::mainProjectConfiguration.PROCESS_START_TIMEOUT))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog("Invoke timeout");
@@ -99,7 +99,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, Q
     invokingProcess.setArguments(args);
 
     invokingProcess.start();
-    if (!invokingProcess.waitForStarted(PROCESS_START_TIMEOUT))
+    if (!invokingProcess.waitForStarted(Configuration::mainProjectConfiguration.PROCESS_START_TIMEOUT))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog("Invoke timeout");
@@ -198,6 +198,31 @@ Project *UtilFunctionClass::getProject(const QString &projectName)
     }
 
     return projectPos;
+}
+
+bool UtilFunctionClass::hasDepend(const Project *proj, const QString & libName)
+{
+    Project * pProj;
+    bool hasDependInRecurse {false};
+
+    if (proj->name == libName)
+        return true;
+
+    for (const QString & depName : proj->depends)
+    {
+        pProj = getProject(depName);
+
+        if (pProj)
+        {
+            if (pProj->name == libName)
+                return true;
+
+            hasDependInRecurse = hasDepend(pProj, libName);
+
+            if (hasDependInRecurse)
+                return true;
+        }
+    }
 }
 
 QStringList UtilFunctionClass::getLibraryNameList()

@@ -65,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
 
     connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
+
+    connect(ui->recursiveSearch_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::recursiveDependencySearch);
 }
 
 MainWindow::~MainWindow()
@@ -411,6 +413,35 @@ void MainWindow::buildComplete(const QString &projectName, const bool result)
         emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле buildLog.txt").arg(projectName));
         m_progressPercent.store(100);
     }
+}
+
+void MainWindow::recursiveDependencySearch()
+{
+    const QString dependName = ui->recursiveSearch_lineEdit->text();
+
+    auto pItem = ui->projects_listWidget->currentItem();
+
+    if (!pItem)
+    {
+        emit printInfo("Выберите проект для поиска в нём зависимости");
+        return;
+    }
+
+    const QString projectName = pItem->text();
+
+    if (dependName.length() < 1)
+    {
+        emit printInfo("Введите название библиотеки для рекурсивного поиска среди зависимостей проекта");
+        return;
+    }
+
+    bool hasDepend = m_fileInterface.hasDependRecurse(projectName, dependName);
+
+    if (hasDepend)
+        emit printInfo(QString("Проект %1 зависит от библиотеки %2").arg(projectName, dependName));
+    else
+        emit printInfo(QString("Проект не зависит от этой библиотеки: %1").arg(dependName));
+
 }
 
 void MainWindow::updateProjectList()
