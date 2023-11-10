@@ -1,0 +1,58 @@
+
+---------------------------------------------------------------------------
+Project build "FirstLibrary" with target "debug" started
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+Project build "SecondLibrary" with target "debug" started
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+src/testsecondclass.cpp:3:39: fatal error: FirstLibrary/TestFirstClass: Нет такого файла или каталога
+ #include <FirstLibrary/TestFirstClass>
+                                       ^
+compilation terminated.
+make: *** [../../BUILD/SecondLibrary/testsecondclass.o] Ошибка 1
+
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+g++ -c -pipe -g -Wall -W -D_REENTRANT -fPIC -DQT_GUI_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I../../BUILD/SecondLibrary -isystem /usr/include/libdrm -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o ../../BUILD/SecondLibrary/testsecondclass.o src/testsecondclass.cpp
+Makefile:412: ошибка выполнения рецепта для цели «../../BUILD/SecondLibrary/testsecondclass.o»
+
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+Project rebuild started
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+Project rebuild started
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+Project rebuild started
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+Project build "FirstLibrary" with target "debug" started
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+Project build "SecondLibrary" with target "debug" started
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+src/testsecondclass.cpp:3:39: fatal error: FirstLibrary/TestFirstClass: Нет такого файла или каталога
+ #include <FirstLibrary/TestFirstClass>
+                                       ^
+compilation terminated.
+make: *** [../../BUILD/SecondLibrary/testsecondclass.o] Ошибка 1
+
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------
+g++ -c -pipe -g -Wall -W -D_REENTRANT -fPIC -DQT_GUI_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I../../BUILD/SecondLibrary -isystem /usr/include/libdrm -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o ../../BUILD/SecondLibrary/testsecondclass.o src/testsecondclass.cpp
+Makefile:412: ошибка выполнения рецепта для цели «../../BUILD/SecondLibrary/testsecondclass.o»
+
+---------------------------------------------------------------------------

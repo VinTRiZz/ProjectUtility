@@ -4,6 +4,8 @@
 #include <QDir>
 #include <QThread>
 
+#include "projectsettings.h"
+
 using namespace FileWork;
 
 BuildManager::BuildManager(QObject * parent) :
@@ -46,8 +48,11 @@ bool BuildManager::rebuild(const BuildProjectHandle & proj)
     cleanArgs << "clean";
 
     QDir::setCurrent(projectDir);
-    m_utilClass.invoke("/usr/bin/make", cleanArgs, proj.timeout);
+    bool result = m_utilClass.invoke(Configuration::mainProjectConfiguration.makeProgram, cleanArgs, proj.timeout);
     QDir::setCurrent(currentDir);
+
+    if (!result)
+        qDebug() << "[BUILD MANAGER] (Skipped) Error cleaning";
 
     qDebug() << "[BUILD MANAGER] Build cleaned";
     return build(proj);
@@ -92,37 +97,42 @@ bool BuildManager::startBuilding()
                 qmakeArgs << proj.project.name + ".pro" << "\-spec" << "linux\-g\+\+";
 
                 if (proj.target == "debug")
-                    qmakeArgs << "CONFIG+=debug CONFIG+=qml_debug";
+                    qmakeArgs << Configuration::mainProjectConfiguration.qmakeDebugTargetArg;
                 else if (proj.target == "release")
-                    qmakeArgs << "CONFIG+=qtquickcompiler";
+                    qmakeArgs << Configuration::mainProjectConfiguration.qmakeReleaseTargetArg;
                 else
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] No target selected, skipped";
                     m_utilClass.writeLog("No target selected, skipped");
                     emit buildComplete(proj.project.name, false);
-                    continue;
+                    break;
                 }
 
                 QStringList buildArgs;
 
+                if (!Configuration::mainProjectConfiguration.qmakeArgString.isEmpty())
+                {
+                    qmakeArgs << Configuration::mainProjectConfiguration.qmakeArgString;
+                }
+
                 qDebug() << "[BUILD MANAGER] [BUILD THREAD] Running qmake";
 
                 // Stage 1
-                if (!m_utilClass.invoke("/usr/bin/qmake", qmakeArgs, proj.timeout))
+                if (!m_utilClass.invoke(Configuration::mainProjectConfiguration.qmakeProgram, qmakeArgs, proj.timeout))
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in qmake";
                     emit buildComplete(proj.project.name, false);
-                    continue;
+                    break;
                 }
 
                 qDebug() << "[BUILD MANAGER] [BUILD THREAD] Running make";
 
                 // Stage 2
-                if (!m_utilClass.invoke("/usr/bin/make", buildArgs, proj.timeout))
+                if (!m_utilClass.invoke(Configuration::mainProjectConfiguration.makeProgram, buildArgs, proj.timeout))
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in make";
                     emit buildComplete(proj.project.name, false);
-                    continue;
+                    break;
                 }
 
                 QDir::setCurrent(currentDir);
@@ -133,6 +143,7 @@ bool BuildManager::startBuilding()
 
                 m_startingTask = true;
             }
+            buildQueue.clear();
             m_startingTask = false;
         }
     );

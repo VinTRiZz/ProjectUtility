@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "projectsettings.h" // To change all
+
 #include <QFileInfo>
 #include <QThread>
 
@@ -257,7 +259,9 @@ void MainWindow::build()
         return;
     }
 
+    ui->progressBar->setValue(0);
     m_progressPercent.store(0);
+    projectsToBuild = 0;
 
     QString target;
     if (ui->debugTarget_radioButton->isChecked())
@@ -270,13 +274,19 @@ void MainWindow::build()
 
     if (ui->buildAll_radioButton->isChecked())
     {
-        const int projectCount = ui->projects_listWidget->count();
+        projectsToBuild = ui->projects_listWidget->count();
 
-        for (int i = 0; (i < projectCount) && (i < ui->projects_listWidget->count()); i++)
-            m_fileInterface.addBuild(ui->projects_listWidget->item(i)->text(), target);
+        QString projectName;
+        for (int i = 0; (i < projectsToBuild) && (i < ui->projects_listWidget->count()); i++)
+        {
+            projectName = ui->projects_listWidget->item(i)->text();
+            m_fileInterface.addBuild(projectName, target);
+            emit printInfo(QString("Проект %1 добавлен в очередь сборки").arg(projectName));
+        }
     }
     else if (ui->buildCurrent_radioButton->isChecked())
     {
+
         auto pItem = ui->projects_listWidget->currentItem();
 
         if (!pItem)
@@ -285,17 +295,33 @@ void MainWindow::build()
             return;
         }
 
-        m_fileInterface.addBuild(pItem->text(), target);
+        projectsToBuild = 1;
+
+        const QString projectName = pItem->text();
+
+        m_fileInterface.addBuild(projectName, target);
+
+        emit printInfo(QString("Проект %1 добавлен в очередь сборки").arg(projectName));
     }
 
     if (m_fileInterface.startBuild())
-        emit printInfo("Проект(ы) добавлен(ы) в очередь на сборку");
+        emit printInfo("Сборка запущена");
     else
-        emit printInfo("Ошибка добавления на сборку");
+        emit printInfo("Ошибка запуска сборки проектов");
 }
 
 void MainWindow::rebuild()
 {
+    if (m_progressPercent.load() != 100)
+    {
+        emit printInfo("Сборка уже ведётся. Проверьте прогресс в меню сборки");
+        return;
+    }
+    ui->progressBar->setValue(0);
+
+    m_progressPercent.store(0);
+    projectsToBuild = 0;
+
     QString target;
     if (ui->debugTarget_radioButton->isChecked())
     {
@@ -314,12 +340,11 @@ void MainWindow::rebuild()
         {
             projectName = ui->projects_listWidget->item(i)->text();
             m_fileInterface.addRebuild(projectName, target);
+            emit printInfo(QString("Проект %1 добавлен в очередь пересборки").arg(projectName));
         }
     }
     else if (ui->buildCurrent_radioButton->isChecked())
     {
-        projectsToBuild = 1;
-
         auto pItem = ui->projects_listWidget->currentItem();
 
         if (!pItem)
@@ -328,13 +353,19 @@ void MainWindow::rebuild()
             return;
         }
 
-        m_fileInterface.addRebuild(pItem->text(), target);
+        projectsToBuild = 1;
+
+        const QString projectName = pItem->text();
+
+        m_fileInterface.addRebuild(projectName, target);
+
+        emit printInfo(QString("Проект %1 добавлен в очередь пересборки").arg(projectName));
     }
 
     if (m_fileInterface.startBuild())
-        emit printInfo("Проект(ы) добавлен(ы) в очередь на пересборку");
+        emit printInfo("Начата пересборка");
     else
-        emit printInfo("Ошибка добавления на пересборку");
+        emit printInfo("Ошибка запуска пересборки проектов");
 }
 
 void MainWindow::printInfo(const QString & what)
@@ -407,11 +438,14 @@ void MainWindow::buildComplete(const QString &projectName, const bool result)
     {
         emit printInfo(QString("Собран проект %1").arg(projectName));
         m_progressPercent.store(m_progressPercent.load() + 100.0f / (float)projectsToBuild);
+        int currentPercent = m_progressPercent.load();
+        ui->progressBar->setValue(currentPercent);
     }
     else
     {
         emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле buildLog.txt").arg(projectName));
         m_progressPercent.store(100);
+        ui->progressBar->setValue(100);
     }
 }
 

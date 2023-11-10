@@ -1,5 +1,7 @@
 #include "archivator.h"
 
+#include "projectsettings.h"
+
 #include <QFileInfo>
 #include <QDir>
 
@@ -10,12 +12,6 @@
 #include <QDebug>
 
 #include <QThread>
-
-// Timeout of thread in poll() function
-#define PROCESS_THREAD_TIMEOUT 60000
-
-// Timeout for archiving (1h)
-#define ZIP_PROCESS_TIMEOUT 3600000
 
 using namespace FileWork;
 
@@ -54,7 +50,7 @@ struct Archivator::Impl
 
         if (processThread->isRunning())
         {
-            if (!processThread->wait(PROCESS_THREAD_TIMEOUT))
+            if (!processThread->wait(Configuration::mainProjectConfiguration.PROCESS_THREAD_TIMEOUT))
                 processThread->exit(1);
         }
 
@@ -258,9 +254,9 @@ void Archivator::archive(const QString & resultPath)
 
             packProcess.start();
 
-            if (packProcess.waitForStarted(ZIP_PROCESS_TIMEOUT))
+            if (packProcess.waitForStarted(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
             {
-                if (!packProcess.waitForFinished(ZIP_PROCESS_TIMEOUT))
+                if (!packProcess.waitForFinished(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
                 {
                     packProcess.kill();
                 }
@@ -347,9 +343,9 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
 
             packProcess.start();
 
-            if (packProcess.waitForStarted(ZIP_PROCESS_TIMEOUT))
+            if (packProcess.waitForStarted(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
             {
-                if (!packProcess.waitForFinished(ZIP_PROCESS_TIMEOUT))
+                if (!packProcess.waitForFinished(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
                 {
                     packProcess.kill();
                 }
