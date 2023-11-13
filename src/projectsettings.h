@@ -4,6 +4,7 @@
 #include <atomic>
 #include <mutex>
 #include <QString>
+#include <map>
 
 #include <QDebug>
 
@@ -13,13 +14,21 @@ namespace Configuration
 class IntSetting
 {
 public:
+    IntSetting()        { data.store(0); }
     IntSetting(int val) { data.store(val); }
 
-    IntSetting(IntSetting && s) { data = s; }
+    IntSetting(const IntSetting & s) { data.store(s.data.load()); }
+    IntSetting(IntSetting && s) { data.store(s.data.load()); }
 
     IntSetting & operator =(int newValue)
     {
         data.store(newValue);
+        return *this;
+    }
+
+    IntSetting & operator =(const IntSetting newValue)
+    {
+        data.store(newValue.data.load());
         return *this;
     }
 
@@ -32,9 +41,19 @@ protected:
 class StringSetting
 {
 public:
-    StringSetting(const QString & data)
+    StringSetting()
+    {
+        this->data = QString();
+    }
+
+    StringSetting(const char * data)
     {
         this->data = data;
+    }
+
+    StringSetting(const StringSetting & data)
+    {
+        this->data = data.data;
     }
 
     StringSetting(StringSetting && s)
@@ -50,6 +69,24 @@ public:
         mx.lock();
         qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Setting data:" << data;
         this->data = data;
+        mx.unlock();
+        return *this;
+    }
+
+    StringSetting & operator =(StringSetting & data)
+    {
+        mx.lock();
+        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Setting data:" << data;
+        this->data = data;
+        mx.unlock();
+        return *this;
+    }
+
+    StringSetting & operator =(const StringSetting & data)
+    {
+        mx.lock();
+        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Setting data:" << data.data;
+        this->data = data.data;
         mx.unlock();
         return *this;
     }
@@ -80,44 +117,55 @@ private:
 
 struct ProjectConfiguration
 {
-    // Main configurations
-    const QString SAVE_CHANGES_BACKUP_DIRECTORY {"./saveChangesBackup"};
-    const QString BUILD_LOG_FILE_NAME {"buildLog.txt"};
+    ProjectConfiguration()
+    {
+        qDebug() << "[\033[32mCREATED CONFIGURATION STRUCTURE\033[0m]";
+    }
 
-    // Util class
-    IntSetting PROCESS_START_TIMEOUT {5000};
+    std::map<QString, StringSetting> strSettings
+    {
+        // Main configurations
+        { "SAVE_CHANGES_BACKUP_DIRECTORY", "./saveChangesBackup"},
+        { "BUILD_LOG_FILE_NAME", "buildLog.txt"},
 
-    // Archivator
-    IntSetting PROCESS_THREAD_TIMEOUT {60000}; // Timeout of thread in poll() function
-    IntSetting ZIP_PROCESS_TIMEOUT {3600000}; // Timeout for archiving (1h)
+        // Builder
+        { "makeProgram", "/usr/bin/make"},
+        { "qmakeProgram", "/usr/bin/qmake"},
 
-    // Builder
-    StringSetting makeProgram {"/usr/bin/make"};
-    StringSetting qmakeProgram{"/usr/bin/qmake"};
+        { "qmakeDefaultBuildArgs", "-spec linux-g++"},
+        { "qmakeArgString", ""}, // Adds in settings tile
+        { "qmakeDebugTargetArg", "CONFIG+=debug CONFIG+=qml_debug"},
+        { "qmakeReleaseTargetArg", "CONFIG+=qtquickcompiler"},
 
-    const QString qmakeDefaultBuildArgs = "PROJECT_NAME.pro -spec linux-g++";
-    StringSetting qmakeArgString {""}; // Adds in settings tile
-    StringSetting qmakeDebugTargetArg {"CONFIG+=debug CONFIG+=qml_debug"};
-    StringSetting qmakeReleaseTargetArg {"CONFIG+=qtquickcompiler"};
+        { "buildDirectory", "/BUILD"},
+        { "binDirectory", "/BIN"},
+        { "libDirectory", "/LIB"},
+        { "libraryDirectory", "/Libraries"},
+        { "appDirectory", "/Apps"},
 
-    IntSetting BUILD_TIMEOUT {360000000};
+        // Depends parser
+        { "dependPathRegexp", "\\$\\$PWD\\/\\.\\.\\/\\.\\."},
+        { "dependPathBase", "$$PWD/../.."}
+    };
 
-    // Cleaner
-    IntSetting FIND_FINISH_TIMEOUT {100000};
+    std::map<QString, IntSetting> intSettings =
+    {
+        // Util class
+        { "PROCESS_START_TIMEOUT", 5000},
 
-    StringSetting buildDirectory {"/BUILD"};
-    StringSetting binDirectory {"/BIN"};
-    StringSetting libDirectory {"/LIB"};
-    StringSetting libraryDirectory {"/Libraries"};
-    StringSetting appDirectory {"/Apps"};
+        // Archivator
+        { "PROCESS_THREAD_TIMEOUT", 60000}, // Timeout of thread in poll() function
+        { "ZIP_PROCESS_TIMEOUT", 3600000}, // Timeout for archiving (1h)
 
-    // Depends parser
-    StringSetting dependPathRegexp {"\\$\\$PWD\\/\\.\\.\\/\\.\\."};
-    StringSetting dependPathBase {"$$PWD/../.."};
+        { "BUILD_TIMEOUT", 360000000},
+
+        // Cleaner
+        { "FIND_FINISH_TIMEOUT", 100000}
+    };
 };
 
 
-static ProjectConfiguration mainProjectConfiguration {ProjectConfiguration()};
+static ProjectConfiguration defaultProjectConfiguration {ProjectConfiguration()};
 
 }
 

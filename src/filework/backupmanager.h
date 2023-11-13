@@ -4,6 +4,8 @@
 #include <QString>
 #include <QStringList>
 
+#include "projectsettings.h"
+
 class QFile;
 namespace FileWork
 {
@@ -11,7 +13,7 @@ namespace FileWork
 class BackupManager
 {
 public:
-    BackupManager();
+    BackupManager(Configuration::ProjectConfiguration & mainProjectConfiguration);
     ~BackupManager();
 
     bool backup(const QString & projectName, const QString & filePath);
@@ -30,6 +32,8 @@ private:
 
     void parseFilesList();
     bool processBackupDirectory(const QString & path);
+
+    Configuration::ProjectConfiguration & mainProjectConfiguration;
 };
 
 }

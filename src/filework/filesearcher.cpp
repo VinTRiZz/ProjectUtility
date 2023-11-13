@@ -10,8 +10,8 @@
 
 using namespace FileWork;
 
-FileSearcher::FileSearcher(QVector<Project> & apps, QVector<Project> & libs):
-    apps{apps}, libs{libs}
+FileSearcher::FileSearcher(QVector<Project> & apps, QVector<Project> & libs, UtilFunctionClass & utilClass):
+    apps{apps}, libs{libs}, m_utilClass {utilClass}
 {
 
 }
@@ -116,8 +116,8 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
 void FileSearcher::findFiles()
 {
     const QString
-            appDirBasePath = currentBasePath + Configuration::mainProjectConfiguration.appDirectory,
-            libDirBasePath = currentBasePath + Configuration::mainProjectConfiguration.libraryDirectory
+            appDirBasePath = currentBasePath + m_utilClass.projectConfiguration().strSettings["appDirectory"],
+            libDirBasePath = currentBasePath + m_utilClass.projectConfiguration().strSettings["libraryDirectory"]
             ;
 
     apps.clear();

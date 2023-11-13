@@ -12,7 +12,7 @@ namespace FileWork
 class FileSearcher
 {
 public:
-    FileSearcher(QVector<Project> & apps, QVector<Project> & libs);
+    FileSearcher(QVector<Project> & apps, QVector<Project> & libs, UtilFunctionClass & utilClass);
     ~FileSearcher();
 
     void setPath(const QString & path);
@@ -25,9 +25,9 @@ private:
     QString findOutput;
     QVector<Project> & apps;
     QVector<Project> & libs;
+    UtilFunctionClass & m_utilClass;
 
     bool searchForProjects(const QString & basePath, bool isLibs);
-//    bool searchForFiles(const QString & basePath);
 };
 
 }

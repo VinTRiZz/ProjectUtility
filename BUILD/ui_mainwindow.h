@@ -44,23 +44,6 @@ public:
     QAction *action_2;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
-    QVBoxLayout *verticalLayout_7;
-    QVBoxLayout *verticalLayout_10;
-    QLineEdit *basePath_lineEdit;
-    QPushButton *update_pushButton;
-    QLabel *label;
-    QListWidget *projects_listWidget;
-    QLineEdit *searchProject_lineEdit;
-    QWidget *widget;
-    QVBoxLayout *verticalLayout_5;
-    QLabel *label_5;
-    QRadioButton *libs_radioButton;
-    QRadioButton *apps_radioButton;
-    QSpacerItem *horizontalSpacer_2;
-    QSpacerItem *horizontalSpacer;
-    QListWidget *notifications_listWidget;
-    QLabel *label_9;
-    QPushButton *cleanOutput_pushButton;
     QStackedWidget *menu_stackedWidget;
     QWidget *page;
     QHBoxLayout *horizontalLayout_4;
@@ -121,46 +104,44 @@ public:
     QSpacerItem *verticalSpacer;
     QWidget *page_3;
     QGridLayout *gridLayout_3;
-    QStackedWidget *settings_stackedWidget;
-    QWidget *page_4;
-    QPushButton *pushButton;
-    QWidget *layoutWidget;
-    QHBoxLayout *horizontalLayout_5;
-    QLabel *label_11;
-    QLineEdit *processStartTimeout_lineEdit;
-    QWidget *layoutWidget_2;
-    QHBoxLayout *horizontalLayout_6;
-    QLabel *label_12;
-    QLineEdit *archiveTimeout_lineEdit;
-    QWidget *layoutWidget_3;
-    QHBoxLayout *horizontalLayout_7;
-    QLabel *label_13;
-    QLineEdit *zipTimeout_lineEdit;
-    QWidget *layoutWidget_4;
-    QHBoxLayout *horizontalLayout_8;
-    QLabel *label_14;
-    QLineEdit *make_lineEdit;
-    QWidget *layoutWidget_5;
-    QHBoxLayout *horizontalLayout_9;
-    QLabel *label_15;
-    QLineEdit *qmake_lineEdit;
-    QWidget *layoutWidget_6;
-    QHBoxLayout *horizontalLayout_10;
+    QWidget *widget_6;
+    QGridLayout *gridLayout_4;
     QLabel *label_16;
-    QLineEdit *qmakeDefault_lineEdit;
-    QWidget *layoutWidget_7;
-    QHBoxLayout *horizontalLayout_11;
-    QLabel *label_17;
-    QLineEdit *qmakeArgs_lineEdit;
-    QWidget *widget1;
+    QVBoxLayout *verticalLayout_15;
+    QLabel *label_15;
     QHBoxLayout *horizontalLayout_3;
+    QVBoxLayout *verticalLayout_13;
     QLabel *label_10;
-    QLineEdit *logFile_lineEdit;
-    QWidget *page_5;
-    QPushButton *pushButton_2;
-    QPushButton *prevPage_pushButton;
-    QPushButton *nextPage_pushButton;
-    QSpacerItem *horizontalSpacer_4;
+    QLabel *label_11;
+    QLabel *label_12;
+    QVBoxLayout *verticalLayout_14;
+    QLabel *settingName_label;
+    QLabel *settingValue_label;
+    QLineEdit *settingValue_lineEdit;
+    QPushButton *settingAccept_pushButton;
+    QPushButton *settingRestore_pushButton;
+    QPushButton *settingsSave_pushButton;
+    QPushButton *settingsRestore_pushButton;
+    QListWidget *settingList_listWidget;
+    QSpacerItem *verticalSpacer_3;
+    QLineEdit *settingSearch_lineEdit;
+    QVBoxLayout *verticalLayout_7;
+    QVBoxLayout *verticalLayout_10;
+    QLineEdit *basePath_lineEdit;
+    QPushButton *update_pushButton;
+    QLabel *label;
+    QListWidget *projects_listWidget;
+    QLineEdit *searchProject_lineEdit;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout_5;
+    QLabel *label_5;
+    QRadioButton *libs_radioButton;
+    QRadioButton *apps_radioButton;
+    QSpacerItem *horizontalSpacer_2;
+    QSpacerItem *horizontalSpacer;
+    QListWidget *notifications_listWidget;
+    QLabel *label_9;
+    QPushButton *cleanOutput_pushButton;
     QMenuBar *menuBar;
     QMenu *menu;
     QStatusBar *statusBar;
@@ -308,145 +289,6 @@ public:
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        verticalLayout_7 = new QVBoxLayout();
-        verticalLayout_7->setSpacing(6);
-        verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
-        verticalLayout_10 = new QVBoxLayout();
-        verticalLayout_10->setSpacing(0);
-        verticalLayout_10->setObjectName(QStringLiteral("verticalLayout_10"));
-        basePath_lineEdit = new QLineEdit(centralWidget);
-        basePath_lineEdit->setObjectName(QStringLiteral("basePath_lineEdit"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(basePath_lineEdit->sizePolicy().hasHeightForWidth());
-        basePath_lineEdit->setSizePolicy(sizePolicy);
-        basePath_lineEdit->setMaximumSize(QSize(350, 16777215));
-        basePath_lineEdit->setStyleSheet(QStringLiteral("color: rgb(167, 167, 167);"));
-
-        verticalLayout_10->addWidget(basePath_lineEdit);
-
-
-        verticalLayout_7->addLayout(verticalLayout_10);
-
-        update_pushButton = new QPushButton(centralWidget);
-        update_pushButton->setObjectName(QStringLiteral("update_pushButton"));
-        sizePolicy.setHeightForWidth(update_pushButton->sizePolicy().hasHeightForWidth());
-        update_pushButton->setSizePolicy(sizePolicy);
-        update_pushButton->setMinimumSize(QSize(0, 0));
-        update_pushButton->setMaximumSize(QSize(500, 16777215));
-        update_pushButton->setStyleSheet(QStringLiteral(""));
-
-        verticalLayout_7->addWidget(update_pushButton);
-
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy);
-        label->setMaximumSize(QSize(500, 16777215));
-        label->setLayoutDirection(Qt::LeftToRight);
-        label->setAlignment(Qt::AlignCenter);
-
-        verticalLayout_7->addWidget(label);
-
-        projects_listWidget = new QListWidget(centralWidget);
-        projects_listWidget->setObjectName(QStringLiteral("projects_listWidget"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(projects_listWidget->sizePolicy().hasHeightForWidth());
-        projects_listWidget->setSizePolicy(sizePolicy1);
-        projects_listWidget->setMaximumSize(QSize(500, 16777215));
-        projects_listWidget->setFocusPolicy(Qt::NoFocus);
-        projects_listWidget->setStyleSheet(QStringLiteral(""));
-        projects_listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        projects_listWidget->setSortingEnabled(true);
-
-        verticalLayout_7->addWidget(projects_listWidget);
-
-        searchProject_lineEdit = new QLineEdit(centralWidget);
-        searchProject_lineEdit->setObjectName(QStringLiteral("searchProject_lineEdit"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(searchProject_lineEdit->sizePolicy().hasHeightForWidth());
-        searchProject_lineEdit->setSizePolicy(sizePolicy2);
-        searchProject_lineEdit->setMaximumSize(QSize(500, 16777215));
-        searchProject_lineEdit->setStyleSheet(QStringLiteral(""));
-        searchProject_lineEdit->setAlignment(Qt::AlignCenter);
-
-        verticalLayout_7->addWidget(searchProject_lineEdit);
-
-
-        gridLayout->addLayout(verticalLayout_7, 1, 0, 1, 3);
-
-        widget = new QWidget(centralWidget);
-        widget->setObjectName(QStringLiteral("widget"));
-        sizePolicy2.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
-        widget->setSizePolicy(sizePolicy2);
-        widget->setStyleSheet(QStringLiteral(""));
-        verticalLayout_5 = new QVBoxLayout(widget);
-        verticalLayout_5->setSpacing(0);
-        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        verticalLayout_5->setContentsMargins(0, 0, 0, 0);
-        label_5 = new QLabel(widget);
-        label_5->setObjectName(QStringLiteral("label_5"));
-        sizePolicy.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
-        label_5->setSizePolicy(sizePolicy);
-        label_5->setAlignment(Qt::AlignCenter);
-
-        verticalLayout_5->addWidget(label_5);
-
-        libs_radioButton = new QRadioButton(widget);
-        libs_radioButton->setObjectName(QStringLiteral("libs_radioButton"));
-        libs_radioButton->setStyleSheet(QStringLiteral(""));
-        libs_radioButton->setChecked(true);
-
-        verticalLayout_5->addWidget(libs_radioButton);
-
-        apps_radioButton = new QRadioButton(widget);
-        apps_radioButton->setObjectName(QStringLiteral("apps_radioButton"));
-        apps_radioButton->setStyleSheet(QStringLiteral(""));
-
-        verticalLayout_5->addWidget(apps_radioButton);
-
-
-        gridLayout->addWidget(widget, 0, 1, 1, 1);
-
-        horizontalSpacer_2 = new QSpacerItem(30, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_2, 0, 0, 1, 1);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer, 0, 2, 1, 1);
-
-        notifications_listWidget = new QListWidget(centralWidget);
-        notifications_listWidget->setObjectName(QStringLiteral("notifications_listWidget"));
-        sizePolicy2.setHeightForWidth(notifications_listWidget->sizePolicy().hasHeightForWidth());
-        notifications_listWidget->setSizePolicy(sizePolicy2);
-        notifications_listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        notifications_listWidget->setProperty("showDropIndicator", QVariant(false));
-        notifications_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
-        notifications_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-        notifications_listWidget->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-        notifications_listWidget->setSpacing(2);
-        notifications_listWidget->setWordWrap(true);
-
-        gridLayout->addWidget(notifications_listWidget, 3, 0, 1, 3);
-
-        label_9 = new QLabel(centralWidget);
-        label_9->setObjectName(QStringLiteral("label_9"));
-        label_9->setAlignment(Qt::AlignCenter);
-
-        gridLayout->addWidget(label_9, 2, 0, 1, 3);
-
-        cleanOutput_pushButton = new QPushButton(centralWidget);
-        cleanOutput_pushButton->setObjectName(QStringLiteral("cleanOutput_pushButton"));
-
-        gridLayout->addWidget(cleanOutput_pushButton, 4, 0, 1, 3);
-
         menu_stackedWidget = new QStackedWidget(centralWidget);
         menu_stackedWidget->setObjectName(QStringLiteral("menu_stackedWidget"));
         page = new QWidget();
@@ -464,6 +306,9 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         label_3 = new QLabel(page);
         label_3->setObjectName(QStringLiteral("label_3"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
         label_3->setSizePolicy(sizePolicy);
         label_3->setAlignment(Qt::AlignCenter);
@@ -472,8 +317,11 @@ public:
 
         avaliableLibs_listWidget = new QListWidget(page);
         avaliableLibs_listWidget->setObjectName(QStringLiteral("avaliableLibs_listWidget"));
-        sizePolicy2.setHeightForWidth(avaliableLibs_listWidget->sizePolicy().hasHeightForWidth());
-        avaliableLibs_listWidget->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(avaliableLibs_listWidget->sizePolicy().hasHeightForWidth());
+        avaliableLibs_listWidget->setSizePolicy(sizePolicy1);
 
         verticalLayout->addWidget(avaliableLibs_listWidget);
 
@@ -529,8 +377,8 @@ public:
 
         addedLibs_listWidget = new QListWidget(page);
         addedLibs_listWidget->setObjectName(QStringLiteral("addedLibs_listWidget"));
-        sizePolicy2.setHeightForWidth(addedLibs_listWidget->sizePolicy().hasHeightForWidth());
-        addedLibs_listWidget->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(addedLibs_listWidget->sizePolicy().hasHeightForWidth());
+        addedLibs_listWidget->setSizePolicy(sizePolicy1);
 
         verticalLayout_2->addWidget(addedLibs_listWidget);
 
@@ -554,11 +402,11 @@ public:
 
         graph_scrollArea = new QScrollArea(page);
         graph_scrollArea->setObjectName(QStringLiteral("graph_scrollArea"));
-        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(graph_scrollArea->sizePolicy().hasHeightForWidth());
-        graph_scrollArea->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(graph_scrollArea->sizePolicy().hasHeightForWidth());
+        graph_scrollArea->setSizePolicy(sizePolicy2);
         graph_scrollArea->viewport()->setProperty("cursor", QVariant(QCursor(Qt::ArrowCursor)));
         graph_scrollArea->setMouseTracking(false);
         graph_scrollArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
@@ -591,8 +439,8 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         widget_3 = new QWidget(page_2);
         widget_3->setObjectName(QStringLiteral("widget_3"));
-        sizePolicy2.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
-        widget_3->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
+        widget_3->setSizePolicy(sizePolicy1);
         widget_3->setStyleSheet(QStringLiteral(""));
         verticalLayout_8 = new QVBoxLayout(widget_3);
         verticalLayout_8->setSpacing(6);
@@ -625,8 +473,8 @@ public:
 
         widget_2 = new QWidget(page_2);
         widget_2->setObjectName(QStringLiteral("widget_2"));
-        sizePolicy2.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
-        widget_2->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
+        widget_2->setSizePolicy(sizePolicy1);
         widget_2->setStyleSheet(QStringLiteral(""));
         verticalLayout_11 = new QVBoxLayout(widget_2);
         verticalLayout_11->setSpacing(6);
@@ -754,8 +602,8 @@ public:
 
         widget_4 = new QWidget(page_2);
         widget_4->setObjectName(QStringLiteral("widget_4"));
-        sizePolicy2.setHeightForWidth(widget_4->sizePolicy().hasHeightForWidth());
-        widget_4->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(widget_4->sizePolicy().hasHeightForWidth());
+        widget_4->setSizePolicy(sizePolicy1);
         widget_4->setStyleSheet(QStringLiteral(""));
         verticalLayout_12 = new QVBoxLayout(widget_4);
         verticalLayout_12->setSpacing(2);
@@ -831,197 +679,255 @@ public:
         gridLayout_3->setSpacing(6);
         gridLayout_3->setContentsMargins(11, 11, 11, 11);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        settings_stackedWidget = new QStackedWidget(page_3);
-        settings_stackedWidget->setObjectName(QStringLiteral("settings_stackedWidget"));
-        page_4 = new QWidget();
-        page_4->setObjectName(QStringLiteral("page_4"));
-        pushButton = new QPushButton(page_4);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(110, 390, 80, 26));
-        layoutWidget = new QWidget(page_4);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(50, 80, 651, 28));
-        horizontalLayout_5 = new QHBoxLayout(layoutWidget);
-        horizontalLayout_5->setSpacing(6);
-        horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
-        label_11 = new QLabel(layoutWidget);
-        label_11->setObjectName(QStringLiteral("label_11"));
-        label_11->setAlignment(Qt::AlignCenter);
+        widget_6 = new QWidget(page_3);
+        widget_6->setObjectName(QStringLiteral("widget_6"));
+        gridLayout_4 = new QGridLayout(widget_6);
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setContentsMargins(11, 11, 11, 11);
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        label_16 = new QLabel(widget_6);
+        label_16->setObjectName(QStringLiteral("label_16"));
+        label_16->setMaximumSize(QSize(16777215, 50));
+        label_16->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_5->addWidget(label_11);
+        gridLayout_4->addWidget(label_16, 0, 0, 1, 1);
 
-        processStartTimeout_lineEdit = new QLineEdit(layoutWidget);
-        processStartTimeout_lineEdit->setObjectName(QStringLiteral("processStartTimeout_lineEdit"));
-        processStartTimeout_lineEdit->setInputMethodHints(Qt::ImhDigitsOnly);
-        processStartTimeout_lineEdit->setClearButtonEnabled(false);
-
-        horizontalLayout_5->addWidget(processStartTimeout_lineEdit);
-
-        layoutWidget_2 = new QWidget(page_4);
-        layoutWidget_2->setObjectName(QStringLiteral("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(50, 120, 651, 28));
-        horizontalLayout_6 = new QHBoxLayout(layoutWidget_2);
-        horizontalLayout_6->setSpacing(6);
-        horizontalLayout_6->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
-        label_12 = new QLabel(layoutWidget_2);
-        label_12->setObjectName(QStringLiteral("label_12"));
-        label_12->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_6->addWidget(label_12);
-
-        archiveTimeout_lineEdit = new QLineEdit(layoutWidget_2);
-        archiveTimeout_lineEdit->setObjectName(QStringLiteral("archiveTimeout_lineEdit"));
-        archiveTimeout_lineEdit->setInputMethodHints(Qt::ImhDigitsOnly);
-
-        horizontalLayout_6->addWidget(archiveTimeout_lineEdit);
-
-        layoutWidget_3 = new QWidget(page_4);
-        layoutWidget_3->setObjectName(QStringLiteral("layoutWidget_3"));
-        layoutWidget_3->setGeometry(QRect(50, 160, 651, 28));
-        horizontalLayout_7 = new QHBoxLayout(layoutWidget_3);
-        horizontalLayout_7->setSpacing(6);
-        horizontalLayout_7->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
-        horizontalLayout_7->setContentsMargins(0, 0, 0, 0);
-        label_13 = new QLabel(layoutWidget_3);
-        label_13->setObjectName(QStringLiteral("label_13"));
-        label_13->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_7->addWidget(label_13);
-
-        zipTimeout_lineEdit = new QLineEdit(layoutWidget_3);
-        zipTimeout_lineEdit->setObjectName(QStringLiteral("zipTimeout_lineEdit"));
-        zipTimeout_lineEdit->setInputMethodHints(Qt::ImhDigitsOnly);
-
-        horizontalLayout_7->addWidget(zipTimeout_lineEdit);
-
-        layoutWidget_4 = new QWidget(page_4);
-        layoutWidget_4->setObjectName(QStringLiteral("layoutWidget_4"));
-        layoutWidget_4->setGeometry(QRect(50, 200, 651, 28));
-        horizontalLayout_8 = new QHBoxLayout(layoutWidget_4);
-        horizontalLayout_8->setSpacing(6);
-        horizontalLayout_8->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
-        horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
-        label_14 = new QLabel(layoutWidget_4);
-        label_14->setObjectName(QStringLiteral("label_14"));
-        label_14->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_8->addWidget(label_14);
-
-        make_lineEdit = new QLineEdit(layoutWidget_4);
-        make_lineEdit->setObjectName(QStringLiteral("make_lineEdit"));
-
-        horizontalLayout_8->addWidget(make_lineEdit);
-
-        layoutWidget_5 = new QWidget(page_4);
-        layoutWidget_5->setObjectName(QStringLiteral("layoutWidget_5"));
-        layoutWidget_5->setGeometry(QRect(50, 240, 651, 28));
-        horizontalLayout_9 = new QHBoxLayout(layoutWidget_5);
-        horizontalLayout_9->setSpacing(6);
-        horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
-        horizontalLayout_9->setContentsMargins(0, 0, 0, 0);
-        label_15 = new QLabel(layoutWidget_5);
+        verticalLayout_15 = new QVBoxLayout();
+        verticalLayout_15->setSpacing(6);
+        verticalLayout_15->setObjectName(QStringLiteral("verticalLayout_15"));
+        label_15 = new QLabel(widget_6);
         label_15->setObjectName(QStringLiteral("label_15"));
         label_15->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_9->addWidget(label_15);
+        verticalLayout_15->addWidget(label_15);
 
-        qmake_lineEdit = new QLineEdit(layoutWidget_5);
-        qmake_lineEdit->setObjectName(QStringLiteral("qmake_lineEdit"));
-
-        horizontalLayout_9->addWidget(qmake_lineEdit);
-
-        layoutWidget_6 = new QWidget(page_4);
-        layoutWidget_6->setObjectName(QStringLiteral("layoutWidget_6"));
-        layoutWidget_6->setGeometry(QRect(50, 280, 651, 28));
-        horizontalLayout_10 = new QHBoxLayout(layoutWidget_6);
-        horizontalLayout_10->setSpacing(6);
-        horizontalLayout_10->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_10->setObjectName(QStringLiteral("horizontalLayout_10"));
-        horizontalLayout_10->setContentsMargins(0, 0, 0, 0);
-        label_16 = new QLabel(layoutWidget_6);
-        label_16->setObjectName(QStringLiteral("label_16"));
-        label_16->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_10->addWidget(label_16);
-
-        qmakeDefault_lineEdit = new QLineEdit(layoutWidget_6);
-        qmakeDefault_lineEdit->setObjectName(QStringLiteral("qmakeDefault_lineEdit"));
-        qmakeDefault_lineEdit->setReadOnly(false);
-
-        horizontalLayout_10->addWidget(qmakeDefault_lineEdit);
-
-        layoutWidget_7 = new QWidget(page_4);
-        layoutWidget_7->setObjectName(QStringLiteral("layoutWidget_7"));
-        layoutWidget_7->setGeometry(QRect(50, 320, 651, 28));
-        horizontalLayout_11 = new QHBoxLayout(layoutWidget_7);
-        horizontalLayout_11->setSpacing(6);
-        horizontalLayout_11->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_11->setObjectName(QStringLiteral("horizontalLayout_11"));
-        horizontalLayout_11->setContentsMargins(0, 0, 0, 0);
-        label_17 = new QLabel(layoutWidget_7);
-        label_17->setObjectName(QStringLiteral("label_17"));
-        label_17->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_11->addWidget(label_17);
-
-        qmakeArgs_lineEdit = new QLineEdit(layoutWidget_7);
-        qmakeArgs_lineEdit->setObjectName(QStringLiteral("qmakeArgs_lineEdit"));
-
-        horizontalLayout_11->addWidget(qmakeArgs_lineEdit);
-
-        widget1 = new QWidget(page_4);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(50, 40, 651, 28));
-        horizontalLayout_3 = new QHBoxLayout(widget1);
+        horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
-        horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        label_10 = new QLabel(widget1);
+        verticalLayout_13 = new QVBoxLayout();
+        verticalLayout_13->setSpacing(6);
+        verticalLayout_13->setObjectName(QStringLiteral("verticalLayout_13"));
+        label_10 = new QLabel(widget_6);
         label_10->setObjectName(QStringLiteral("label_10"));
-        label_10->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_3->addWidget(label_10);
+        verticalLayout_13->addWidget(label_10);
 
-        logFile_lineEdit = new QLineEdit(widget1);
-        logFile_lineEdit->setObjectName(QStringLiteral("logFile_lineEdit"));
+        label_11 = new QLabel(widget_6);
+        label_11->setObjectName(QStringLiteral("label_11"));
 
-        horizontalLayout_3->addWidget(logFile_lineEdit);
+        verticalLayout_13->addWidget(label_11);
 
-        settings_stackedWidget->addWidget(page_4);
-        page_5 = new QWidget();
-        page_5->setObjectName(QStringLiteral("page_5"));
-        pushButton_2 = new QPushButton(page_5);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(250, 190, 80, 26));
-        settings_stackedWidget->addWidget(page_5);
+        label_12 = new QLabel(widget_6);
+        label_12->setObjectName(QStringLiteral("label_12"));
 
-        gridLayout_3->addWidget(settings_stackedWidget, 0, 0, 1, 3);
+        verticalLayout_13->addWidget(label_12);
 
-        prevPage_pushButton = new QPushButton(page_3);
-        prevPage_pushButton->setObjectName(QStringLiteral("prevPage_pushButton"));
 
-        gridLayout_3->addWidget(prevPage_pushButton, 1, 0, 1, 1);
+        horizontalLayout_3->addLayout(verticalLayout_13);
 
-        nextPage_pushButton = new QPushButton(page_3);
-        nextPage_pushButton->setObjectName(QStringLiteral("nextPage_pushButton"));
+        verticalLayout_14 = new QVBoxLayout();
+        verticalLayout_14->setSpacing(6);
+        verticalLayout_14->setObjectName(QStringLiteral("verticalLayout_14"));
+        settingName_label = new QLabel(widget_6);
+        settingName_label->setObjectName(QStringLiteral("settingName_label"));
+        settingName_label->setAlignment(Qt::AlignCenter);
 
-        gridLayout_3->addWidget(nextPage_pushButton, 1, 2, 1, 1);
+        verticalLayout_14->addWidget(settingName_label);
 
-        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+        settingValue_label = new QLabel(widget_6);
+        settingValue_label->setObjectName(QStringLiteral("settingValue_label"));
+        settingValue_label->setAlignment(Qt::AlignCenter);
 
-        gridLayout_3->addItem(horizontalSpacer_4, 1, 1, 1, 1);
+        verticalLayout_14->addWidget(settingValue_label);
+
+        settingValue_lineEdit = new QLineEdit(widget_6);
+        settingValue_lineEdit->setObjectName(QStringLiteral("settingValue_lineEdit"));
+
+        verticalLayout_14->addWidget(settingValue_lineEdit);
+
+
+        horizontalLayout_3->addLayout(verticalLayout_14);
+
+
+        verticalLayout_15->addLayout(horizontalLayout_3);
+
+        settingAccept_pushButton = new QPushButton(widget_6);
+        settingAccept_pushButton->setObjectName(QStringLiteral("settingAccept_pushButton"));
+
+        verticalLayout_15->addWidget(settingAccept_pushButton);
+
+        settingRestore_pushButton = new QPushButton(widget_6);
+        settingRestore_pushButton->setObjectName(QStringLiteral("settingRestore_pushButton"));
+
+        verticalLayout_15->addWidget(settingRestore_pushButton);
+
+        settingsSave_pushButton = new QPushButton(widget_6);
+        settingsSave_pushButton->setObjectName(QStringLiteral("settingsSave_pushButton"));
+
+        verticalLayout_15->addWidget(settingsSave_pushButton);
+
+        settingsRestore_pushButton = new QPushButton(widget_6);
+        settingsRestore_pushButton->setObjectName(QStringLiteral("settingsRestore_pushButton"));
+
+        verticalLayout_15->addWidget(settingsRestore_pushButton);
+
+
+        gridLayout_4->addLayout(verticalLayout_15, 0, 1, 2, 1);
+
+        settingList_listWidget = new QListWidget(widget_6);
+        settingList_listWidget->setObjectName(QStringLiteral("settingList_listWidget"));
+
+        gridLayout_4->addWidget(settingList_listWidget, 1, 0, 2, 1);
+
+        verticalSpacer_3 = new QSpacerItem(20, 324, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_4->addItem(verticalSpacer_3, 2, 1, 1, 1);
+
+        settingSearch_lineEdit = new QLineEdit(widget_6);
+        settingSearch_lineEdit->setObjectName(QStringLiteral("settingSearch_lineEdit"));
+        settingSearch_lineEdit->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(settingSearch_lineEdit, 3, 0, 1, 1);
+
+
+        gridLayout_3->addWidget(widget_6, 0, 0, 1, 2);
 
         menu_stackedWidget->addWidget(page_3);
 
         gridLayout->addWidget(menu_stackedWidget, 0, 3, 5, 1);
+
+        verticalLayout_7 = new QVBoxLayout();
+        verticalLayout_7->setSpacing(6);
+        verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
+        verticalLayout_10 = new QVBoxLayout();
+        verticalLayout_10->setSpacing(0);
+        verticalLayout_10->setObjectName(QStringLiteral("verticalLayout_10"));
+        basePath_lineEdit = new QLineEdit(centralWidget);
+        basePath_lineEdit->setObjectName(QStringLiteral("basePath_lineEdit"));
+        sizePolicy.setHeightForWidth(basePath_lineEdit->sizePolicy().hasHeightForWidth());
+        basePath_lineEdit->setSizePolicy(sizePolicy);
+        basePath_lineEdit->setMaximumSize(QSize(350, 16777215));
+        basePath_lineEdit->setStyleSheet(QStringLiteral("color: rgb(167, 167, 167);"));
+
+        verticalLayout_10->addWidget(basePath_lineEdit);
+
+
+        verticalLayout_7->addLayout(verticalLayout_10);
+
+        update_pushButton = new QPushButton(centralWidget);
+        update_pushButton->setObjectName(QStringLiteral("update_pushButton"));
+        sizePolicy.setHeightForWidth(update_pushButton->sizePolicy().hasHeightForWidth());
+        update_pushButton->setSizePolicy(sizePolicy);
+        update_pushButton->setMinimumSize(QSize(0, 0));
+        update_pushButton->setMaximumSize(QSize(500, 16777215));
+        update_pushButton->setStyleSheet(QStringLiteral(""));
+
+        verticalLayout_7->addWidget(update_pushButton);
+
+        label = new QLabel(centralWidget);
+        label->setObjectName(QStringLiteral("label"));
+        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy);
+        label->setMaximumSize(QSize(500, 16777215));
+        label->setLayoutDirection(Qt::LeftToRight);
+        label->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_7->addWidget(label);
+
+        projects_listWidget = new QListWidget(centralWidget);
+        projects_listWidget->setObjectName(QStringLiteral("projects_listWidget"));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(projects_listWidget->sizePolicy().hasHeightForWidth());
+        projects_listWidget->setSizePolicy(sizePolicy3);
+        projects_listWidget->setMaximumSize(QSize(500, 16777215));
+        projects_listWidget->setFocusPolicy(Qt::NoFocus);
+        projects_listWidget->setStyleSheet(QStringLiteral(""));
+        projects_listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        projects_listWidget->setSortingEnabled(true);
+
+        verticalLayout_7->addWidget(projects_listWidget);
+
+        searchProject_lineEdit = new QLineEdit(centralWidget);
+        searchProject_lineEdit->setObjectName(QStringLiteral("searchProject_lineEdit"));
+        sizePolicy1.setHeightForWidth(searchProject_lineEdit->sizePolicy().hasHeightForWidth());
+        searchProject_lineEdit->setSizePolicy(sizePolicy1);
+        searchProject_lineEdit->setMaximumSize(QSize(500, 16777215));
+        searchProject_lineEdit->setStyleSheet(QStringLiteral(""));
+        searchProject_lineEdit->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_7->addWidget(searchProject_lineEdit);
+
+
+        gridLayout->addLayout(verticalLayout_7, 1, 0, 1, 3);
+
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        sizePolicy1.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy1);
+        widget->setStyleSheet(QStringLiteral(""));
+        verticalLayout_5 = new QVBoxLayout(widget);
+        verticalLayout_5->setSpacing(0);
+        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        verticalLayout_5->setContentsMargins(0, 0, 0, 0);
+        label_5 = new QLabel(widget);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        sizePolicy.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
+        label_5->setSizePolicy(sizePolicy);
+        label_5->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_5->addWidget(label_5);
+
+        libs_radioButton = new QRadioButton(widget);
+        libs_radioButton->setObjectName(QStringLiteral("libs_radioButton"));
+        libs_radioButton->setStyleSheet(QStringLiteral(""));
+        libs_radioButton->setChecked(true);
+
+        verticalLayout_5->addWidget(libs_radioButton);
+
+        apps_radioButton = new QRadioButton(widget);
+        apps_radioButton->setObjectName(QStringLiteral("apps_radioButton"));
+        apps_radioButton->setStyleSheet(QStringLiteral(""));
+
+        verticalLayout_5->addWidget(apps_radioButton);
+
+
+        gridLayout->addWidget(widget, 0, 1, 1, 1);
+
+        horizontalSpacer_2 = new QSpacerItem(30, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer_2, 0, 0, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer, 0, 2, 1, 1);
+
+        notifications_listWidget = new QListWidget(centralWidget);
+        notifications_listWidget->setObjectName(QStringLiteral("notifications_listWidget"));
+        sizePolicy1.setHeightForWidth(notifications_listWidget->sizePolicy().hasHeightForWidth());
+        notifications_listWidget->setSizePolicy(sizePolicy1);
+        notifications_listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        notifications_listWidget->setProperty("showDropIndicator", QVariant(false));
+        notifications_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
+        notifications_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+        notifications_listWidget->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+        notifications_listWidget->setSpacing(2);
+        notifications_listWidget->setWordWrap(true);
+
+        gridLayout->addWidget(notifications_listWidget, 3, 0, 1, 3);
+
+        label_9 = new QLabel(centralWidget);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(label_9, 2, 0, 1, 3);
+
+        cleanOutput_pushButton = new QPushButton(centralWidget);
+        cleanOutput_pushButton->setObjectName(QStringLiteral("cleanOutput_pushButton"));
+
+        gridLayout->addWidget(cleanOutput_pushButton, 4, 0, 1, 3);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -1042,7 +948,6 @@ public:
         retranslateUi(MainWindow);
 
         menu_stackedWidget->setCurrentIndex(2);
-        settings_stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1055,17 +960,6 @@ public:
         depends_action->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\270 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
         action->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\200\320\265\320\262\320\276 \320\267\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\265\320\271", nullptr));
         action_2->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
-        basePath_lineEdit->setText(QApplication::translate("MainWindow", "/home/lazarev_as/workspace/project", nullptr));
-        basePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
-        update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
-        label->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\265\320\272\321\202\321\213", nullptr));
-        searchProject_lineEdit->setText(QString());
-        searchProject_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
-        label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
-        libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
-        apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
-        label_9->setText(QApplication::translate("MainWindow", "\320\241\320\276\320\276\320\261\321\211\320\265\320\275\320\270\321\217 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
-        cleanOutput_pushButton->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214 \320\262\321\213\320\262\320\276\320\264", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "\320\224\320\276\321\201\321\202\321\203\320\277\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         search_lineEdit->setText(QString());
         search_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
@@ -1097,26 +991,29 @@ public:
         archivePath_lineEdit->setText(QApplication::translate("MainWindow", "ProjectsArchive", nullptr));
         archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
         archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
-        pushButton->setText(QApplication::translate("MainWindow", "1", nullptr));
-        label_11->setText(QApplication::translate("MainWindow", "\320\242\320\260\320\271\320\274\320\260\321\203\321\202 \320\267\320\260\320\277\321\203\321\201\320\272\320\260 \320\277\321\200\320\276\321\206\320\265\321\201\321\201\320\260", nullptr));
-        processStartTimeout_lineEdit->setText(QString());
-        label_12->setText(QApplication::translate("MainWindow", "\320\242\320\260\320\271\320\274\320\260\321\203\321\202 \320\260\321\200\321\205\320\270\320\262\320\260\321\206\320\270\320\270", nullptr));
-        archiveTimeout_lineEdit->setText(QString());
-        label_13->setText(QApplication::translate("MainWindow", "\320\242\320\260\320\271\320\274\320\260\321\203\321\202 \320\277\321\200\320\276\321\206\320\265\321\201\321\201\320\260 \321\201\320\266\320\260\321\202\320\270\321\217", nullptr));
-        zipTimeout_lineEdit->setText(QString());
-        label_14->setText(QApplication::translate("MainWindow", "make", nullptr));
-        make_lineEdit->setText(QString());
-        label_15->setText(QApplication::translate("MainWindow", "qmake", nullptr));
-        qmake_lineEdit->setText(QString());
-        label_16->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213 qmake \320\277\320\276 \321\203\320\274\320\276\320\273\321\207\320\260\320\275\320\270\321\216", nullptr));
-        qmakeDefault_lineEdit->setText(QString());
-        label_17->setText(QApplication::translate("MainWindow", "\320\220\321\200\320\263\321\203\320\274\320\265\320\275\321\202\321\213 qmake", nullptr));
-        qmakeArgs_lineEdit->setText(QString());
-        label_10->setText(QApplication::translate("MainWindow", "\320\244\320\260\320\271\320\273 \320\273\320\276\320\263\320\260 \321\201\320\261\320\276\321\200\320\272\320\270", nullptr));
-        logFile_lineEdit->setText(QString());
-        pushButton_2->setText(QApplication::translate("MainWindow", "2", nullptr));
-        prevPage_pushButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\265\320\264\321\213\320\264\321\203\321\211\320\260\321\217 \321\201\321\202\321\200\320\260\320\275\320\270\321\206\320\260", nullptr));
-        nextPage_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\273\320\265\320\264\321\203\321\216\321\211\320\260\321\217 \321\201\321\202\321\200\320\260\320\275\320\270\321\206\320\260", nullptr));
+        label_16->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
+        label_15->setText(QApplication::translate("MainWindow", "\320\230\320\267\320\274\320\265\320\275\320\265\320\275\320\270\320\265 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
+        label_10->setText(QApplication::translate("MainWindow", "\320\230\320\274\321\217", nullptr));
+        label_11->setText(QApplication::translate("MainWindow", "\320\227\320\275\320\260\321\207\320\265\320\275\320\270\320\265", nullptr));
+        label_12->setText(QApplication::translate("MainWindow", "\320\235\320\276\320\262\320\276\320\265", nullptr));
+        settingName_label->setText(QApplication::translate("MainWindow", "\320\235\320\265 \320\262\321\213\320\261\321\200\320\260\320\275\320\276", nullptr));
+        settingValue_label->setText(QApplication::translate("MainWindow", "\320\235\320\265\321\202", nullptr));
+        settingAccept_pushButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\270\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
+        settingRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265", nullptr));
+        settingsSave_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\272\320\276\320\275\321\204\320\270\320\263\321\203\321\200\320\260\321\206\320\270\321\216", nullptr));
+        settingsRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\262\321\201\320\265 \320\262 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265", nullptr));
+        settingSearch_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
+        basePath_lineEdit->setText(QApplication::translate("MainWindow", "/home/lazarev_as/workspace/project", nullptr));
+        basePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
+        update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
+        label->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\265\320\272\321\202\321\213", nullptr));
+        searchProject_lineEdit->setText(QString());
+        searchProject_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
+        label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
+        libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
+        apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
+        label_9->setText(QApplication::translate("MainWindow", "\320\241\320\276\320\276\320\261\321\211\320\265\320\275\320\270\321\217 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
+        cleanOutput_pushButton->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214 \320\262\321\213\320\262\320\276\320\264", nullptr));
         menu->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\320\275\321\216", nullptr));
     } // retranslateUi
 

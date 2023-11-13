@@ -4,6 +4,7 @@
 #include <QString>
 
 #include "utilfunctionclass.h"
+#include "projectsettings.h"
 
 namespace FileWork
 {
@@ -27,6 +28,8 @@ public:
     void removeFiles(const QStringList & filesToRemove);
 
     QStringList getFileList(const QString & basePath, int fileType = FILE_REMOVE_TYPE::NO_FILE);
+
+    static bool listIsCorrect(const QStringList & filesToRemove);
 
 private:
     void addFiles(const QString &findOutput, QStringList & resultList);

@@ -9,7 +9,8 @@
 
 using namespace FileWork;
 
-BackupManager::BackupManager()
+BackupManager::BackupManager(Configuration::ProjectConfiguration & mainProjectConfiguration) :
+    mainProjectConfiguration{mainProjectConfiguration}
 {
 
 }

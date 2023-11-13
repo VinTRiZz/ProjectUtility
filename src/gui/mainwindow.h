@@ -27,9 +27,6 @@ public slots:
     void loadDependencyList(const QString & projectName);
     void saveChanges();
 
-    void createBackup();
-    void loadBackup();
-
     void removeFiles();
 
     void searchForLibrary(const QString & changedText);
@@ -50,10 +47,11 @@ public slots:
 
     void recursiveDependencySearch();
 
-private slots:
-    void on_prevPage_pushButton_clicked();
-
-    void on_nextPage_pushButton_clicked();
+    void settingClicked();
+    void updateSelectedSetting();
+    void saveSettingsToFile();
+    void restoreSettingsAll();
+    void restoreSetting();
 
 private:
     Ui::MainWindow *ui;
@@ -71,6 +69,10 @@ private:
 
     void updateProjectList();
     void setupAvailableLibrariesView();
+    void setupSignals();
+    void removeButtonFocuses();
+    void setupSettings();
+
     void updateUsedLibraries();
 };
 

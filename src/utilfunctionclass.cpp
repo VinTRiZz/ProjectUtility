@@ -7,7 +7,8 @@
 
 using namespace FileWork;
 
-UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs) :
+UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration) :
+    mainProjectConfiguration(mainProjectConfiguration),
     apps(initApps),
     libs(initLibs)
 {
@@ -63,7 +64,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, c
     invokingProcess.setArguments(args);
 
     invokingProcess.start();
-    if (!invokingProcess.waitForStarted(Configuration::mainProjectConfiguration.PROCESS_START_TIMEOUT))
+    if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["PROCESS_START_TIMEOUT"]))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog("Invoke timeout");
@@ -99,7 +100,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, Q
     invokingProcess.setArguments(args);
 
     invokingProcess.start();
-    if (!invokingProcess.waitForStarted(Configuration::mainProjectConfiguration.PROCESS_START_TIMEOUT))
+    if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["PROCESS_START_TIMEOUT"]))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog("Invoke timeout");
@@ -142,6 +143,14 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
 {
     if ((m_logFile.fileName() < 2) || (!what.size()))
         return;
+
+    const QString logFileName = mainProjectConfiguration->strSettings["BUILD_LOG_FILE_NAME"];
+
+    if (logFileName != m_logFile.fileName())
+    {
+        setLogFile(logFileName);
+    }
+    qDebug() << "Writing log to file" << m_logFile.fileName() << "; current log file name:" << logFileName;
 
     m_logFile.open(QIODevice::WriteOnly | QIODevice::Append);
     if (m_logFile.isOpen())
@@ -261,8 +270,17 @@ float UtilFunctionClass::currentPercent() const
     return processPercent.load();
 }
 
-UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> * initApps, QVector<Project> * initLibs)
+Configuration::ProjectConfiguration & UtilFunctionClass::projectConfiguration()
 {
-    static UtilFunctionClass instance(initApps, initLibs);
+    if (!mainProjectConfiguration)
+    {
+        throw std::runtime_error("Invalid initialization querry");
+    }
+    return *mainProjectConfiguration;
+}
+
+UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration)
+{
+    static UtilFunctionClass instance(initApps, initLibs, mainProjectConfiguration);
     return instance;
 }

@@ -20,6 +20,8 @@ using namespace FileWork;
 
 struct ProjectDirectoryFileInterface::Impl
 {
+    Configuration::ProjectConfiguration mainProjectConfiguration {Configuration::ProjectConfiguration()};
+
     std::thread * processThread {nullptr};
 
     QVector<Project> apps;
@@ -29,22 +31,23 @@ struct ProjectDirectoryFileInterface::Impl
 
     UtilFunctionClass & m_utilClass;
 
-    FileSearcher m_searcher{ apps, libs };
+    FileSearcher m_searcher{ apps, libs, m_utilClass};
     DependsWorker m_dependsWorker {apps, libs };
 
     BuildManager m_buildManager;
-    Archivator m_archivator;
+    Archivator m_archivator {mainProjectConfiguration};
 
-    BackupManager m_backupManager;
+    BackupManager m_backupManager {mainProjectConfiguration};
 
     GraphWidget::DependencyGraphWidget * m_pGraphWidget;
 
     Impl(QObject * parent, GraphWidget::DependencyGraphWidget * displayWidget) :
-        m_utilClass( UtilFunctionClass::getInstance(&apps, &libs) ),
+        mainProjectConfiguration { Configuration::ProjectConfiguration() },
+        m_utilClass( UtilFunctionClass::getInstance(&apps, &libs, &mainProjectConfiguration) ),
         m_buildManager{parent},
         m_pGraphWidget(displayWidget)
     {
-        m_utilClass.setLogFile( QDir::currentPath() + "/" + Configuration::mainProjectConfiguration.BUILD_LOG_FILE_NAME );
+        m_utilClass.setLogFile( QDir::currentPath() + "/" + mainProjectConfiguration.strSettings["BUILD_LOG_FILE_NAME"] );
     }
 
     void setPath(const QString & path)
@@ -357,4 +360,9 @@ bool ProjectDirectoryFileInterface::hasDependRecurse(const QString &projName, co
     }
 
     return m_pImpl->m_utilClass.hasDepend(pProj, depName);
+}
+
+Configuration::ProjectConfiguration &ProjectDirectoryFileInterface::mainConfig()
+{
+    return m_pImpl->mainProjectConfiguration;
 }

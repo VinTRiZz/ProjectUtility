@@ -7,6 +7,8 @@
 
 #include <atomic>
 
+#include "projectsettings.h"
+
 namespace FileWork
 {
 
@@ -44,18 +46,22 @@ public:
     void setPercent(const float newVal);
     float currentPercent() const;
 
-    static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr);
+    Configuration::ProjectConfiguration & projectConfiguration();
+
+    static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr, Configuration::ProjectConfiguration * mainProjectConfiguration = nullptr);
     ~UtilFunctionClass();
 private:
     QVector<Project> * apps;
     QVector<Project> * libs;
+
+    Configuration::ProjectConfiguration * mainProjectConfiguration {nullptr};
 
     std::atomic<float> processPercent {0};
 
     QFile m_logFile;
 
     UtilFunctionClass();
-    UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs);
+    UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration);
 };
 
 }

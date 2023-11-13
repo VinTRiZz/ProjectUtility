@@ -9,7 +9,7 @@
 #include <QDebug>
 
 #define REMOVE_BUTTON_FOCUS(buttonName)                     ui->buttonName##_pushButton->setFocusPolicy(Qt::NoFocus)
-#define CONNECT_CLIECKED(buttonName, mainWindowFunction)    connect(ui->buttonName##_pushButton, &QPushButton::clicked, this, &MainWindow::mainWindowFunction)
+#define CONNECT_CLICKED(buttonName, mainWindowFunction)    connect(ui->buttonName##_pushButton, &QPushButton::clicked, this, &MainWindow::mainWindowFunction)
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,58 +20,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->menu_stackedWidget->setCurrentIndex(0);
-    ui->settings_stackedWidget->setCurrentIndex(0);
     m_progressPercent.store(100);
 
     ui->graph_scrollArea->setWidget(m_depGraphWidget);
 
     setupAvailableLibrariesView();
+    setupSignals();
+    setupSettings();
 
-    // Remove focus
-    REMOVE_BUTTON_FOCUS(add);
-    REMOVE_BUTTON_FOCUS(remove);
-    // REMOVE_BUTTON_FOCUS(saveBackup);
-    // REMOVE_BUTTON_FOCUS(loadBackup);
-    REMOVE_BUTTON_FOCUS(update);
-    REMOVE_BUTTON_FOCUS(clean);
-    REMOVE_BUTTON_FOCUS(saveChanges);
-    REMOVE_BUTTON_FOCUS(build);
-    REMOVE_BUTTON_FOCUS(rebuild);
-    REMOVE_BUTTON_FOCUS(archive);
-    REMOVE_BUTTON_FOCUS(nextPage);
-    REMOVE_BUTTON_FOCUS(prevPage);
-
-    CONNECT_CLIECKED(add, addSelectedLibrary);
-    CONNECT_CLIECKED(remove, removeSelectedLibrary);
-    // CONNECT_CLIECKED(saveBackup, createBackup);
-    // CONNECT_CLIECKED(loadBackup, loadBackup);
-    CONNECT_CLIECKED(update, updateProjectList);
-    CONNECT_CLIECKED(clean, removeFiles);
-    CONNECT_CLIECKED(saveChanges, saveChanges);
-    CONNECT_CLIECKED(build, build);
-    CONNECT_CLIECKED(rebuild, rebuild);
-    CONNECT_CLIECKED(archive, archive);
-
-    connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
-    connect(ui->basePath_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::updateProjectList);
-
-    connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForLibrary);
-    connect(ui->searchProject_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForProject);
-
-    connect(ui->menuBar, &QMenuBar::triggered, this, &MainWindow::changedMenu);
-
-    connect(ui->apps_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
-    connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
-
-    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
-
-    connect(ui->projects_listWidget, &QListWidget::clicked, this, &MainWindow::projectSelected);
-
-    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
-
-    connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
-
-    connect(ui->recursiveSearch_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::recursiveDependencySearch);
+    removeButtonFocuses();
 }
 
 MainWindow::~MainWindow()
@@ -84,7 +41,7 @@ void MainWindow::addSelectedLibrary()
     auto pItem = ui->avaliableLibs_listWidget->currentItem();
     if (!pItem)
     {
-        emit printInfo("Выберите библиотеку");
+        emit printInfo("Библиотека не выбрана");
         return;
     }
 
@@ -92,30 +49,32 @@ void MainWindow::addSelectedLibrary()
 
     if (ui->addedLibs_listWidget->findItems(libraryName, Qt::MatchExactly).size() > 0)
     {
-        emit printInfo("Уже добавлено");
+        emit printInfo("Уже в списке зависимостей");
         return;
     }
 
     auto pProjectItem = ui->projects_listWidget->currentItem();
     if (!pProjectItem)
     {
-        emit printInfo("Выберите проект");
+        emit printInfo("Не выбран проект");
         return;
     }
 
     const QString currentProjectName = pProjectItem->text();
     if (currentProjectName == libraryName)
     {
-        emit printInfo("Нельзя зависеть от себя!");
+        emit printInfo("Не добавлено: Выбрана одномённая с проектом библиотека");
         return;
     }
 
     if (!m_fileInterface.addLibrary(currentProjectName, libraryName))
     {
-        emit printInfo("Обнаружена рекурсивная зависимость! Библиотека не добавлена.");
+        emit printInfo("Не добавлено: Обнаружена циклическая зависимость");
         return;
     }
     ui->addedLibs_listWidget->addItem( libraryName );
+
+    emit printInfo("Зависимость добавлена");
 }
 
 void MainWindow::removeSelectedLibrary()
@@ -123,31 +82,34 @@ void MainWindow::removeSelectedLibrary()
     auto pItem = ui->addedLibs_listWidget->currentItem();
     if (!pItem)
     {
-        emit printInfo("Не выбрана библиотека");
+        emit printInfo("Библиотека не выбрана");
         return;
     }
 
     auto pProjectItem = ui->projects_listWidget->currentItem();
     if (!pProjectItem)
+    {
+        emit printInfo("Не выбран проект");
         return;
+    }
 
     m_fileInterface.removeLibrary(pProjectItem->text(), pItem->text());
     delete ui->addedLibs_listWidget->currentItem();
+
+    emit printInfo("Зависимость удалена");
 }
 
 void MainWindow::loadDependencyList(const QString & projectName)
 {
     if (projectName.size() == 0)
-    {
-        emit printInfo("Не выбран проект");
         return;
-    }
 
     auto deps = m_fileInterface.getDepends(projectName);
 
     ui->addedLibs_listWidget->clear();
     for (auto & dep : deps)
         ui->addedLibs_listWidget->addItem( dep );
+    emit printInfo("Зависимости загружены");
 }
 
 void MainWindow::saveChanges()
@@ -156,29 +118,15 @@ void MainWindow::saveChanges()
     emit printInfo("Изменения сохранены");
 }
 
-void MainWindow::createBackup()
-{
-    // if (m_fileInterface.backupAll(ui->backupDir_lineEdit->text()))
-        emit printInfo("Бэкап создан");
-    // else
-        emit printInfo("Бэкап создан частично или не создан (проверьте путь до директории с бэкапами)");
-}
-
-void MainWindow::loadBackup()
-{
-    // if (m_fileInterface.loadBackup(ui->backupDir_lineEdit->text()))
-        emit printInfo("Бэкап загружен");
-    // else
-        emit printInfo("Бэкап загружен частично или не загружен (проверьте путь до директории с бэкапами)");
-}
-
 void MainWindow::removeFiles()
 {
     if (ui->projects_listWidget->count() == 0)
     {
-        emit printInfo("Негде чистить");
+        emit printInfo("Проекты не найдены, чистки не будет");
         return;
     }
+
+    emit printInfo("Анализ директорий...");
 
     int filesToRemove = FileWork::FILE_REMOVE_TYPE::NO_FILE;
 
@@ -199,24 +147,18 @@ void MainWindow::removeFiles()
 
     QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentDirectory(), filesToRemove);
 
-    // Check if all's good
-    for (QString & file : fileList)
+    emit printInfo("Проверка найденных файлов...");
+
+    if (!m_cleaner.listIsCorrect(fileList))
     {
-        if (
-            !file.contains("/BIN/") &&
-            !file.contains("/BUILD/") &&
-            !file.contains("/LIB/") &&
-            !file.contains("/Makefile") &&
-            !file.contains("/.qmake.stash")
-        )
-        {
-            qDebug() << "[REMOVE CHECK] Invalid file:[" << file << "]";
-            emit printInfo("Ошибка в списке файлов на удаление. Ничего не удалено");
-            return;
-        }
+        emit printInfo("Найдена ошибка среди удаляемых файлов, ничего не удалено");
+        return;
     }
 
+    emit printInfo("Удаление...");
+
     m_cleaner.removeFiles(fileList);
+    emit printInfo("Файлы удалены");
 }
 
 void MainWindow::searchForLibrary(const QString &changedText)
@@ -293,7 +235,7 @@ void MainWindow::build()
         {
             projectName = ui->projects_listWidget->item(i)->text();
             m_fileInterface.addBuild(projectName, target);
-            emit printInfo(QString("Проект %1 добавлен в очередь сборки").arg(projectName));
+            emit printInfo(QString("Проект %1 добавлен в очередь сборки с целью %2").arg(projectName, target));
         }
     }
     else if (ui->buildCurrent_radioButton->isChecked())
@@ -313,7 +255,7 @@ void MainWindow::build()
 
         m_fileInterface.addBuild(projectName, target);
 
-        emit printInfo(QString("Проект %1 добавлен в очередь сборки").arg(projectName));
+        emit printInfo(QString("Проект %1 добавлен в очередь сборки с целью %2").arg(projectName, target));
     }
 
     if (m_fileInterface.startBuild())
@@ -358,7 +300,7 @@ void MainWindow::rebuild()
         {
             projectName = ui->projects_listWidget->item(i)->text();
             m_fileInterface.addRebuild(projectName, target);
-            emit printInfo(QString("Проект %1 добавлен в очередь пересборки").arg(projectName));
+            emit printInfo(QString("Проект %1 добавлен в очередь пересборки с целью %2").arg(projectName, target));
         }
     }
     else if (ui->buildCurrent_radioButton->isChecked())
@@ -377,7 +319,7 @@ void MainWindow::rebuild()
 
         m_fileInterface.addRebuild(projectName, target);
 
-        emit printInfo(QString("Проект %1 добавлен в очередь пересборки").arg(projectName));
+        emit printInfo(QString("Проект %1 добавлен в очередь пересборки с целью %2").arg(projectName, target));
     }
 
     if (m_fileInterface.startBuild())
@@ -430,13 +372,13 @@ void MainWindow::archive()
             return;
         }
 
-        emit printInfo("Архивируется...");
-
         const QString archivePath = ui->archivePath_lineEdit->text();
         const QString projectName = pItem->text();
 
         m_fileInterface.archiveProject(projectName, archivePath);
     }
+
+    emit printInfo("Архивация запущена");
 }
 
 void MainWindow::projectSelected()
@@ -461,7 +403,7 @@ void MainWindow::buildComplete(const QString &projectName, const bool result)
     }
     else
     {
-        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле buildLog.txt").arg(projectName));
+        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле %2").arg(projectName, m_fileInterface.mainConfig().strSettings["BUILD_LOG_FILE_NAME"]));
         m_progressPercent.store(100);
         ui->progressBar->setValue(100);
     }
@@ -496,6 +438,126 @@ void MainWindow::recursiveDependencySearch()
 
 }
 
+void MainWindow::settingClicked()
+{
+    const QString settingName = ui->settingList_listWidget->currentItem()->text();
+
+    Configuration::StringSetting * pStrSetting {nullptr};
+    Configuration::IntSetting * pIntSetting {nullptr};
+
+    for (auto & strSetting : m_fileInterface.mainConfig().strSettings)
+    {
+        if (strSetting.first == settingName)
+            pStrSetting = &strSetting.second;
+    }
+
+    if (!pStrSetting)
+    {
+        for (auto & intSetting : m_fileInterface.mainConfig().intSettings)
+        {
+            if (intSetting.first == settingName)
+                pIntSetting = &intSetting.second;
+        }
+
+        if (!pIntSetting)
+            return;
+
+        ui->settingValue_label->setText(QString::number(*pIntSetting));
+    }
+    else
+    {
+        ui->settingValue_label->setText(*pStrSetting);
+    }
+
+    ui->settingName_label->setText(settingName);
+    ui->settingValue_lineEdit->clear();
+}
+
+void MainWindow::updateSelectedSetting()
+{
+    const QString settingName = ui->settingName_label->text();
+
+    if (settingName.isEmpty())
+    {
+        emit printInfo("Настройка не выбрана");
+        return;
+    }
+
+    const QString settingValue = ui->settingValue_lineEdit->text();
+
+    Configuration::StringSetting * pStrSetting {nullptr};
+    Configuration::IntSetting * pIntSetting {nullptr};
+
+    for (auto & strSetting : m_fileInterface.mainConfig().strSettings)
+    {
+        if (strSetting.first == settingName)
+            pStrSetting = &strSetting.second;
+    }
+
+    if (!pStrSetting)
+    {
+        for (auto & intSetting : m_fileInterface.mainConfig().intSettings)
+        {
+            if (intSetting.first == settingName)
+                pIntSetting = &intSetting.second;
+        }
+
+        if (!pIntSetting)
+            return;
+
+        *pIntSetting = settingValue.toInt();
+    }
+    else
+    {
+        *pStrSetting = settingValue;
+    }
+
+    ui->settingValue_label->setText(settingValue);
+}
+
+void MainWindow::saveSettingsToFile()
+{
+#warning "Don't save now"
+    qDebug() << "\033[32mSettings not saved!\033[0m";
+}
+
+void MainWindow::restoreSetting()
+{
+    const QString settingName = ui->settingName_label->text();
+
+    Configuration::StringSetting * pStrSetting {nullptr};
+    Configuration::IntSetting * pIntSetting {nullptr};
+
+    for (auto & strSetting : m_fileInterface.mainConfig().strSettings)
+    {
+        if (strSetting.first == settingName)
+            pStrSetting = &strSetting.second;
+    }
+
+    if (pStrSetting)
+    {
+        *pStrSetting = Configuration::defaultProjectConfiguration.strSettings[settingName];
+        return;
+    }
+
+    for (auto & intSetting : m_fileInterface.mainConfig().intSettings)
+    {
+        if (intSetting.first == settingName)
+            pIntSetting = &intSetting.second;
+    }
+
+    if (!pIntSetting)
+        return;
+
+    *pIntSetting = Configuration::defaultProjectConfiguration.intSettings[settingName];
+}
+
+void MainWindow::restoreSettingsAll()
+{
+    m_fileInterface.mainConfig() = Configuration::defaultProjectConfiguration;
+    emit printInfo("Все настройки возвращены");
+}
+
 void MainWindow::updateProjectList()
 {
     basePath = ui->basePath_lineEdit->text();
@@ -523,26 +585,87 @@ void MainWindow::updateProjectList()
         emit printInfo("Ничего не найдено");
         return;
     }
+
     emit printInfo(QString("Найдено %1 объектов").arg(QString::number(parsedFilesCount)));
 
     QStringList projectList;
 
     projectList.append( m_fileInterface.getLibraryNameList() );
-    // projectList.append( m_fileInterface.getAppNameList() );
 
     ui->avaliableLibs_listWidget->clear();
     for (QString & proj : projectList)
-    {
         ui->avaliableLibs_listWidget->addItem(proj);
-    }
 
     fillProjectList();
+
+    emit printInfo("Проекты загружены");
 }
 
 void MainWindow::setupAvailableLibrariesView()
 {
     ui->avaliableLibs_listWidget->setFocusPolicy(Qt::NoFocus);
     ui->avaliableLibs_listWidget->setSortingEnabled(true);
+}
+
+void MainWindow::setupSignals()
+{
+    CONNECT_CLICKED(add, addSelectedLibrary);
+    CONNECT_CLICKED(remove, removeSelectedLibrary);
+    CONNECT_CLICKED(update, updateProjectList);
+    CONNECT_CLICKED(clean, removeFiles);
+    CONNECT_CLICKED(saveChanges, saveChanges);
+    CONNECT_CLICKED(build, build);
+    CONNECT_CLICKED(rebuild, rebuild);
+    CONNECT_CLICKED(archive, archive);
+
+    connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
+    connect(ui->basePath_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::updateProjectList);
+
+    connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForLibrary);
+    connect(ui->searchProject_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForProject);
+
+    connect(ui->menuBar, &QMenuBar::triggered, this, &MainWindow::changedMenu);
+
+    connect(ui->apps_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
+    connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
+
+    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
+
+    connect(ui->projects_listWidget, &QListWidget::clicked, this, &MainWindow::projectSelected);
+
+    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
+
+    connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
+
+    connect(ui->recursiveSearch_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::recursiveDependencySearch);
+}
+
+void MainWindow::removeButtonFocuses()
+{
+    // Remove focus
+    REMOVE_BUTTON_FOCUS(add);
+    REMOVE_BUTTON_FOCUS(remove);
+    REMOVE_BUTTON_FOCUS(update);
+    REMOVE_BUTTON_FOCUS(clean);
+    REMOVE_BUTTON_FOCUS(saveChanges);
+    REMOVE_BUTTON_FOCUS(build);
+    REMOVE_BUTTON_FOCUS(rebuild);
+    REMOVE_BUTTON_FOCUS(archive);
+}
+
+void MainWindow::setupSettings()
+{
+    for (auto & strSetting : m_fileInterface.mainConfig().strSettings)
+        ui->settingList_listWidget->addItem(strSetting.first);
+
+    for (auto & intSetting : m_fileInterface.mainConfig().intSettings)
+        ui->settingList_listWidget->addItem(intSetting.first);
+
+    connect(ui->settingList_listWidget, &QListWidget::clicked, this, &MainWindow::settingClicked);
+    connect(ui->settingAccept_pushButton, &QPushButton::clicked, this, &MainWindow::updateSelectedSetting);
+    connect(ui->settingsSave_pushButton, &QPushButton::clicked, this, &MainWindow::saveSettingsToFile);
+    connect(ui->settingsRestore_pushButton, &QPushButton::clicked, this, &MainWindow::restoreSettingsAll);
+    connect(ui->settingRestore_pushButton, &QPushButton::clicked, this, &MainWindow::restoreSetting);
 }
 
 void MainWindow::fillProjectList()
@@ -560,21 +683,4 @@ void MainWindow::fillProjectList()
         for (QString & lib : libList)
             ui->projects_listWidget->addItem(lib);
     }
-}
-
-
-void MainWindow::on_prevPage_pushButton_clicked()
-{
-    const int currentIndex = ui->settings_stackedWidget->currentIndex();
-
-    if (currentIndex > 0)
-        ui->settings_stackedWidget->setCurrentIndex( currentIndex - 1 );
-}
-
-void MainWindow::on_nextPage_pushButton_clicked()
-{
-    const int currentIndex = ui->settings_stackedWidget->currentIndex();
-
-    if (currentIndex < ui->settings_stackedWidget->count())
-        ui->settings_stackedWidget->setCurrentIndex( currentIndex + 1 );
 }

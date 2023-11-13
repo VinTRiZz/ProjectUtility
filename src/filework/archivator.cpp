@@ -30,11 +30,14 @@ struct ArchiveDirectory
 
 struct Archivator::Impl
 {
+    Configuration::ProjectConfiguration & mainProjectConfiguration;
+
     ArchiveDirectory mainArchiveDir;
     QThread * processThread {nullptr};
     bool isArchived {false};
 
-    Impl()
+    Impl(Configuration::ProjectConfiguration & mainProjectConfiguration) :
+        mainProjectConfiguration {mainProjectConfiguration}
     {
         mainArchiveDir.dirName = "Projects";
         mainArchiveDir.archivePath = "Projects";
@@ -50,7 +53,7 @@ struct Archivator::Impl
 
         if (processThread->isRunning())
         {
-            if (!processThread->wait(Configuration::mainProjectConfiguration.PROCESS_THREAD_TIMEOUT))
+            if (!processThread->wait(mainProjectConfiguration.intSettings["PROCESS_THREAD_TIMEOUT"]))
                 processThread->exit(1);
         }
 
@@ -140,9 +143,10 @@ struct Archivator::Impl
     }
 };
 
-Archivator::Archivator(QObject * parent) :
+Archivator::Archivator(Configuration::ProjectConfiguration & mainProjectConfiguration, QObject * parent) :
     QObject(parent),
-    m_pImpl {new Impl}
+    mainProjectConfiguration{mainProjectConfiguration},
+    m_pImpl {new Impl(mainProjectConfiguration)}
 {
 
 }
@@ -254,9 +258,9 @@ void Archivator::archive(const QString & resultPath)
 
             packProcess.start();
 
-            if (packProcess.waitForStarted(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
+            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
             {
-                if (!packProcess.waitForFinished(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
+                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
                 {
                     packProcess.kill();
                 }
@@ -343,9 +347,9 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
 
             packProcess.start();
 
-            if (packProcess.waitForStarted(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
+            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
             {
-                if (!packProcess.waitForFinished(Configuration::mainProjectConfiguration.ZIP_PROCESS_TIMEOUT))
+                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
                 {
                     packProcess.kill();
                 }
