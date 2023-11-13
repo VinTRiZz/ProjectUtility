@@ -145,8 +145,8 @@ struct Archivator::Impl
 
 Archivator::Archivator(Configuration::ProjectConfiguration & mainProjectConfiguration, QObject * parent) :
     QObject(parent),
-    mainProjectConfiguration{mainProjectConfiguration},
-    m_pImpl {new Impl(mainProjectConfiguration)}
+    m_pImpl {new Impl(mainProjectConfiguration)},
+    mainProjectConfiguration(mainProjectConfiguration)
 {
 
 }

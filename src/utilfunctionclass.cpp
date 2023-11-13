@@ -8,9 +8,9 @@
 using namespace FileWork;
 
 UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration) :
-    mainProjectConfiguration(mainProjectConfiguration),
     apps(initApps),
-    libs(initLibs)
+    libs(initLibs),
+    mainProjectConfiguration(mainProjectConfiguration)
 {
 
 }

@@ -106,7 +106,10 @@ public:
     QGridLayout *gridLayout_3;
     QWidget *widget_6;
     QGridLayout *gridLayout_4;
+    QSpacerItem *verticalSpacer_3;
     QLabel *label_16;
+    QLineEdit *settingSearch_lineEdit;
+    QListWidget *settingList_listWidget;
     QVBoxLayout *verticalLayout_15;
     QLabel *label_15;
     QHBoxLayout *horizontalLayout_3;
@@ -120,11 +123,9 @@ public:
     QLineEdit *settingValue_lineEdit;
     QPushButton *settingAccept_pushButton;
     QPushButton *settingRestore_pushButton;
-    QPushButton *settingsSave_pushButton;
     QPushButton *settingsRestore_pushButton;
-    QListWidget *settingList_listWidget;
-    QSpacerItem *verticalSpacer_3;
-    QLineEdit *settingSearch_lineEdit;
+    QPushButton *settingsSave_pushButton;
+    QLineEdit *settingsSaveFile_lineEdit;
     QVBoxLayout *verticalLayout_7;
     QVBoxLayout *verticalLayout_10;
     QLineEdit *basePath_lineEdit;
@@ -414,7 +415,7 @@ public:
         graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 474, 649));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 46, 28));
         graph_scrollArea->setWidget(scrollAreaWidgetContents);
 
         horizontalLayout_4->addWidget(graph_scrollArea);
@@ -685,12 +686,27 @@ public:
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        verticalSpacer_3 = new QSpacerItem(20, 324, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_4->addItem(verticalSpacer_3, 4, 1, 1, 1);
+
         label_16 = new QLabel(widget_6);
         label_16->setObjectName(QStringLiteral("label_16"));
         label_16->setMaximumSize(QSize(16777215, 50));
         label_16->setAlignment(Qt::AlignCenter);
 
         gridLayout_4->addWidget(label_16, 0, 0, 1, 1);
+
+        settingSearch_lineEdit = new QLineEdit(widget_6);
+        settingSearch_lineEdit->setObjectName(QStringLiteral("settingSearch_lineEdit"));
+        settingSearch_lineEdit->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(settingSearch_lineEdit, 5, 0, 1, 1);
+
+        settingList_listWidget = new QListWidget(widget_6);
+        settingList_listWidget->setObjectName(QStringLiteral("settingList_listWidget"));
+
+        gridLayout_4->addWidget(settingList_listWidget, 1, 0, 4, 1);
 
         verticalLayout_15 = new QVBoxLayout();
         verticalLayout_15->setSpacing(6);
@@ -761,33 +777,23 @@ public:
 
         verticalLayout_15->addWidget(settingRestore_pushButton);
 
-        settingsSave_pushButton = new QPushButton(widget_6);
-        settingsSave_pushButton->setObjectName(QStringLiteral("settingsSave_pushButton"));
-
-        verticalLayout_15->addWidget(settingsSave_pushButton);
-
         settingsRestore_pushButton = new QPushButton(widget_6);
         settingsRestore_pushButton->setObjectName(QStringLiteral("settingsRestore_pushButton"));
 
         verticalLayout_15->addWidget(settingsRestore_pushButton);
 
+        settingsSave_pushButton = new QPushButton(widget_6);
+        settingsSave_pushButton->setObjectName(QStringLiteral("settingsSave_pushButton"));
+
+        verticalLayout_15->addWidget(settingsSave_pushButton);
+
+        settingsSaveFile_lineEdit = new QLineEdit(widget_6);
+        settingsSaveFile_lineEdit->setObjectName(QStringLiteral("settingsSaveFile_lineEdit"));
+
+        verticalLayout_15->addWidget(settingsSaveFile_lineEdit);
+
 
         gridLayout_4->addLayout(verticalLayout_15, 0, 1, 2, 1);
-
-        settingList_listWidget = new QListWidget(widget_6);
-        settingList_listWidget->setObjectName(QStringLiteral("settingList_listWidget"));
-
-        gridLayout_4->addWidget(settingList_listWidget, 1, 0, 2, 1);
-
-        verticalSpacer_3 = new QSpacerItem(20, 324, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_4->addItem(verticalSpacer_3, 2, 1, 1, 1);
-
-        settingSearch_lineEdit = new QLineEdit(widget_6);
-        settingSearch_lineEdit->setObjectName(QStringLiteral("settingSearch_lineEdit"));
-        settingSearch_lineEdit->setAlignment(Qt::AlignCenter);
-
-        gridLayout_4->addWidget(settingSearch_lineEdit, 3, 0, 1, 1);
 
 
         gridLayout_3->addWidget(widget_6, 0, 0, 1, 2);
@@ -992,6 +998,7 @@ public:
         archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
         archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
         label_16->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
+        settingSearch_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
         label_15->setText(QApplication::translate("MainWindow", "\320\230\320\267\320\274\320\265\320\275\320\265\320\275\320\270\320\265 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
         label_10->setText(QApplication::translate("MainWindow", "\320\230\320\274\321\217", nullptr));
         label_11->setText(QApplication::translate("MainWindow", "\320\227\320\275\320\260\321\207\320\265\320\275\320\270\320\265", nullptr));
@@ -1000,9 +1007,8 @@ public:
         settingValue_label->setText(QApplication::translate("MainWindow", "\320\235\320\265\321\202", nullptr));
         settingAccept_pushButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\270\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
         settingRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265", nullptr));
+        settingsRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\222\320\241\320\201", nullptr));
         settingsSave_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\272\320\276\320\275\321\204\320\270\320\263\321\203\321\200\320\260\321\206\320\270\321\216", nullptr));
-        settingsRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\262\321\201\320\265 \320\262 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265", nullptr));
-        settingSearch_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
         basePath_lineEdit->setText(QApplication::translate("MainWindow", "/home/lazarev_as/workspace/project", nullptr));
         basePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
         update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));

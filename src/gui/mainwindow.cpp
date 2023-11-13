@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    m_fileInterface.loadConfiguration();
+
     ui->menu_stackedWidget->setCurrentIndex(0);
     m_progressPercent.store(100);
 
@@ -517,8 +519,8 @@ void MainWindow::updateSelectedSetting()
 
 void MainWindow::saveSettingsToFile()
 {
-#warning "Don't save now"
-    qDebug() << "\033[32mSettings not saved!\033[0m";
+    m_fileInterface.saveCurrentConfiguration();
+    emit printInfo("Конфигурация сохранена");
 }
 
 void MainWindow::restoreSetting()

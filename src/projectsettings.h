@@ -32,7 +32,7 @@ public:
         return *this;
     }
 
-    operator int() { return data.load(); }
+    operator int() const { return data.load(); }
 
 protected:
     std::atomic<int> data;
@@ -59,7 +59,6 @@ public:
     StringSetting(StringSetting && s)
     {
         mx.lock();
-        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Copy construct:" << s;
         data = s;
         mx.unlock();
     }
@@ -67,7 +66,6 @@ public:
     StringSetting & operator =(const QString & data)
     {
         mx.lock();
-        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Setting data:" << data;
         this->data = data;
         mx.unlock();
         return *this;
@@ -76,7 +74,6 @@ public:
     StringSetting & operator =(StringSetting & data)
     {
         mx.lock();
-        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Setting data:" << data;
         this->data = data;
         mx.unlock();
         return *this;
@@ -85,7 +82,6 @@ public:
     StringSetting & operator =(const StringSetting & data)
     {
         mx.lock();
-        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Setting data:" << data.data;
         this->data = data.data;
         mx.unlock();
         return *this;
@@ -95,7 +91,6 @@ public:
     {
         QString result;
         mx.lock();
-        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Getting data:" << data;
         result = data;
         mx.unlock();
         return data;
@@ -110,23 +105,28 @@ public:
         return result;
     }
 
+    QByteArray toUtf8() const
+    {
+        QByteArray result;
+        mx.lock();
+        result = data.toUtf8();
+        mx.unlock();
+        return result;
+    }
+
 private:
     QString data;
-    std::mutex mx;
+    mutable std::mutex mx;
 };
 
 struct ProjectConfiguration
 {
-    ProjectConfiguration()
-    {
-        qDebug() << "[\033[32mCREATED CONFIGURATION STRUCTURE\033[0m]";
-    }
-
     std::map<QString, StringSetting> strSettings
     {
         // Main configurations
         { "SAVE_CHANGES_BACKUP_DIRECTORY", "./saveChangesBackup"},
         { "BUILD_LOG_FILE_NAME", "buildLog.txt"},
+        { "Configuration file path", "DepsSearcherConfig.ini" },
 
         // Builder
         { "makeProgram", "/usr/bin/make"},

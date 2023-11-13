@@ -7,6 +7,8 @@
 #include "archivator.h"
 #include "projectsettings.h"
 
+#include <QSettings>
+
 #include <QDebug>
 
 #include <QDir>
@@ -365,4 +367,62 @@ bool ProjectDirectoryFileInterface::hasDependRecurse(const QString &projName, co
 Configuration::ProjectConfiguration &ProjectDirectoryFileInterface::mainConfig()
 {
     return m_pImpl->mainProjectConfiguration;
+}
+
+void ProjectDirectoryFileInterface::saveCurrentConfiguration()
+{
+    const QString configPath = m_pImpl->mainProjectConfiguration.strSettings["Configuration file path"];
+
+    qDebug() << "[FILE INTERFACE] Saving settings to path:" << configPath;
+    QSettings configFile(configPath, QSettings::Format::IniFormat);
+    QString writeBuffer;
+
+    configFile.beginGroup("StringSettings");
+    for (const auto & configPair : m_pImpl->mainProjectConfiguration.strSettings)
+    {
+        writeBuffer = configPair.second.toUtf8().toBase64();
+        configFile.setValue(configPair.first, writeBuffer);
+    }
+    configFile.endGroup();
+
+    configFile.beginGroup("IntSettings");
+    for (const auto & configPair : m_pImpl->mainProjectConfiguration.intSettings)
+    {
+        configFile.setValue(configPair.first, QString::number(configPair.second));
+    }
+    configFile.endGroup();
+    qDebug() << "[FILE INTERFACE] Setting loaded";
+}
+
+void ProjectDirectoryFileInterface::loadConfiguration()
+{
+    const QString configPath = m_pImpl->mainProjectConfiguration.strSettings["Configuration file path"];
+
+    qDebug() << "[FILE INTERFACE] Loading settings by path:" << configPath;
+
+    if (!QFileInfo(configPath).exists())
+    {
+        qDebug() << "[FILE INTERFACE] Configuration file not found";
+        return;
+    }
+
+    QSettings configFile(configPath, QSettings::Format::IniFormat);
+    QString writeBuffer;
+
+    configFile.beginGroup("StringSettings");
+    for (auto & configPair : m_pImpl->mainProjectConfiguration.strSettings)
+    {
+        writeBuffer = configFile.value(configPair.first).toString();
+        writeBuffer = QByteArray::fromBase64(writeBuffer.toUtf8());
+        configPair.second = writeBuffer;
+    }
+    configFile.endGroup();
+
+    configFile.beginGroup("IntSettings");
+    for (auto & configPair : m_pImpl->mainProjectConfiguration.intSettings)
+    {
+        configPair.second = configFile.value(configPair.first).toInt();
+    }
+    configFile.endGroup();
+    qDebug() << "[FILE INTERFACE] Setting loaded";
 }
