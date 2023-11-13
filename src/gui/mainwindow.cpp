@@ -8,6 +8,8 @@
 
 #include <QDebug>
 
+#include <QValidator>
+
 #define REMOVE_BUTTON_FOCUS(buttonName)                     ui->buttonName##_pushButton->setFocusPolicy(Qt::NoFocus)
 #define CONNECT_CLICKED(buttonName, mainWindowFunction)    connect(ui->buttonName##_pushButton, &QPushButton::clicked, this, &MainWindow::mainWindowFunction)
 
@@ -463,11 +465,12 @@ void MainWindow::settingClicked()
 
         if (!pIntSetting)
             return;
-
+        ui->settingValue_lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]+"), ui->settingValue_lineEdit));
         ui->settingValue_label->setText(QString::number(*pIntSetting));
     }
     else
     {
+        ui->settingValue_lineEdit->setValidator(nullptr);
         ui->settingValue_label->setText(*pStrSetting);
     }
 

@@ -875,7 +875,20 @@ border-color: rgb(186, 186, 186);</string>
             </widget>
            </item>
            <item row="1" column="0" rowspan="4">
-            <widget class="QListWidget" name="settingList_listWidget"/>
+            <widget class="QListWidget" name="settingList_listWidget">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="verticalScrollMode">
+              <enum>QAbstractItemView::ScrollPerPixel</enum>
+             </property>
+             <property name="horizontalScrollMode">
+              <enum>QAbstractItemView::ScrollPerPixel</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="0" column="1" rowspan="2">
             <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -939,7 +952,14 @@ border-color: rgb(186, 186, 186);</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="settingValue_lineEdit"/>
+                  <widget class="QLineEdit" name="settingValue_lineEdit">
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>Впишите значение</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -972,9 +992,6 @@ border-color: rgb(186, 186, 186);</string>
                 <string>Сохранить конфигурацию</string>
                </property>
               </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="settingsSaveFile_lineEdit"/>
              </item>
             </layout>
            </item>

@@ -125,7 +125,6 @@ public:
     QPushButton *settingRestore_pushButton;
     QPushButton *settingsRestore_pushButton;
     QPushButton *settingsSave_pushButton;
-    QLineEdit *settingsSaveFile_lineEdit;
     QVBoxLayout *verticalLayout_7;
     QVBoxLayout *verticalLayout_10;
     QLineEdit *basePath_lineEdit;
@@ -705,6 +704,10 @@ public:
 
         settingList_listWidget = new QListWidget(widget_6);
         settingList_listWidget->setObjectName(QStringLiteral("settingList_listWidget"));
+        settingList_listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        settingList_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+        settingList_listWidget->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+        settingList_listWidget->setSortingEnabled(true);
 
         gridLayout_4->addWidget(settingList_listWidget, 1, 0, 4, 1);
 
@@ -758,6 +761,7 @@ public:
 
         settingValue_lineEdit = new QLineEdit(widget_6);
         settingValue_lineEdit->setObjectName(QStringLiteral("settingValue_lineEdit"));
+        settingValue_lineEdit->setAlignment(Qt::AlignCenter);
 
         verticalLayout_14->addWidget(settingValue_lineEdit);
 
@@ -786,11 +790,6 @@ public:
         settingsSave_pushButton->setObjectName(QStringLiteral("settingsSave_pushButton"));
 
         verticalLayout_15->addWidget(settingsSave_pushButton);
-
-        settingsSaveFile_lineEdit = new QLineEdit(widget_6);
-        settingsSaveFile_lineEdit->setObjectName(QStringLiteral("settingsSaveFile_lineEdit"));
-
-        verticalLayout_15->addWidget(settingsSaveFile_lineEdit);
 
 
         gridLayout_4->addLayout(verticalLayout_15, 0, 1, 2, 1);
@@ -1005,6 +1004,7 @@ public:
         label_12->setText(QApplication::translate("MainWindow", "\320\235\320\276\320\262\320\276\320\265", nullptr));
         settingName_label->setText(QApplication::translate("MainWindow", "\320\235\320\265 \320\262\321\213\320\261\321\200\320\260\320\275\320\276", nullptr));
         settingValue_label->setText(QApplication::translate("MainWindow", "\320\235\320\265\321\202", nullptr));
+        settingValue_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\222\320\277\320\270\321\210\320\270\321\202\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", nullptr));
         settingAccept_pushButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\270\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
         settingRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265", nullptr));
         settingsRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\222\320\241\320\201", nullptr));
