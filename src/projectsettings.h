@@ -5,6 +5,8 @@
 #include <mutex>
 #include <QString>
 
+#include <QDebug>
+
 namespace Configuration
 {
 
@@ -12,6 +14,8 @@ class IntSetting
 {
 public:
     IntSetting(int val) { data.store(val); }
+
+    IntSetting(IntSetting && s) { data = s; }
 
     IntSetting & operator =(int newValue)
     {
@@ -33,9 +37,18 @@ public:
         this->data = data;
     }
 
+    StringSetting(StringSetting && s)
+    {
+        mx.lock();
+        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Copy construct:" << s;
+        data = s;
+        mx.unlock();
+    }
+
     StringSetting & operator =(const QString & data)
     {
         mx.lock();
+        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Setting data:" << data;
         this->data = data;
         mx.unlock();
         return *this;
@@ -45,6 +58,7 @@ public:
     {
         QString result;
         mx.lock();
+        qDebug() << "[\033[33mCONFIG TEST\033[0m] [STRING] Getting data:" << data;
         result = data;
         mx.unlock();
         return data;
@@ -66,6 +80,10 @@ private:
 
 struct ProjectConfiguration
 {
+    // Main configurations
+    const QString SAVE_CHANGES_BACKUP_DIRECTORY {"./saveChangesBackup"};
+    const QString BUILD_LOG_FILE_NAME {"buildLog.txt"};
+
     // Util class
     IntSetting PROCESS_START_TIMEOUT {5000};
 
@@ -91,11 +109,15 @@ struct ProjectConfiguration
     StringSetting binDirectory {"/BIN"};
     StringSetting libDirectory {"/LIB"};
     StringSetting libraryDirectory {"/Libraries"};
-    StringSetting projectDirectory {"/Apps"};
+    StringSetting appDirectory {"/Apps"};
+
+    // Depends parser
+    StringSetting dependPathRegexp {"\\$\\$PWD\\/\\.\\.\\/\\.\\."};
+    StringSetting dependPathBase {"$$PWD/../.."};
 };
 
 
-static ProjectConfiguration mainProjectConfiguration;
+static ProjectConfiguration mainProjectConfiguration {ProjectConfiguration()};
 
 }
 

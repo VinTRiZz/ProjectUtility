@@ -5,6 +5,7 @@
 #include "dependsworker.h"
 #include "buildmanager.h"
 #include "archivator.h"
+#include "projectsettings.h"
 
 #include <QDebug>
 
@@ -14,10 +15,6 @@
 #include <QVector>
 
 #include <thread>
-
-#define BUILD_LOG_FILE_NAME "buildLog.txt"
-
-static const QString SAVE_CHANGES_BACKUP_DIRECTORY {"./saveChangesBackup"};
 
 using namespace FileWork;
 
@@ -47,7 +44,7 @@ struct ProjectDirectoryFileInterface::Impl
         m_buildManager{parent},
         m_pGraphWidget(displayWidget)
     {
-        m_utilClass.setLogFile( QDir::currentPath() + "/" + BUILD_LOG_FILE_NAME );
+        m_utilClass.setLogFile( QDir::currentPath() + "/" + Configuration::mainProjectConfiguration.BUILD_LOG_FILE_NAME );
     }
 
     void setPath(const QString & path)

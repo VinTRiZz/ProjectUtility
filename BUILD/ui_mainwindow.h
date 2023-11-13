@@ -120,6 +120,47 @@ public:
     QSpacerItem *verticalSpacer_2;
     QSpacerItem *verticalSpacer;
     QWidget *page_3;
+    QGridLayout *gridLayout_3;
+    QStackedWidget *settings_stackedWidget;
+    QWidget *page_4;
+    QPushButton *pushButton;
+    QWidget *layoutWidget;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *label_11;
+    QLineEdit *processStartTimeout_lineEdit;
+    QWidget *layoutWidget_2;
+    QHBoxLayout *horizontalLayout_6;
+    QLabel *label_12;
+    QLineEdit *archiveTimeout_lineEdit;
+    QWidget *layoutWidget_3;
+    QHBoxLayout *horizontalLayout_7;
+    QLabel *label_13;
+    QLineEdit *zipTimeout_lineEdit;
+    QWidget *layoutWidget_4;
+    QHBoxLayout *horizontalLayout_8;
+    QLabel *label_14;
+    QLineEdit *make_lineEdit;
+    QWidget *layoutWidget_5;
+    QHBoxLayout *horizontalLayout_9;
+    QLabel *label_15;
+    QLineEdit *qmake_lineEdit;
+    QWidget *layoutWidget_6;
+    QHBoxLayout *horizontalLayout_10;
+    QLabel *label_16;
+    QLineEdit *qmakeDefault_lineEdit;
+    QWidget *layoutWidget_7;
+    QHBoxLayout *horizontalLayout_11;
+    QLabel *label_17;
+    QLineEdit *qmakeArgs_lineEdit;
+    QWidget *widget1;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_10;
+    QLineEdit *logFile_lineEdit;
+    QWidget *page_5;
+    QPushButton *pushButton_2;
+    QPushButton *prevPage_pushButton;
+    QPushButton *nextPage_pushButton;
+    QSpacerItem *horizontalSpacer_4;
     QMenuBar *menuBar;
     QMenu *menu;
     QStatusBar *statusBar;
@@ -786,6 +827,198 @@ public:
         menu_stackedWidget->addWidget(page_2);
         page_3 = new QWidget();
         page_3->setObjectName(QStringLiteral("page_3"));
+        gridLayout_3 = new QGridLayout(page_3);
+        gridLayout_3->setSpacing(6);
+        gridLayout_3->setContentsMargins(11, 11, 11, 11);
+        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
+        settings_stackedWidget = new QStackedWidget(page_3);
+        settings_stackedWidget->setObjectName(QStringLiteral("settings_stackedWidget"));
+        page_4 = new QWidget();
+        page_4->setObjectName(QStringLiteral("page_4"));
+        pushButton = new QPushButton(page_4);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(110, 390, 80, 26));
+        layoutWidget = new QWidget(page_4);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(50, 80, 651, 28));
+        horizontalLayout_5 = new QHBoxLayout(layoutWidget);
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
+        label_11 = new QLabel(layoutWidget);
+        label_11->setObjectName(QStringLiteral("label_11"));
+        label_11->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_5->addWidget(label_11);
+
+        processStartTimeout_lineEdit = new QLineEdit(layoutWidget);
+        processStartTimeout_lineEdit->setObjectName(QStringLiteral("processStartTimeout_lineEdit"));
+        processStartTimeout_lineEdit->setInputMethodHints(Qt::ImhDigitsOnly);
+        processStartTimeout_lineEdit->setClearButtonEnabled(false);
+
+        horizontalLayout_5->addWidget(processStartTimeout_lineEdit);
+
+        layoutWidget_2 = new QWidget(page_4);
+        layoutWidget_2->setObjectName(QStringLiteral("layoutWidget_2"));
+        layoutWidget_2->setGeometry(QRect(50, 120, 651, 28));
+        horizontalLayout_6 = new QHBoxLayout(layoutWidget_2);
+        horizontalLayout_6->setSpacing(6);
+        horizontalLayout_6->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
+        label_12 = new QLabel(layoutWidget_2);
+        label_12->setObjectName(QStringLiteral("label_12"));
+        label_12->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_6->addWidget(label_12);
+
+        archiveTimeout_lineEdit = new QLineEdit(layoutWidget_2);
+        archiveTimeout_lineEdit->setObjectName(QStringLiteral("archiveTimeout_lineEdit"));
+        archiveTimeout_lineEdit->setInputMethodHints(Qt::ImhDigitsOnly);
+
+        horizontalLayout_6->addWidget(archiveTimeout_lineEdit);
+
+        layoutWidget_3 = new QWidget(page_4);
+        layoutWidget_3->setObjectName(QStringLiteral("layoutWidget_3"));
+        layoutWidget_3->setGeometry(QRect(50, 160, 651, 28));
+        horizontalLayout_7 = new QHBoxLayout(layoutWidget_3);
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        horizontalLayout_7->setContentsMargins(0, 0, 0, 0);
+        label_13 = new QLabel(layoutWidget_3);
+        label_13->setObjectName(QStringLiteral("label_13"));
+        label_13->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_7->addWidget(label_13);
+
+        zipTimeout_lineEdit = new QLineEdit(layoutWidget_3);
+        zipTimeout_lineEdit->setObjectName(QStringLiteral("zipTimeout_lineEdit"));
+        zipTimeout_lineEdit->setInputMethodHints(Qt::ImhDigitsOnly);
+
+        horizontalLayout_7->addWidget(zipTimeout_lineEdit);
+
+        layoutWidget_4 = new QWidget(page_4);
+        layoutWidget_4->setObjectName(QStringLiteral("layoutWidget_4"));
+        layoutWidget_4->setGeometry(QRect(50, 200, 651, 28));
+        horizontalLayout_8 = new QHBoxLayout(layoutWidget_4);
+        horizontalLayout_8->setSpacing(6);
+        horizontalLayout_8->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
+        horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
+        label_14 = new QLabel(layoutWidget_4);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_8->addWidget(label_14);
+
+        make_lineEdit = new QLineEdit(layoutWidget_4);
+        make_lineEdit->setObjectName(QStringLiteral("make_lineEdit"));
+
+        horizontalLayout_8->addWidget(make_lineEdit);
+
+        layoutWidget_5 = new QWidget(page_4);
+        layoutWidget_5->setObjectName(QStringLiteral("layoutWidget_5"));
+        layoutWidget_5->setGeometry(QRect(50, 240, 651, 28));
+        horizontalLayout_9 = new QHBoxLayout(layoutWidget_5);
+        horizontalLayout_9->setSpacing(6);
+        horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
+        horizontalLayout_9->setContentsMargins(0, 0, 0, 0);
+        label_15 = new QLabel(layoutWidget_5);
+        label_15->setObjectName(QStringLiteral("label_15"));
+        label_15->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_9->addWidget(label_15);
+
+        qmake_lineEdit = new QLineEdit(layoutWidget_5);
+        qmake_lineEdit->setObjectName(QStringLiteral("qmake_lineEdit"));
+
+        horizontalLayout_9->addWidget(qmake_lineEdit);
+
+        layoutWidget_6 = new QWidget(page_4);
+        layoutWidget_6->setObjectName(QStringLiteral("layoutWidget_6"));
+        layoutWidget_6->setGeometry(QRect(50, 280, 651, 28));
+        horizontalLayout_10 = new QHBoxLayout(layoutWidget_6);
+        horizontalLayout_10->setSpacing(6);
+        horizontalLayout_10->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_10->setObjectName(QStringLiteral("horizontalLayout_10"));
+        horizontalLayout_10->setContentsMargins(0, 0, 0, 0);
+        label_16 = new QLabel(layoutWidget_6);
+        label_16->setObjectName(QStringLiteral("label_16"));
+        label_16->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(label_16);
+
+        qmakeDefault_lineEdit = new QLineEdit(layoutWidget_6);
+        qmakeDefault_lineEdit->setObjectName(QStringLiteral("qmakeDefault_lineEdit"));
+        qmakeDefault_lineEdit->setReadOnly(false);
+
+        horizontalLayout_10->addWidget(qmakeDefault_lineEdit);
+
+        layoutWidget_7 = new QWidget(page_4);
+        layoutWidget_7->setObjectName(QStringLiteral("layoutWidget_7"));
+        layoutWidget_7->setGeometry(QRect(50, 320, 651, 28));
+        horizontalLayout_11 = new QHBoxLayout(layoutWidget_7);
+        horizontalLayout_11->setSpacing(6);
+        horizontalLayout_11->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_11->setObjectName(QStringLiteral("horizontalLayout_11"));
+        horizontalLayout_11->setContentsMargins(0, 0, 0, 0);
+        label_17 = new QLabel(layoutWidget_7);
+        label_17->setObjectName(QStringLiteral("label_17"));
+        label_17->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_11->addWidget(label_17);
+
+        qmakeArgs_lineEdit = new QLineEdit(layoutWidget_7);
+        qmakeArgs_lineEdit->setObjectName(QStringLiteral("qmakeArgs_lineEdit"));
+
+        horizontalLayout_11->addWidget(qmakeArgs_lineEdit);
+
+        widget1 = new QWidget(page_4);
+        widget1->setObjectName(QStringLiteral("widget1"));
+        widget1->setGeometry(QRect(50, 40, 651, 28));
+        horizontalLayout_3 = new QHBoxLayout(widget1);
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
+        label_10 = new QLabel(widget1);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_3->addWidget(label_10);
+
+        logFile_lineEdit = new QLineEdit(widget1);
+        logFile_lineEdit->setObjectName(QStringLiteral("logFile_lineEdit"));
+
+        horizontalLayout_3->addWidget(logFile_lineEdit);
+
+        settings_stackedWidget->addWidget(page_4);
+        page_5 = new QWidget();
+        page_5->setObjectName(QStringLiteral("page_5"));
+        pushButton_2 = new QPushButton(page_5);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(250, 190, 80, 26));
+        settings_stackedWidget->addWidget(page_5);
+
+        gridLayout_3->addWidget(settings_stackedWidget, 0, 0, 1, 3);
+
+        prevPage_pushButton = new QPushButton(page_3);
+        prevPage_pushButton->setObjectName(QStringLiteral("prevPage_pushButton"));
+
+        gridLayout_3->addWidget(prevPage_pushButton, 1, 0, 1, 1);
+
+        nextPage_pushButton = new QPushButton(page_3);
+        nextPage_pushButton->setObjectName(QStringLiteral("nextPage_pushButton"));
+
+        gridLayout_3->addWidget(nextPage_pushButton, 1, 2, 1, 1);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+        gridLayout_3->addItem(horizontalSpacer_4, 1, 1, 1, 1);
+
         menu_stackedWidget->addWidget(page_3);
 
         gridLayout->addWidget(menu_stackedWidget, 0, 3, 5, 1);
@@ -808,7 +1041,8 @@ public:
 
         retranslateUi(MainWindow);
 
-        menu_stackedWidget->setCurrentIndex(0);
+        menu_stackedWidget->setCurrentIndex(2);
+        settings_stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -863,6 +1097,26 @@ public:
         archivePath_lineEdit->setText(QApplication::translate("MainWindow", "ProjectsArchive", nullptr));
         archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
         archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
+        pushButton->setText(QApplication::translate("MainWindow", "1", nullptr));
+        label_11->setText(QApplication::translate("MainWindow", "\320\242\320\260\320\271\320\274\320\260\321\203\321\202 \320\267\320\260\320\277\321\203\321\201\320\272\320\260 \320\277\321\200\320\276\321\206\320\265\321\201\321\201\320\260", nullptr));
+        processStartTimeout_lineEdit->setText(QString());
+        label_12->setText(QApplication::translate("MainWindow", "\320\242\320\260\320\271\320\274\320\260\321\203\321\202 \320\260\321\200\321\205\320\270\320\262\320\260\321\206\320\270\320\270", nullptr));
+        archiveTimeout_lineEdit->setText(QString());
+        label_13->setText(QApplication::translate("MainWindow", "\320\242\320\260\320\271\320\274\320\260\321\203\321\202 \320\277\321\200\320\276\321\206\320\265\321\201\321\201\320\260 \321\201\320\266\320\260\321\202\320\270\321\217", nullptr));
+        zipTimeout_lineEdit->setText(QString());
+        label_14->setText(QApplication::translate("MainWindow", "make", nullptr));
+        make_lineEdit->setText(QString());
+        label_15->setText(QApplication::translate("MainWindow", "qmake", nullptr));
+        qmake_lineEdit->setText(QString());
+        label_16->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213 qmake \320\277\320\276 \321\203\320\274\320\276\320\273\321\207\320\260\320\275\320\270\321\216", nullptr));
+        qmakeDefault_lineEdit->setText(QString());
+        label_17->setText(QApplication::translate("MainWindow", "\320\220\321\200\320\263\321\203\320\274\320\265\320\275\321\202\321\213 qmake", nullptr));
+        qmakeArgs_lineEdit->setText(QString());
+        label_10->setText(QApplication::translate("MainWindow", "\320\244\320\260\320\271\320\273 \320\273\320\276\320\263\320\260 \321\201\320\261\320\276\321\200\320\272\320\270", nullptr));
+        logFile_lineEdit->setText(QString());
+        pushButton_2->setText(QApplication::translate("MainWindow", "2", nullptr));
+        prevPage_pushButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\265\320\264\321\213\320\264\321\203\321\211\320\260\321\217 \321\201\321\202\321\200\320\260\320\275\320\270\321\206\320\260", nullptr));
+        nextPage_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\273\320\265\320\264\321\203\321\216\321\211\320\260\321\217 \321\201\321\202\321\200\320\260\320\275\320\270\321\206\320\260", nullptr));
         menu->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\320\275\321\216", nullptr));
     } // retranslateUi
 

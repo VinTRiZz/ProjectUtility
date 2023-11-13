@@ -223,6 +223,7 @@ bool UtilFunctionClass::hasDepend(const Project *proj, const QString & libName)
                 return true;
         }
     }
+    return false;
 }
 
 QStringList UtilFunctionClass::getLibraryNameList()

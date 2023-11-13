@@ -3,6 +3,7 @@
 
 #include "utilfunctionclass.h"
 #include "dependencyparser.h"
+#include "projectsettings.h"
 
 #include <QString>
 #include <thread>
@@ -29,6 +30,9 @@ public:
 
     void saveChanges();
     int progressPercent() const;
+
+signals:
+    void progressUpdated();
 
 private:
     QVector<Project> & apps;

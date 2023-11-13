@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->menu_stackedWidget->setCurrentIndex(0);
+    ui->settings_stackedWidget->setCurrentIndex(0);
     m_progressPercent.store(100);
 
     ui->graph_scrollArea->setWidget(m_depGraphWidget);
@@ -37,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     REMOVE_BUTTON_FOCUS(build);
     REMOVE_BUTTON_FOCUS(rebuild);
     REMOVE_BUTTON_FOCUS(archive);
+    REMOVE_BUTTON_FOCUS(nextPage);
+    REMOVE_BUTTON_FOCUS(prevPage);
 
     CONNECT_CLIECKED(add, addSelectedLibrary);
     CONNECT_CLIECKED(remove, removeSelectedLibrary);
@@ -248,11 +251,20 @@ void MainWindow::changedMenu(QAction *menuAction)
     } else if (menuAction->text() == "Сборка, чистка и архивация")
     {
         ui->menu_stackedWidget->setCurrentIndex(1);
+    } else if (menuAction->text() == "Настройки")
+    {
+        ui->menu_stackedWidget->setCurrentIndex(2);
     }
 }
 
 void MainWindow::build()
 {
+    if (!ui->projects_listWidget->count())
+    {
+        emit printInfo("Список проектов пуст, нечего собирать");
+        return;
+    }
+
     if (m_progressPercent.load() != 100)
     {
         emit printInfo("Сборка уже ведётся. Проверьте прогресс в меню сборки");
@@ -312,6 +324,12 @@ void MainWindow::build()
 
 void MainWindow::rebuild()
 {
+    if (!ui->projects_listWidget->count())
+    {
+        emit printInfo("Список проектов пуст, нечего пересобирать");
+        return;
+    }
+
     if (m_progressPercent.load() != 100)
     {
         emit printInfo("Сборка уже ведётся. Проверьте прогресс в меню сборки");
@@ -544,3 +562,19 @@ void MainWindow::fillProjectList()
     }
 }
 
+
+void MainWindow::on_prevPage_pushButton_clicked()
+{
+    const int currentIndex = ui->settings_stackedWidget->currentIndex();
+
+    if (currentIndex > 0)
+        ui->settings_stackedWidget->setCurrentIndex( currentIndex - 1 );
+}
+
+void MainWindow::on_nextPage_pushButton_clicked()
+{
+    const int currentIndex = ui->settings_stackedWidget->currentIndex();
+
+    if (currentIndex < ui->settings_stackedWidget->count())
+        ui->settings_stackedWidget->setCurrentIndex( currentIndex + 1 );
+}

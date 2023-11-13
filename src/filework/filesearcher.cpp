@@ -1,4 +1,5 @@
 #include "filesearcher.h"
+#include "projectsettings.h"
 
 #include <QDebug>
 
@@ -8,13 +9,6 @@
 #include <QVector>
 
 using namespace FileWork;
-
-#define FIND_START_TIMEOUT 1000
-#define FIND_FINISH_TIMEOUT 10000
-
-#define LIBRARY_PROJECTS_BASE_DIRECTORY "/Libraries"
-#define APP_PROJECTS_BASE_DIRECTORY     "/Apps"
-#define LIBRARIES_BASE_DIRECTORY        "/LIB"
 
 FileSearcher::FileSearcher(QVector<Project> & apps, QVector<Project> & libs):
     apps{apps}, libs{libs}
@@ -122,8 +116,8 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
 void FileSearcher::findFiles()
 {
     const QString
-            appDirBasePath = currentBasePath + APP_PROJECTS_BASE_DIRECTORY,
-            libDirBasePath = currentBasePath + LIBRARY_PROJECTS_BASE_DIRECTORY
+            appDirBasePath = currentBasePath + Configuration::mainProjectConfiguration.appDirectory,
+            libDirBasePath = currentBasePath + Configuration::mainProjectConfiguration.libraryDirectory
             ;
 
     apps.clear();

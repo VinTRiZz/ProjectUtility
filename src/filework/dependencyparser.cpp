@@ -1,5 +1,7 @@
 #include "dependencyparser.h"
 
+#include "projectsettings.h"
+
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -83,7 +85,7 @@ void DependencyParser::parseDepends(Project &proj)
         if (beginBracketPos != endBracketPos)
         {
             buffer = std::string(beginBracketPos + 1, endBracketPos).c_str();
-            buffer.replace(QRegExp("\\$\\$PWD\\/\\.\\.\\/\\.\\."), currentBasePath);
+            buffer.replace(QRegExp(Configuration::mainProjectConfiguration.dependPathRegexp), currentBasePath);
             depPaths << buffer;
         }
         includeStartPos++;
@@ -126,17 +128,15 @@ void DependencyParser::writeDepends(Project &proj)
         qDebug() << "[DEPENDS PARSER] \033[33mWarning\033[0m No depend file specified!";
 
         if (proj.depends.size() == 0)
-        {
             return;
-        }
 
         qDebug() << "[DEPENDS PARSER] Depends file will be created";
 
         openMode = QIODevice::NewOnly;
         if (proj.isLibrary)
-            proj.dependFilePath = currentBasePath + "/Libraries/" + proj.name + "/deps.pri";
+            proj.dependFilePath = currentBasePath + "/" + Configuration::mainProjectConfiguration.libraryDirectory + "/" + proj.name + "/deps.pri";
         else
-            proj.dependFilePath = currentBasePath + "/Apps/" + proj.name + "/deps.pri";
+            proj.dependFilePath = currentBasePath + "/" + Configuration::mainProjectConfiguration.appDirectory + "/" + proj.name + "/deps.pri";
     }
 
     QFile deps(proj.dependFilePath);
@@ -175,7 +175,7 @@ void DependencyParser::writeDepends(Project &proj)
     for (QString & dep : depList)
     {
         dep.remove(0, currentBasePath.size());
-        dep = "include($$PWD/../.." + dep + ")";
+        dep = "include(" + Configuration::mainProjectConfiguration.dependPathBase + dep + ")";
         depsStream << dep << endl;
     }
     deps.close();

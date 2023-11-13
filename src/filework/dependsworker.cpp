@@ -28,6 +28,7 @@ bool DependsWorker::addLibrary(Project * proj, const QString &libraryName)
         if (libraryExist)
             break;
     }
+
     if (!libraryExist)
         return false;
 
@@ -69,10 +70,10 @@ void DependsWorker::updateDepends()
             {
                 dependsBuffer = app.depends;
                 std::sort(dependsBuffer.begin(), dependsBuffer.end(),
-                          [](QString & first, QString & second)
-                {
-                    return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-                }
+                    [](QString & first, QString & second)
+                    {
+                        return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                    }
                 );
                 m_depParser.writeDepends(app);
                 m_utilClass.increasePercent(progressPart);
@@ -81,10 +82,10 @@ void DependsWorker::updateDepends()
             for (Project & lib : libs)
             {
                 std::sort(lib.depends.begin(), lib.depends.end(),
-                          [](QString & first, QString & second)
-                {
-                    return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-                }
+                    [](QString & first, QString & second)
+                    {
+                        return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
+                    }
                 );
                 m_depParser.writeDepends(lib);
                 m_utilClass.increasePercent(progressPart);

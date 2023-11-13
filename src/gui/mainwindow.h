@@ -50,6 +50,11 @@ public slots:
 
     void recursiveDependencySearch();
 
+private slots:
+    void on_prevPage_pushButton_clicked();
+
+    void on_nextPage_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
