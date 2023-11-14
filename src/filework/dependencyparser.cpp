@@ -85,7 +85,7 @@ void DependencyParser::parseDepends(Project &proj)
         if (beginBracketPos != endBracketPos)
         {
             buffer = std::string(beginBracketPos + 1, endBracketPos).c_str();
-            buffer.replace(QRegExp(m_utilClass.projectConfiguration().strSettings["dependPathRegexp"]), currentBasePath);
+            buffer.replace(QRegExp(m_utilClass.projectConfiguration().strSettings["Depend reg exp"]), currentBasePath);
             depPaths << buffer;
         }
         includeStartPos++;
@@ -134,9 +134,9 @@ void DependencyParser::writeDepends(Project &proj)
 
         openMode = QIODevice::NewOnly;
         if (proj.isLibrary)
-            proj.dependFilePath = currentBasePath + "/" + m_utilClass.projectConfiguration().strSettings["libraryDirectory"] + "/" + proj.name + "/deps.pri";
+            proj.dependFilePath = currentBasePath + "/" + m_utilClass.projectConfiguration().strSettings["Library directory path"] + "/" + proj.name + "/deps.pri";
         else
-            proj.dependFilePath = currentBasePath + "/" + m_utilClass.projectConfiguration().strSettings["appDirectory"] + "/" + proj.name + "/deps.pri";
+            proj.dependFilePath = currentBasePath + "/" + m_utilClass.projectConfiguration().strSettings["App directory path"] + "/" + proj.name + "/deps.pri";
     }
 
     QFile deps(proj.dependFilePath);
@@ -175,7 +175,7 @@ void DependencyParser::writeDepends(Project &proj)
     for (QString & dep : depList)
     {
         dep.remove(0, currentBasePath.size());
-        dep = "include(" + m_utilClass.projectConfiguration().strSettings["dependPathBase"] + dep + ")";
+        dep = "include(" + m_utilClass.projectConfiguration().strSettings["Depend base"] + dep + ")";
         depsStream << dep << endl;
     }
     deps.close();

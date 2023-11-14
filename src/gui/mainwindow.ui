@@ -360,7 +360,7 @@ QListWidget:item:hover
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>46</width>
+             <width>98</width>
              <height>28</height>
             </rect>
            </property>
@@ -1027,7 +1027,7 @@ border-color: rgb(186, 186, 186);</string>
            <string notr="true">color: rgb(167, 167, 167);</string>
           </property>
           <property name="text">
-           <string>/home/lazarev_as/workspace/project</string>
+           <string/>
           </property>
           <property name="placeholderText">
            <string>Директория с проектами</string>

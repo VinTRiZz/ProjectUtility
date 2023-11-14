@@ -414,7 +414,7 @@ public:
         graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 46, 28));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 98, 28));
         graph_scrollArea->setWidget(scrollAreaWidgetContents);
 
         horizontalLayout_4->addWidget(graph_scrollArea);
@@ -1009,7 +1009,7 @@ public:
         settingRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265", nullptr));
         settingsRestore_pushButton->setText(QApplication::translate("MainWindow", "\320\222\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\270\320\267\320\275\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\222\320\241\320\201", nullptr));
         settingsSave_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\272\320\276\320\275\321\204\320\270\320\263\321\203\321\200\320\260\321\206\320\270\321\216", nullptr));
-        basePath_lineEdit->setText(QApplication::translate("MainWindow", "/home/lazarev_as/workspace/project", nullptr));
+        basePath_lineEdit->setText(QString());
         basePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \321\201 \320\277\321\200\320\276\320\265\320\272\321\202\320\260\320\274\320\270", nullptr));
         update_pushButton->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214 \321\201\320\277\320\270\321\201\320\276\320\272 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
         label->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\265\320\272\321\202\321\213", nullptr));

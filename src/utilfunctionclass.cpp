@@ -64,7 +64,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, c
     invokingProcess.setArguments(args);
 
     invokingProcess.start();
-    if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["PROCESS_START_TIMEOUT"]))
+    if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["Start process timeout"]))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog("Invoke timeout");
@@ -100,7 +100,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, Q
     invokingProcess.setArguments(args);
 
     invokingProcess.start();
-    if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["PROCESS_START_TIMEOUT"]))
+    if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["Start process timeout"]))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog("Invoke timeout");
@@ -144,13 +144,12 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
     if ((m_logFile.fileName() < 2) || (!what.size()))
         return;
 
-    const QString logFileName = mainProjectConfiguration->strSettings["BUILD_LOG_FILE_NAME"];
+    const QString logFileName = mainProjectConfiguration->strSettings["Log file name for build"];
 
     if (logFileName != m_logFile.fileName())
     {
         setLogFile(logFileName);
     }
-    qDebug() << "Writing log to file" << m_logFile.fileName() << "; current log file name:" << logFileName;
 
     m_logFile.open(QIODevice::WriteOnly | QIODevice::Append);
     if (m_logFile.isOpen())

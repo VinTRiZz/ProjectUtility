@@ -46,7 +46,7 @@ bool BuildManager::rebuild(const BuildProjectHandle & proj)
     cleanArgs << "clean";
 
     QDir::setCurrent(projectDir);
-    bool result = m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["makeProgram"], cleanArgs, proj.timeout);
+    bool result = m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["Make bin path"], cleanArgs, proj.timeout);
     QDir::setCurrent(currentDir);
 
     if (!result)
@@ -92,12 +92,12 @@ bool BuildManager::startBuilding()
                 QDir::setCurrent(projectDir);
 
                 QStringList qmakeArgs;
-                qmakeArgs << proj.project.name + ".pro" << "\-spec" << "linux\-g\+\+";
+                qmakeArgs << proj.project.name + ".pro" << m_utilClass.projectConfiguration().strSettings["QMake Default args"].toList();
 
                 if (proj.target == "debug")
-                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["qmakeDebugTargetArg"];
+                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["QMake Debug args"];
                 else if (proj.target == "release")
-                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["qmakeReleaseTargetArg"];
+                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["QMake Release args"];
                 else
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] No target selected, skipped";
@@ -108,15 +108,15 @@ bool BuildManager::startBuilding()
 
                 QStringList buildArgs;
 
-                if (!m_utilClass.projectConfiguration().strSettings["qmakeArgString"].isEmpty())
+                if (!m_utilClass.projectConfiguration().strSettings["QMake args"].isEmpty())
                 {
-                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["qmakeArgString"];
+                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["QMake args"];
                 }
 
                 qDebug() << "[BUILD MANAGER] [BUILD THREAD] Running qmake";
 
                 // Stage 1
-                if (!m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["qmakeProgram"], qmakeArgs, proj.timeout))
+                if (!m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["QMake bin path"], qmakeArgs, proj.timeout))
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in qmake";
                     emit buildComplete(proj.project.name, false);
@@ -126,7 +126,7 @@ bool BuildManager::startBuilding()
                 qDebug() << "[BUILD MANAGER] [BUILD THREAD] Running make";
 
                 // Stage 2
-                if (!m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["makeProgram"], buildArgs, proj.timeout))
+                if (!m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["Make bin path"], buildArgs, proj.timeout))
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in make";
                     emit buildComplete(proj.project.name, false);
@@ -162,7 +162,7 @@ void BuildManager::poll()
 
     if (m_pProcessThread->isRunning())
     {
-        if (!m_pProcessThread->wait(m_utilClass.projectConfiguration().intSettings["BUILD_TIMEOUT"]))
+        if (!m_pProcessThread->wait(m_utilClass.projectConfiguration().intSettings["Build timeout"]))
             m_pProcessThread->exit(1);
     }
 

@@ -31,8 +31,10 @@ QString FileSearcher::basePath() const
     return currentBasePath;
 }
 
-bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
+bool FileSearcher::searchForProjects(const QString &basePath)
 {
+    qDebug() << "[FILE SEARCHER] Checking path:" << basePath;
+
     QDir searchDir(basePath);
     QDir projectDir;
 
@@ -41,12 +43,13 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
     entries.removeOne("..");
 
     Project foundProj;
-    foundProj.isLibrary = isLibs;
 
     int projectFilePos = -1;
+    bool isLib {false};
     QStringList projectContents;
     for (QString & entry : entries)
     {
+        qDebug() << "[FILE SEARCHER] Checking directory:" << entry;
         foundProj.name = entry;
 
         projectDir.setPath( searchDir.absoluteFilePath(entry) );
@@ -62,21 +65,23 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
         if (projectFilePos > 0)
             foundProj.dependFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
 
-        if (isLibs)
-        {
-            projectFilePos = projectContents.indexOf("use.pri");
+        projectFilePos = projectContents.indexOf("use.pri");
 
-            if (projectFilePos > 0)
-                foundProj.useFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
-        }
+        if (projectFilePos > 0)
+            foundProj.useFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
 
-        if (!isLibs)
+        projectFilePos = projectContents.indexOf("include");
+
+        isLib = (projectFilePos > 0);
+        foundProj.isLibrary = isLib;
+
+        if (!isLib)
             apps.push_back(foundProj);
         else
             libs.push_back(foundProj);
     }
 
-    return (((apps.size() > 0) && !isLibs) || ((libs.size() > 0) && isLibs));
+    return (apps.size() > 0) || (libs.size() > 0);
 }
 
 //bool FileSearcher::searchForFiles(const QString &basePath)
@@ -96,7 +101,7 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
 //        return false;
 //    }
 
-//    if (!findProcess.waitForFinished(FIND_FINISH_TIMEOUT))
+//    if (!findProcess.waitForFinished(Find files timeout))
 //    {
 //        qDebug() << "[FILE SEARCHER] [\033[31mFIND\033[0m] Finish error, args:" << findArgs.join(" ");
 //        return false;
@@ -116,18 +121,15 @@ bool FileSearcher::searchForProjects(const QString &basePath, bool isLibs)
 void FileSearcher::findFiles()
 {
     const QString
-            appDirBasePath = currentBasePath + m_utilClass.projectConfiguration().strSettings["appDirectory"],
-            libDirBasePath = currentBasePath + m_utilClass.projectConfiguration().strSettings["libraryDirectory"]
+            appDirBasePath = currentBasePath + m_utilClass.projectConfiguration().strSettings["App directory path"],
+            libDirBasePath = currentBasePath + m_utilClass.projectConfiguration().strSettings["Library directory path"]
             ;
 
     apps.clear();
     libs.clear();
 
-    if (!searchForProjects(appDirBasePath, false) || !searchForProjects(libDirBasePath, true))
-    {
-        qDebug() << "[FILE SEARCHER] [\033[31mNot found projects of apps or libraries\033[0m]";
-        return;
-    }
+    searchForProjects(appDirBasePath);
+    searchForProjects(libDirBasePath);
 
     std::sort(apps.begin(), apps.end(), [](Project & proj_1, Project & proj_2){ return (proj_1.name > proj_2.name); });
     std::sort(libs.begin(), libs.end(), [](Project & proj_1, Project & proj_2){ return (proj_1.name > proj_2.name); });

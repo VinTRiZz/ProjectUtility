@@ -136,21 +136,21 @@ struct DependencyGraphWidget::Impl
     QStringList dependQuery;
     DependencyStruct * checkForRecurse(DependencyStruct * pParent)
     {
-        DependencyStruct * result {nullptr};
-        int dependQuerySize = dependQuery.count();
-
+        int dependQuerySize = dependQuery.size();
+        bool recurseExist = false;
         for (DependencyStruct * dep : pParent->dependsFrom)
         {
-            if (dependQuery.contains(dep->name))
-            {
-                dependQuery << dep->name;
-                qDebug() << "[DependencyGraphWidget] Error: Found recurse for node:" << pParent->name << ":" << dependQuery.join("-->");
-                return dep;
-            }
+            recurseExist = dependQuery.contains(dep->name);
             dependQuery << dep->name;
-            result = checkForRecurse(dep);
-            if (result)
-                return result;
+
+            if (recurseExist)
+                return dep;
+
+            if (dep->dependsFrom.size())
+            {
+                if (checkForRecurse(dep))
+                    return dep;
+            }
             dependQuery.erase(dependQuery.begin() + dependQuerySize, dependQuery.end());
         }
         return nullptr;
@@ -408,6 +408,11 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
 
             drawGraph(m_pImpl->currentHead);
             drawHistory();
+        }
+        else
+        {
+            qDebug() << "[DependencyGraphWidget] Error: Found recurse for node:" << m_pImpl->currentHead->name << ":" << m_pImpl->dependQuery.join("-->");
+            m_pImpl->dependQuery.clear();
         }
     }
 

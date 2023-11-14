@@ -49,7 +49,7 @@ struct ProjectDirectoryFileInterface::Impl
         m_buildManager{parent},
         m_pGraphWidget(displayWidget)
     {
-        m_utilClass.setLogFile( QDir::currentPath() + "/" + mainProjectConfiguration.strSettings["BUILD_LOG_FILE_NAME"] );
+        m_utilClass.setLogFile( QDir::currentPath() + "/" + mainProjectConfiguration.strSettings["Log file name for build"] );
     }
 
     void setPath(const QString & path)
@@ -131,11 +131,6 @@ struct ProjectDirectoryFileInterface::Impl
             pBufferStruct->name = proj.name;
 
             depsVect.push_back(pBufferStruct);
-        }
-
-        for (GraphWidget::DependencyStruct * pStruct : depsVect)
-        {
-            qDebug() << pStruct->name;
         }
 
         // Convert depends
@@ -272,7 +267,7 @@ QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
 
 void ProjectDirectoryFileInterface::saveChanges()
 {
-    // backupAll(SAVE_CHANGES_BACKUP_DIRECTORY);
+    // backupAll(Backup directory for changes);
     m_pImpl->m_dependsWorker.saveChanges();
 }
 

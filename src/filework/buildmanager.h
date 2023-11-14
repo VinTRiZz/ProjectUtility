@@ -15,7 +15,7 @@ struct BuildProjectHandle
 {
     Project project;
     QString target;
-    int timeout {Configuration::defaultProjectConfiguration.intSettings["BUILD_TIMEOUT"]};
+    int timeout {Configuration::defaultProjectConfiguration.intSettings["Build timeout"]};
 };
 
 class BuildManager : public QObject

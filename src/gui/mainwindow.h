@@ -31,6 +31,7 @@ public slots:
 
     void searchForLibrary(const QString & changedText);
     void searchForProject(const QString & changedText);
+    void searchForSetting(const QString &changedText);
 
     void changedMenu(QAction * menuAction);
 

@@ -53,7 +53,7 @@ struct Archivator::Impl
 
         if (processThread->isRunning())
         {
-            if (!processThread->wait(mainProjectConfiguration.intSettings["PROCESS_THREAD_TIMEOUT"]))
+            if (!processThread->wait(mainProjectConfiguration.intSettings["Archive thread timeout"]))
                 processThread->exit(1);
         }
 
@@ -258,9 +258,9 @@ void Archivator::archive(const QString & resultPath)
 
             packProcess.start();
 
-            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
+            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP program timeout"]))
             {
-                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
+                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP program timeout"]))
                 {
                     packProcess.kill();
                 }
@@ -347,9 +347,9 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
 
             packProcess.start();
 
-            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
+            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP program timeout"]))
             {
-                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP_PROCESS_TIMEOUT"]))
+                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP program timeout"]))
                 {
                     packProcess.kill();
                 }

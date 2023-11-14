@@ -27,7 +27,7 @@ private:
     QVector<Project> & libs;
     UtilFunctionClass & m_utilClass;
 
-    bool searchForProjects(const QString & basePath, bool isLibs);
+    bool searchForProjects(const QString & basePath);
 };
 
 }

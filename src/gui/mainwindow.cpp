@@ -189,6 +189,18 @@ void MainWindow::searchForProject(const QString &changedText)
         ui->projects_listWidget->setCurrentItem(pItem);
 }
 
+void MainWindow::searchForSetting(const QString &changedText)
+{
+    auto foundItems = ui->settingList_listWidget->findItems(changedText, Qt::MatchContains);
+
+    if (foundItems.size() < 1)
+        return;
+
+    auto pItem = foundItems[0];
+    if (pItem)
+        ui->settingList_listWidget->setCurrentItem(pItem);
+}
+
 void MainWindow::changedMenu(QAction *menuAction)
 {
     if (menuAction->text() == "Зависимости проекта")
@@ -407,7 +419,7 @@ void MainWindow::buildComplete(const QString &projectName, const bool result)
     }
     else
     {
-        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле %2").arg(projectName, m_fileInterface.mainConfig().strSettings["BUILD_LOG_FILE_NAME"]));
+        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле %2").arg(projectName, m_fileInterface.mainConfig().strSettings["Log file name for build"]));
         m_progressPercent.store(100);
         ui->progressBar->setValue(100);
     }
@@ -514,7 +526,15 @@ void MainWindow::updateSelectedSetting()
     }
     else
     {
-        *pStrSetting = settingValue;
+        if ((settingName.contains("path")) && (settingValue.front().toLatin1() != '/'))
+        {
+            *pStrSetting = "/";
+            *pStrSetting += settingValue;
+        }
+        else
+        {
+            *pStrSetting = settingValue;
+        }
     }
 
     ui->settingValue_label->setText(settingValue);
@@ -540,7 +560,7 @@ void MainWindow::restoreSetting()
     }
 
     if (pStrSetting)
-    {
+    {   
         *pStrSetting = Configuration::defaultProjectConfiguration.strSettings[settingName];
         return;
     }
@@ -666,11 +686,14 @@ void MainWindow::setupSettings()
     for (auto & intSetting : m_fileInterface.mainConfig().intSettings)
         ui->settingList_listWidget->addItem(intSetting.first);
 
+    ui->basePath_lineEdit->setText(m_fileInterface.mainConfig().strSettings["Default base path"]);
+
     connect(ui->settingList_listWidget, &QListWidget::clicked, this, &MainWindow::settingClicked);
     connect(ui->settingAccept_pushButton, &QPushButton::clicked, this, &MainWindow::updateSelectedSetting);
     connect(ui->settingsSave_pushButton, &QPushButton::clicked, this, &MainWindow::saveSettingsToFile);
     connect(ui->settingsRestore_pushButton, &QPushButton::clicked, this, &MainWindow::restoreSettingsAll);
     connect(ui->settingRestore_pushButton, &QPushButton::clicked, this, &MainWindow::restoreSetting);
+    connect(ui->settingSearch_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForSetting);
 }
 
 void MainWindow::fillProjectList()
