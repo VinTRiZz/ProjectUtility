@@ -57,7 +57,7 @@ void UtilFunctionClass::logParsedProjects()
     qDebug() << "--------------------------------------------------------------------------------------------------------";
 }
 
-bool UtilFunctionClass::invoke(const QString &program, const QStringList args, const int timeout)
+bool UtilFunctionClass::invoke(const QString &program, const QStringList & args, const int timeout)
 {
     QProcess invokingProcess;
 
@@ -93,7 +93,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList args, c
     return true;
 }
 
-bool UtilFunctionClass::invoke(const QString &program, const QStringList args, QString &outputBuffer, const int timeout)
+bool UtilFunctionClass::invoke(const QString &program, const QStringList & args, QString &outputBuffer, const int timeout)
 {
     QProcess invokingProcess;
 

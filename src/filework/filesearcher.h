@@ -22,12 +22,16 @@ public:
 
 private:
     QString currentBasePath;
-    QString findOutput;
     QVector<Project> & apps;
     QVector<Project> & libs;
     UtilFunctionClass & m_utilClass;
 
     bool searchForProjects(const QString & basePath);
+    void parseFindOutput();
+
+    QString findOutput;
+    QStringList filesFound;
+    void findProjectFiles();
 };
 
 }

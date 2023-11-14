@@ -91,13 +91,77 @@ bool FileSearcher::searchForProjects(const QString &basePath)
     return (apps.size() > 0) || (libs.size() > 0);
 }
 
+void FileSearcher::parseFindOutput()
+{
+    QDir projectDir;
+    QStringList projectContents;
+    int projectFilePos = -1;
+    bool isLib {false};
+
+    for (const QString & proFile : filesFound)
+    {
+        Project foundProj;
+
+        projectDir.setPath( QFileInfo(proFile).absolutePath() );
+        projectContents = projectDir.entryList();
+
+        foundProj.name = projectDir.dirName();
+        foundProj.projectProFilePath = proFile;
+
+        projectFilePos = projectContents.indexOf("deps.pri");
+
+        if (projectFilePos >= 0)
+            foundProj.dependFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
+
+        projectFilePos = projectContents.indexOf("use.pri");
+
+        if (projectFilePos >= 0)
+            foundProj.useFilePath = projectDir.absoluteFilePath(projectContents.at(projectFilePos));
+
+        projectFilePos = projectContents.indexOf("include");
+
+        isLib = (projectFilePos >= 0);
+        foundProj.isLibrary = isLib;
+
+        if (!isLib)
+            apps.push_back(foundProj);
+        else
+            libs.push_back(foundProj);
+    }
+}
+
+void FileSearcher::findProjectFiles()
+{
+    findOutput.clear();
+
+    QStringList findArgs;
+    findArgs << currentBasePath << "-name" << "*.pro";
+    if (!m_utilClass.invoke("find", findArgs, findOutput, m_utilClass.projectConfiguration().intSettings["Find files timeout"]))
+        return;
+
+    QString anotherFile;
+    for (const QChar s : findOutput)
+    {
+        if (s != '\n')
+            anotherFile += s;
+        else
+        {
+            filesFound << anotherFile;
+            anotherFile.clear();
+        }
+    }
+}
+
 void FileSearcher::findFiles()
 {
     apps.clear();
     libs.clear();
 
-    searchForProjects(currentBasePath + "/App");
-    searchForProjects(currentBasePath + "/Libraries");
+//    searchForProjects(currentBasePath + "/App");
+//    searchForProjects(currentBasePath + "/Libraries");
+
+    findProjectFiles();
+    parseFindOutput();
 
     std::sort(apps.begin(), apps.end(), [](Project & proj_1, Project & proj_2){ return (proj_1.name > proj_2.name); });
     std::sort(libs.begin(), libs.end(), [](Project & proj_1, Project & proj_2){ return (proj_1.name > proj_2.name); });

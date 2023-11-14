@@ -27,8 +27,8 @@ class UtilFunctionClass
 public:
     void logParsedProjects();
 
-    bool invoke(const QString & program, const QStringList args, const int timeout);
-    bool invoke(const QString & program, const QStringList args, QString & outputBuffer, const int timeout);
+    bool invoke(const QString & program, const QStringList & args, const int timeout);
+    bool invoke(const QString & program, const QStringList & args, QString & outputBuffer, const int timeout);
 
     void setLogFile(const QString &logPath);
 
