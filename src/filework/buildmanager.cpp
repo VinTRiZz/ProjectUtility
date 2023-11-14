@@ -110,7 +110,12 @@ bool BuildManager::startBuilding()
 
                 if (!m_utilClass.projectConfiguration().strSettings["QMake args"].isEmpty())
                 {
-                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["QMake args"];
+                    qmakeArgs << m_utilClass.projectConfiguration().strSettings["QMake args"].toList();
+                }
+
+                if (!m_utilClass.projectConfiguration().strSettings["Make args"].isEmpty())
+                {
+                    buildArgs << m_utilClass.projectConfiguration().strSettings["Make args"].toList();
                 }
 
                 qDebug() << "[BUILD MANAGER] [BUILD THREAD] Running qmake";

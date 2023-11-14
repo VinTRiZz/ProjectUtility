@@ -952,7 +952,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        menu_stackedWidget->setCurrentIndex(2);
+        menu_stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

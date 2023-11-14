@@ -223,7 +223,8 @@ void MainWindow::build()
         return;
     }
 
-    if (m_progressPercent.load() != 100)
+    const int currentPercent = m_progressPercent.load();
+    if ((currentPercent != 100) && (currentPercent != 0))
     {
         emit printInfo("Сборка уже ведётся. Проверьте прогресс в меню сборки");
         return;
@@ -288,7 +289,8 @@ void MainWindow::rebuild()
         return;
     }
 
-    if (m_progressPercent.load() != 100)
+    const int currentPercent = m_progressPercent.load();
+    if ((currentPercent != 100) && (currentPercent != 0))
     {
         emit printInfo("Сборка уже ведётся. Проверьте прогресс в меню сборки");
         return;
@@ -526,7 +528,7 @@ void MainWindow::updateSelectedSetting()
     }
     else
     {
-        if ((settingName.contains("path")) && (settingValue.front().toLatin1() != '/'))
+        if ((settingName.contains("path")) && (settingValue.front().toLatin1() != '/') && !settingValue.isEmpty())
         {
             *pStrSetting = "/";
             *pStrSetting += settingValue;

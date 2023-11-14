@@ -18,9 +18,10 @@ struct ProjectConfiguration
 
         // Builder
         { "Make bin path", "/usr/bin/make"},
+        { "Make args", "-j8"},
         { "QMake bin path", "/usr/bin/qmake"},
 
-        { "QMake Default args", "\-spec linux\-g\+\+"},
+        { "QMake Default args", "-spec linux-g++"}, // \-spec linux\-g\+\+
         { "QMake args", ""}, // Adds in settings tile
         { "QMake Debug args", "CONFIG+=debug CONFIG+=qml_debug"},
         { "QMake Release args", "CONFIG+=qtquickcompiler"},
