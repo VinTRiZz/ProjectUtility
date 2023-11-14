@@ -28,13 +28,14 @@ struct ProjectDirectoryFileInterface::Impl
 
     QVector<Project> apps;
     QVector<Project> libs;
+    QVector<Project> unknownLibraries;
 
     QString currentBasePath;
 
     UtilFunctionClass & m_utilClass;
 
     FileSearcher m_searcher{ apps, libs, m_utilClass};
-    DependsWorker m_dependsWorker {apps, libs };
+    DependsWorker m_dependsWorker {apps, libs};
 
     BuildManager m_buildManager;
     Archivator m_archivator {mainProjectConfiguration};
@@ -231,6 +232,7 @@ int ProjectDirectoryFileInterface::processDirectory(const QString path)
     m_pImpl->m_searcher.findFiles();
     m_pImpl->m_dependsWorker.parseFiles();
     m_pImpl->m_dependsWorker.poll();
+    m_pImpl->m_dependsWorker.replaceUnknown();
     m_pImpl->m_utilClass.logParsedProjects();
 
     m_pImpl->m_dependsWorker.poll();

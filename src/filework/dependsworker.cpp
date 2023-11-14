@@ -69,24 +69,14 @@ void DependsWorker::updateDepends()
             for (Project & app : apps)
             {
                 dependsBuffer = app.depends;
-                std::sort(dependsBuffer.begin(), dependsBuffer.end(),
-                    [](QString & first, QString & second)
-                    {
-                        return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-                    }
-                );
+                std::sort(dependsBuffer.begin(), dependsBuffer.end(), [](QString & first, QString & second) { return first > second; } );
                 m_depParser.writeDepends(app);
                 m_utilClass.increasePercent(progressPart);
             }
 
             for (Project & lib : libs)
             {
-                std::sort(lib.depends.begin(), lib.depends.end(),
-                    [](QString & first, QString & second)
-                    {
-                        return std::lexicographical_compare( first.begin(), first.end(), second.begin(), second.end() );
-                    }
-                );
+                std::sort(lib.depends.begin(), lib.depends.end(), [](QString & first, QString & second){ return first > second; } );
                 m_depParser.writeDepends(lib);
                 m_utilClass.increasePercent(progressPart);
             }
@@ -147,4 +137,42 @@ void DependsWorker::saveChanges()
             qDebug() << "[DEPENDS WORKER] Saving complete";
             m_utilClass.setPercent(100);
     });
+}
+
+void DependsWorker::replaceUnknown()
+{
+    bool exist = false;
+    for (Project & app : apps)
+    {
+        for (QString & libName : app.depends)
+        {
+            for (Project & lib : libs)
+            {
+                exist = (lib.name == libName);
+                if (exist)
+                    break;
+            }
+            if (!exist)
+            {
+                libName = "[UNKNOWN] " + libName;
+            }
+        }
+    }
+
+    for (Project & libProject : libs)
+    {
+        for (QString & libName : libProject.depends)
+        {
+            for (Project & lib : libs)
+            {
+                exist = (lib.name == libName);
+                if (exist)
+                    break;
+            }
+            if (!exist)
+            {
+                libName = "[UNKNOWN] " + libName;
+            }
+        }
+    }
 }

@@ -51,6 +51,7 @@ void UtilFunctionClass::logParsedProjects()
                  << "PRO:  " << lib.projectProFilePath                      << endl
                  << "DEPS: " << lib.dependFilePath                          << endl
                  << "USE:  " << lib.useFilePath
+                 << "DEPON: " << lib.depends.join(", ")                   << endl
                     ;
     }
     qDebug() << "--------------------------------------------------------------------------------------------------------";

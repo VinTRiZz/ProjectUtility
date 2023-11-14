@@ -23,6 +23,7 @@ public:
 private:
     QVector<Project> & apps;
     QVector<Project> & libs;
+    QVector<QString> allLibrariesParsed;
 
     QString currentBasePath;
 

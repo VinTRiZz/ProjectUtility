@@ -31,6 +31,8 @@ public:
     void saveChanges();
     int progressPercent() const;
 
+    void replaceUnknown();
+
 signals:
     void progressUpdated();
 

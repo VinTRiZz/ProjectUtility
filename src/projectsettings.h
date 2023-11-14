@@ -30,11 +30,7 @@ struct ProjectConfiguration
         { "Bin directory path", "/BIN"},
         { "Lib directory path", "/LIB"},
         { "Library directory path", "/Libraries"},
-        { "App directory path", "/Apps"},
-
-        // Depends parser
-        { "Depend reg exp", "\\$\\$PWD\\/\\.\\.\\/\\.\\."},
-        { "Depend base", "$$PWD/../.."}
+        { "App directory path", "/Apps"}
     };
 
     std::map<QString, IntSetting> intSettings =

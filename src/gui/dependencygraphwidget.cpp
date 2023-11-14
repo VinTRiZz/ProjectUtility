@@ -133,25 +133,25 @@ struct DependencyGraphWidget::Impl
     QVector<DependencyStruct *> nodeHistory;
     DependencyStruct * currentHead {nullptr};
 
-//    QStringList dependQuery;
-//    DependencyStruct * checkForRecurse(DependencyStruct * pParent)
-//    {
-//        bool recurseExist = false;
-//        for (DependencyStruct * dep : pParent->dependsFrom)
-//        {
-//            recurseExist = dependQuery.contains(dep->name);
-//            dependQuery << dep->name;
+    QStringList dependQuery;
+    DependencyStruct * checkForRecurse(DependencyStruct * pParent)
+    {
+        bool recurseExist = false;
+        for (DependencyStruct * dep : pParent->dependsFrom)
+        {
+            recurseExist = dependQuery.contains(dep->name);
+            dependQuery << dep->name;
 
-//            if (recurseExist)
-//                return dep;
+            if (recurseExist)
+                return dep;
 
-//            if (checkForRecurse(dep))
-//                return dep;
+            if (checkForRecurse(dep))
+                return dep;
 
-//            dependQuery.pop_back();
-//        }
-//        return nullptr;
-//    }
+            dependQuery.pop_back();
+        }
+        return nullptr;
+    }
 
 //    void setupTestDepends()
 //    {
@@ -392,8 +392,8 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
     // Draw depends
     if (m_pImpl->allNodes.size() && m_pImpl->currentHead)
     {
-//        if (!m_pImpl->checkForRecurse(m_pImpl->currentHead))
-//        {
+        if (!m_pImpl->checkForRecurse(m_pImpl->currentHead))
+        {
             m_pImpl->m_paintTools.drawBackground(rect());
 
             setMinimumWidth(m_pImpl->currentHead->dependsFrom.size() * 150);
@@ -405,12 +405,7 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
 
             drawGraph(m_pImpl->currentHead);
             drawHistory();
-//        }
-//        else
-//        {
-//            qDebug() << "[DependencyGraphWidget] Error: Found recurse for node:" << m_pImpl->currentHead->name << ":" << m_pImpl->dependQuery.join("-->");
-//            m_pImpl->dependQuery.clear();
-//        }
+        }
     }
 
     if (m_pImpl->m_paintTools.painter->isActive())

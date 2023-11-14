@@ -6,6 +6,8 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include <QRegularExpressionMatch>
+
 #include <QDebug>
 
 using namespace FileWork;
@@ -31,6 +33,7 @@ void DependencyParser::parseAllDepends()
 {
     qDebug() << "[DEPENDS PARSER] Parsing started";
 
+    QDir::current().cd(currentBasePath);
     if (currentBasePath.size() > 0)
     {
         for (Project & app : apps)
@@ -47,10 +50,11 @@ void DependencyParser::parseDepends(Project &proj)
 {
     if (proj.dependFilePath.isEmpty())
     {
-        qDebug() << "[DEPENDS PARSER] No depend file specified!";
+        qDebug() << "[DEPENDS PARSER] No depend file specified for project:" << proj.name;
         return;
     }
 
+    qDebug() << "[DEPENDS PARSER] Opening dep file for project:" << proj.name;
     QFile deps(proj.dependFilePath);
 
     deps.open(QIODevice::ReadOnly);
@@ -71,6 +75,7 @@ void DependencyParser::parseDepends(Project &proj)
 
     QStringList depPaths;
     QString buffer;
+    std::string bufferStd;
 
     while (includeStartPos != depsFileContents.end())
     {
@@ -84,33 +89,47 @@ void DependencyParser::parseDepends(Project &proj)
 
         if (beginBracketPos != endBracketPos)
         {
-            buffer = std::string(beginBracketPos + 1, endBracketPos).c_str();
-            buffer.replace(QRegExp(m_utilClass.projectConfiguration().strSettings["Depend reg exp"]), currentBasePath);
+            bufferStd = std::string(beginBracketPos + 1, endBracketPos);
+            buffer = bufferStd.c_str();
+
+            if (buffer.contains("$$PWD"))
+            {
+                QDir baseDir = QFileInfo(proj.projectProFilePath).absoluteDir();
+
+                const int cdUpCount = std::count_if(bufferStd.begin(), bufferStd.end(), [](auto & s){ return (s == '.') && (*(&s + 1) == '.') && (*(&s + 2) == '/'); });
+                buffer.remove(QRegExp("\\$\\$PWD(\\/\\.\\.)+\\/"));
+                if (buffer.at(0) != '/')
+                    buffer = "/" + buffer;
+
+                if (cdUpCount)
+                {
+                    QString pwdPath = QFileInfo(proj.projectProFilePath).absolutePath();
+
+                    pwdPath.chop(baseDir.dirName().size() + 1);
+
+                    for (int i = 1; i < cdUpCount; i++)
+                    {
+                        baseDir.cdUp();
+                        pwdPath.chop(baseDir.dirName().size() + 1);
+                    }
+                    buffer = pwdPath + buffer;
+                }
+            }
+
             depPaths << buffer;
+
+            if (!allLibrariesParsed.contains(buffer))
+                allLibrariesParsed.push_back(buffer);
         }
         includeStartPos++;
     }
 
-    QStringList parsedDeps;
-    QStringList::iterator existDepPos;
+    proj.depends.clear();
+
     for (QString & dep : depPaths)
     {
-        existDepPos = std::find_if(
-            proj.depends.begin(), proj.depends.end(),
-            [&dep](QString & depName)
-            {
-                return dep.contains(depName);
-            }
-        );
-
-        if (existDepPos == proj.depends.end())
-            parsedDeps << dep;
-    }
-
-    for (QString & dep : parsedDeps)
-    {
         dep.chop(QFileInfo(dep).fileName().size());
-        proj.depends << QDir(dep).dirName();
+        proj.depends << QFileInfo(dep).absoluteDir().dirName();
         qDebug() << "[DEPENDS PARSER] Parsed dep:" << proj.name << "--->" << proj.depends.last();
     }
 
@@ -125,7 +144,7 @@ void DependencyParser::writeDepends(Project &proj)
 
     if (proj.dependFilePath.isEmpty())
     {
-        qDebug() << "[DEPENDS PARSER] \033[33mWarning\033[0m No depend file specified!";
+        qDebug() << "[DEPENDS PARSER] \033[33mWarning\033[0m No depend file specified for project:" << proj.name;
 
         if (proj.depends.size() == 0)
             return;
@@ -133,10 +152,9 @@ void DependencyParser::writeDepends(Project &proj)
         qDebug() << "[DEPENDS PARSER] Depends file will be created";
 
         openMode = QIODevice::NewOnly;
-        if (proj.isLibrary)
-            proj.dependFilePath = currentBasePath + "/" + m_utilClass.projectConfiguration().strSettings["Library directory path"] + "/" + proj.name + "/deps.pri";
-        else
-            proj.dependFilePath = currentBasePath + "/" + m_utilClass.projectConfiguration().strSettings["App directory path"] + "/" + proj.name + "/deps.pri";
+
+        QString proPath = QFileInfo(proj.projectProFilePath).absoluteDir().absolutePath();
+        proj.dependFilePath = proPath + "/deps.pri";
     }
 
     QFile deps(proj.dependFilePath);
@@ -152,8 +170,8 @@ void DependencyParser::writeDepends(Project &proj)
     while (m_utilClass.hasRecurseDepend(dependQuery, &proj))
     {
         qDebug() << "[DEPENDS WORKER] Found recurse in project" << proj.name << "depends:" << dependQuery.join("-->");
-        qDebug() << "[DEPENDS WORKER] Removing recursive depend on project:" << dependQuery[0];
-        proj.depends.removeOne(dependQuery[0]);
+        qDebug() << "[DEPENDS WORKER] Removing recursive depend on project:" << dependQuery.last();
+        proj.depends.removeOne(dependQuery.last());
         dependQuery.clear();
     }
 
@@ -170,12 +188,46 @@ void DependencyParser::writeDepends(Project &proj)
                 dep = lib.useFilePath;
             }
         }
+
+        if (dep.isEmpty())
+        {
+            dep = "ABOBA";
+        }
     }
+
+    QDir baseDir = QFileInfo(proj.projectProFilePath).absoluteDir();
+    QString pwdPath = "$$PWD";
+
+    while ((baseDir.absolutePath() != currentBasePath) && (baseDir.absolutePath() != "/"))
+    {
+        baseDir.cd("..");
+        pwdPath += "/..";
+    }
+
+    qDebug() << "Base path for config:" << pwdPath;
 
     for (QString & dep : depList)
     {
+        if (dep.contains("[UNKNOWN] "))
+        {
+            dep.remove(0, QString("[UNKNOWN] ").size());
+
+            for (const QString & libraryDep : allLibrariesParsed)
+            {
+                if (libraryDep.contains(dep))
+                {
+                    qDebug() << "Found unknown lib:" << libraryDep;
+                    dep = libraryDep;
+                }
+            }
+        }
+
         dep.remove(0, currentBasePath.size());
-        dep = "include(" + m_utilClass.projectConfiguration().strSettings["Depend base"] + dep + ")";
+
+        dep = "include(" + pwdPath + dep + ")";
+
+        qDebug() << "Added dep:" << dep;
+
         depsStream << dep << endl;
     }
     deps.close();
