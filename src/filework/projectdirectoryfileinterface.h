@@ -21,6 +21,8 @@ public:
     int processDirectory(const QString path);
     QString currentDirectory() const;
 
+    void setCurrentHead(const QString & projectName);
+
     QStringList getLibraryNameList();
     QStringList getAppNameList();
 
@@ -51,6 +53,8 @@ public:
     Configuration::ProjectConfiguration & mainConfig();
     void saveCurrentConfiguration();
     void loadConfiguration();
+
+    void reloadGraph();
 
 signals:
     void archiveComplete();

@@ -350,6 +350,8 @@ void MainWindow::printInfo(const QString & what)
 {
     ui->notifications_listWidget->addItem(what);
     ui->notifications_listWidget->scrollToBottom();
+
+    qDebug() << "[USER ACTION]" << what;
 }
 
 void MainWindow::archiveComplete()
@@ -579,6 +581,20 @@ void MainWindow::restoreSetting()
     *pIntSetting = Configuration::defaultProjectConfiguration.intSettings[settingName];
 }
 
+void MainWindow::reloadGraph()
+{
+    auto pItem = ui->projects_listWidget->currentItem();
+
+    if (!pItem)
+    {
+        emit printInfo("Проект не выбран");
+        return;
+    }
+
+    m_fileInterface.reloadGraph();
+    m_fileInterface.setCurrentHead(pItem->text());
+}
+
 void MainWindow::restoreSettingsAll()
 {
     m_fileInterface.mainConfig() = Configuration::defaultProjectConfiguration;
@@ -644,6 +660,7 @@ void MainWindow::setupSignals()
     CONNECT_CLICKED(build, build);
     CONNECT_CLICKED(rebuild, rebuild);
     CONNECT_CLICKED(archive, archive);
+    CONNECT_CLICKED(reloadGraph, reloadGraph);
 
     connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
     connect(ui->basePath_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::updateProjectList);
@@ -678,6 +695,7 @@ void MainWindow::removeButtonFocuses()
     REMOVE_BUTTON_FOCUS(build);
     REMOVE_BUTTON_FOCUS(rebuild);
     REMOVE_BUTTON_FOCUS(archive);
+    REMOVE_BUTTON_FOCUS(reloadGraph);
 }
 
 void MainWindow::setupSettings()

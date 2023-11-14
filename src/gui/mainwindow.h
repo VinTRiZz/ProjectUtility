@@ -54,6 +54,8 @@ private slots:
     void restoreSettingsAll();
     void restoreSetting();
 
+    void reloadGraph();
+
 private:
     Ui::MainWindow *ui;
 

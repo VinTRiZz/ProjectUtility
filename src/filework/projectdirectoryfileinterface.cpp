@@ -111,6 +111,18 @@ struct ProjectDirectoryFileInterface::Impl
         QVector<GraphWidget::DependencyStruct *> depsVect;
         GraphWidget::DependencyStruct * pBufferStruct;
 
+        // Check for recurses
+        QStringList depQuery;
+        for (FileWork::Project & proj : apps)
+        {
+            depQuery.clear();
+            if (m_utilClass.hasRecurseDepend(depQuery, &proj))
+            {
+                qDebug() << "[FILE INTERFACE] Found infinity depend, vector not inited";
+                return depsVect;
+            }
+        }
+
         // Convert all apps
         for (FileWork::Project & proj : apps)
         {
@@ -242,6 +254,14 @@ QStringList ProjectDirectoryFileInterface::getAppNameList()
 }
 
 QString ProjectDirectoryFileInterface::currentDirectory() const { return m_pImpl->m_searcher.basePath(); }
+
+void ProjectDirectoryFileInterface::setCurrentHead(const QString &projectName)
+{
+    Project * pProject = m_pImpl->m_utilClass.getProject(projectName);
+
+    if (pProject)
+        m_pImpl->m_pGraphWidget->setHead(projectName);
+}
 
 bool ProjectDirectoryFileInterface::addLibrary(const QString &projectName, const QString &libraryName)
 {
@@ -420,4 +440,11 @@ void ProjectDirectoryFileInterface::loadConfiguration()
     }
     configFile.endGroup();
     qDebug() << "[FILE INTERFACE] Setting loaded";
+}
+
+void ProjectDirectoryFileInterface::reloadGraph()
+{
+    m_pImpl->m_pGraphWidget->clear();
+    m_pImpl->m_pGraphWidget->setDependsVector( m_pImpl->createDependsVector() );
+    m_pImpl->m_pGraphWidget->update();
 }

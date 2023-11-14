@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[31];
-    char stringdata0[425];
+    QByteArrayData data[32];
+    char stringdata0[437];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -61,7 +61,8 @@ QT_MOC_LITERAL(26, 335, 14), // "settingClicked"
 QT_MOC_LITERAL(27, 350, 21), // "updateSelectedSetting"
 QT_MOC_LITERAL(28, 372, 18), // "saveSettingsToFile"
 QT_MOC_LITERAL(29, 391, 18), // "restoreSettingsAll"
-QT_MOC_LITERAL(30, 410, 14) // "restoreSetting"
+QT_MOC_LITERAL(30, 410, 14), // "restoreSetting"
+QT_MOC_LITERAL(31, 425, 11) // "reloadGraph"
 
     },
     "MainWindow\0addSelectedLibrary\0\0"
@@ -75,7 +76,8 @@ QT_MOC_LITERAL(30, 410, 14) // "restoreSetting"
     "projectSelected\0buildComplete\0result\0"
     "recursiveDependencySearch\0settingClicked\0"
     "updateSelectedSetting\0saveSettingsToFile\0"
-    "restoreSettingsAll\0restoreSetting"
+    "restoreSettingsAll\0restoreSetting\0"
+    "reloadGraph"
 };
 #undef QT_MOC_LITERAL
 
@@ -85,7 +87,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      23,   14, // methods
+      24,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -93,29 +95,30 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  129,    2, 0x08 /* Private */,
-       3,    0,  130,    2, 0x08 /* Private */,
-       4,    0,  131,    2, 0x08 /* Private */,
-       5,    1,  132,    2, 0x08 /* Private */,
-       7,    0,  135,    2, 0x08 /* Private */,
-       8,    0,  136,    2, 0x08 /* Private */,
-       9,    1,  137,    2, 0x08 /* Private */,
-      11,    1,  140,    2, 0x08 /* Private */,
-      12,    1,  143,    2, 0x08 /* Private */,
-      13,    1,  146,    2, 0x08 /* Private */,
-      16,    0,  149,    2, 0x08 /* Private */,
-      17,    0,  150,    2, 0x08 /* Private */,
-      18,    1,  151,    2, 0x08 /* Private */,
-      20,    0,  154,    2, 0x08 /* Private */,
-      21,    0,  155,    2, 0x08 /* Private */,
-      22,    0,  156,    2, 0x08 /* Private */,
-      23,    2,  157,    2, 0x08 /* Private */,
-      25,    0,  162,    2, 0x08 /* Private */,
-      26,    0,  163,    2, 0x08 /* Private */,
-      27,    0,  164,    2, 0x08 /* Private */,
-      28,    0,  165,    2, 0x08 /* Private */,
-      29,    0,  166,    2, 0x08 /* Private */,
-      30,    0,  167,    2, 0x08 /* Private */,
+       1,    0,  134,    2, 0x08 /* Private */,
+       3,    0,  135,    2, 0x08 /* Private */,
+       4,    0,  136,    2, 0x08 /* Private */,
+       5,    1,  137,    2, 0x08 /* Private */,
+       7,    0,  140,    2, 0x08 /* Private */,
+       8,    0,  141,    2, 0x08 /* Private */,
+       9,    1,  142,    2, 0x08 /* Private */,
+      11,    1,  145,    2, 0x08 /* Private */,
+      12,    1,  148,    2, 0x08 /* Private */,
+      13,    1,  151,    2, 0x08 /* Private */,
+      16,    0,  154,    2, 0x08 /* Private */,
+      17,    0,  155,    2, 0x08 /* Private */,
+      18,    1,  156,    2, 0x08 /* Private */,
+      20,    0,  159,    2, 0x08 /* Private */,
+      21,    0,  160,    2, 0x08 /* Private */,
+      22,    0,  161,    2, 0x08 /* Private */,
+      23,    2,  162,    2, 0x08 /* Private */,
+      25,    0,  167,    2, 0x08 /* Private */,
+      26,    0,  168,    2, 0x08 /* Private */,
+      27,    0,  169,    2, 0x08 /* Private */,
+      28,    0,  170,    2, 0x08 /* Private */,
+      29,    0,  171,    2, 0x08 /* Private */,
+      30,    0,  172,    2, 0x08 /* Private */,
+      31,    0,  173,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -135,6 +138,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString, QMetaType::Bool,    6,   24,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -174,6 +178,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 20: _t->saveSettingsToFile(); break;
         case 21: _t->restoreSettingsAll(); break;
         case 22: _t->restoreSetting(); break;
+        case 23: _t->reloadGraph(); break;
         default: ;
         }
     }
@@ -204,13 +209,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 23)
+        if (_id < 24)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 23;
+        _id -= 24;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 23)
+        if (_id < 24)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 23;
+        _id -= 24;
     }
     return _id;
 }

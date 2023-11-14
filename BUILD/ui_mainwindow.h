@@ -60,6 +60,7 @@ public:
     QLabel *label_2;
     QListWidget *addedLibs_listWidget;
     QLineEdit *recursiveSearch_lineEdit;
+    QPushButton *reloadGraph_pushButton;
     QSpacerItem *verticalSpacer_4;
     QScrollArea *graph_scrollArea;
     QWidget *scrollAreaWidgetContents;
@@ -393,6 +394,11 @@ public:
 
         verticalLayout_6->addWidget(recursiveSearch_lineEdit);
 
+        reloadGraph_pushButton = new QPushButton(page);
+        reloadGraph_pushButton->setObjectName(QStringLiteral("reloadGraph_pushButton"));
+
+        verticalLayout_6->addWidget(reloadGraph_pushButton);
+
         verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_6->addItem(verticalSpacer_4);
@@ -414,7 +420,7 @@ public:
         graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 98, 28));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 474, 649));
         graph_scrollArea->setWidget(scrollAreaWidgetContents);
 
         horizontalLayout_4->addWidget(graph_scrollArea);
@@ -728,16 +734,19 @@ public:
         verticalLayout_13->setObjectName(QStringLiteral("verticalLayout_13"));
         label_10 = new QLabel(widget_6);
         label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setAlignment(Qt::AlignCenter);
 
         verticalLayout_13->addWidget(label_10);
 
         label_11 = new QLabel(widget_6);
         label_11->setObjectName(QStringLiteral("label_11"));
+        label_11->setAlignment(Qt::AlignCenter);
 
         verticalLayout_13->addWidget(label_11);
 
         label_12 = new QLabel(widget_6);
         label_12->setObjectName(QStringLiteral("label_12"));
+        label_12->setAlignment(Qt::AlignCenter);
 
         verticalLayout_13->addWidget(label_12);
 
@@ -813,6 +822,7 @@ public:
         basePath_lineEdit->setSizePolicy(sizePolicy);
         basePath_lineEdit->setMaximumSize(QSize(350, 16777215));
         basePath_lineEdit->setStyleSheet(QStringLiteral("color: rgb(167, 167, 167);"));
+        basePath_lineEdit->setAlignment(Qt::AlignCenter);
 
         verticalLayout_10->addWidget(basePath_lineEdit);
 
@@ -952,7 +962,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        menu_stackedWidget->setCurrentIndex(1);
+        menu_stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -973,6 +983,7 @@ public:
         saveChanges_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\265\320\275\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         recursiveSearch_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\240\320\265\320\272\321\203\321\200\321\201\320\270\320\262\320\275\321\213\320\271 \320\277\320\276\320\270\321\201\320\272", nullptr));
+        reloadGraph_pushButton->setText(QApplication::translate("MainWindow", "\320\237\320\265\321\200\320\265\320\267\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 \320\263\321\200\320\260\321\204", nullptr));
         label_8->setText(QApplication::translate("MainWindow", "\320\246\320\265\320\273\321\214 \321\201\320\261\320\276\321\200\320\272\320\270", nullptr));
         debugTarget_radioButton->setText(QApplication::translate("MainWindow", "Debug", nullptr));
         releaseTarget_radioButton->setText(QApplication::translate("MainWindow", "Release", nullptr));
