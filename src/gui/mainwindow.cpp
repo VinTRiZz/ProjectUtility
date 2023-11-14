@@ -151,13 +151,9 @@ void MainWindow::removeFiles()
 
     QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentDirectory(), filesToRemove);
 
-    emit printInfo("Проверка найденных файлов...");
+    emit printInfo("Очистка от ошибок, если имеются...");
 
-    if (!m_cleaner.listIsCorrect(fileList))
-    {
-        emit printInfo("Найдена ошибка среди удаляемых файлов, ничего не удалено");
-        return;
-    }
+    m_cleaner.clearFromMistakes(fileList);
 
     emit printInfo("Удаление...");
 

@@ -3,6 +3,8 @@
 
 #include "extendedtypes.h"
 
+#include <QDir>
+
 namespace Configuration
 {
 
@@ -30,7 +32,8 @@ struct ProjectConfiguration
         { "Bin directory path", "/BIN"},
         { "Lib directory path", "/LIB"},
         { "Library directory path", "/Libraries"},
-        { "App directory path", "/Apps"}
+        { "App directory path", "/Apps"},
+        { "Program default directory", QDir::currentPath().toUtf8().data() }
     };
 
     std::map<QString, IntSetting> intSettings =

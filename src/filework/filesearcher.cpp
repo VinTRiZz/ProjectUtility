@@ -93,6 +93,10 @@ bool FileSearcher::searchForProjects(const QString &basePath)
 
 void FileSearcher::parseFindOutput()
 {
+    qDebug() << "[FILE SEARCHER] Started parsing find output";
+    apps.clear();
+    libs.clear();
+
     QDir projectDir;
     QStringList projectContents;
     int projectFilePos = -1;
@@ -107,6 +111,8 @@ void FileSearcher::parseFindOutput()
 
         foundProj.name = projectDir.dirName();
         foundProj.projectProFilePath = proFile;
+
+        qDebug() << "[FILE SEARCHER] Found project:" << foundProj.name;
 
         projectFilePos = projectContents.indexOf("deps.pri");
 
@@ -128,6 +134,8 @@ void FileSearcher::parseFindOutput()
         else
             libs.push_back(foundProj);
     }
+
+    qDebug() << "[FILE SEARCHER] Projects replaced";
 }
 
 void FileSearcher::findProjectFiles()
@@ -154,9 +162,6 @@ void FileSearcher::findProjectFiles()
 
 void FileSearcher::findFiles()
 {
-    apps.clear();
-    libs.clear();
-
 //    searchForProjects(currentBasePath + "/App");
 //    searchForProjects(currentBasePath + "/Libraries");
 

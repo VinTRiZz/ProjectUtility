@@ -268,7 +268,7 @@ void Archivator::archive(const QString & resultPath)
                 {
                     qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
                     const QString rmCommand = QString("rm %1 -R").arg(basePathInTmp);
-                    // system(rmCommand.toUtf8().data());
+                    system(rmCommand.toUtf8().data());
                     m_pImpl->isArchived = true;
                 }
                 else
@@ -353,6 +353,7 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
                 {
                     packProcess.kill();
                 }
+
                 if (!packProcess.exitCode())
                 {
                     qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
