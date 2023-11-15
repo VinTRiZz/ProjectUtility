@@ -410,6 +410,8 @@ void MainWindow::projectSelected()
 
     if (ui->autoName_checkBox->isChecked())
         ui->archivePath_lineEdit->setText(pItem->text());
+
+    // s
 }
 
 void MainWindow::buildComplete(const QString &projectName, const bool result)
@@ -663,10 +665,13 @@ void MainWindow::setupSignals()
     CONNECT_CLICKED(reloadGraph, reloadGraph);
 
     connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
+    connect(ui->projects_listWidget, &QListWidget::clicked, this, &MainWindow::projectSelected);
+
     connect(ui->basePath_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::updateProjectList);
 
     connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForLibrary);
     connect(ui->searchProject_lineEdit, &QLineEdit::textChanged, this, &MainWindow::searchForProject);
+    connect(ui->recursiveSearch_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::recursiveDependencySearch);
 
     connect(ui->menuBar, &QMenuBar::triggered, this, &MainWindow::changedMenu);
 
@@ -674,14 +679,9 @@ void MainWindow::setupSignals()
     connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
 
     connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
-
-    connect(ui->projects_listWidget, &QListWidget::clicked, this, &MainWindow::projectSelected);
-
     connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
 
     connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
-
-    connect(ui->recursiveSearch_lineEdit, &QLineEdit::returnPressed, this, &MainWindow::recursiveDependencySearch);
 }
 
 void MainWindow::removeButtonFocuses()

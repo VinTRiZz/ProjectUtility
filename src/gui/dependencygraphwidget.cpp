@@ -133,25 +133,25 @@ struct DependencyGraphWidget::Impl
     QVector<DependencyStruct *> nodeHistory;
     DependencyStruct * currentHead {nullptr};
 
-    QStringList dependQuery;
-    DependencyStruct * checkForRecurse(DependencyStruct * pParent)
-    {
-        bool recurseExist = false;
-        for (DependencyStruct * dep : pParent->dependsFrom)
-        {
-            recurseExist = dependQuery.contains(dep->name);
-            dependQuery << dep->name;
+//    QStringList dependQuery;
+//    DependencyStruct * checkForRecurse(DependencyStruct * pParent)
+//    {
+//        bool recurseExist = false;
+//        for (DependencyStruct * dep : pParent->dependsFrom)
+//        {
+//            recurseExist = dependQuery.contains(dep->name);
+//            dependQuery << dep->name;
 
-            if (recurseExist)
-                return dep;
+//            if (recurseExist)
+//                return dep;
 
-            if (checkForRecurse(dep))
-                return dep;
+//            if (checkForRecurse(dep))
+//                return dep;
 
-            dependQuery.pop_back();
-        }
-        return nullptr;
-    }
+//            dependQuery.pop_back();
+//        }
+//        return nullptr;
+//    }
 
 //    void setupTestDepends()
 //    {
@@ -256,8 +256,6 @@ DependencyGraphWidget::DependencyGraphWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_pImpl->m_paintTools.setDefaultSettings();
-
-    // m_pImpl->setupTestDepends();
 }
 
 DependencyGraphWidget::~DependencyGraphWidget()
@@ -271,11 +269,15 @@ void DependencyGraphWidget::setHead(const QString &headName)
     while (m_pImpl->areDependsUpdating);
     m_pImpl->areDependsUpdating = true;
 
+    m_pImpl->nodeHistory.clear();
     m_pImpl->currentHead = m_pImpl->getNode(headName);
 
-    m_pImpl->nodeHistory.clear();
+    for (DependencyStruct * depNode : m_pImpl->allNodes)
+        depNode->position = QRect();
 
     m_pImpl->areDependsUpdating = false;
+
+    qDebug() << "[DependencyGraphWidget] Head set to" << m_pImpl->currentHead->name;
     update();
 }
 
@@ -285,6 +287,7 @@ void DependencyGraphWidget::setDependsVector(const QVector<DependencyStruct *> &
     m_pImpl->areDependsUpdating = true;
     m_pImpl->allNodes = depsVector;
     m_pImpl->areDependsUpdating = false;
+    qDebug() << "[DependencyGraphWidget] Depends vector replaced";
     update();
 }
 
@@ -392,8 +395,6 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
     // Draw depends
     if (m_pImpl->allNodes.size() && m_pImpl->currentHead)
     {
-        if (!m_pImpl->checkForRecurse(m_pImpl->currentHead))
-        {
             m_pImpl->m_paintTools.drawBackground(rect());
 
             setMinimumWidth(m_pImpl->currentHead->dependsFrom.size() * 150);
@@ -405,7 +406,6 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
 
             drawGraph(m_pImpl->currentHead);
             drawHistory();
-        }
     }
 
     if (m_pImpl->m_paintTools.painter->isActive())
@@ -423,12 +423,13 @@ void DependencyGraphWidget::mousePressEvent(QMouseEvent *e)
     {
         if (pNode->position.contains(clickPos))
         {
+            for (DependencyStruct * depNode : m_pImpl->currentHead->dependsFrom)
+                depNode->position = QRect();
+
             int nodeIndex = m_pImpl->currentHead->dependsFrom.indexOf(pNode);
 
             if (nodeIndex > -1)
             {
-                for (DependencyStruct * depNode : m_pImpl->currentHead->dependsFrom)
-                    depNode->position = QRect();
                 m_pImpl->nodeHistory.push_back(m_pImpl->currentHead);
                 m_pImpl->currentHead = pNode;
 

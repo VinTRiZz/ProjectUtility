@@ -280,6 +280,7 @@ QStringList ProjectDirectoryFileInterface::getDepends(const QString &appName)
     if (pProj)
     {
         m_pImpl->m_pGraphWidget->setHead(appName);
+        m_pImpl->m_pGraphWidget->update();
         return pProj->depends;
     }
     return QStringList();
