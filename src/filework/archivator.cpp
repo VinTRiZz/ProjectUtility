@@ -1,7 +1,5 @@
 #include "archivator.h"
 
-#include "projectsettings.h"
-
 #include <QFileInfo>
 #include <QDir>
 
@@ -30,14 +28,14 @@ struct ArchiveDirectory
 
 struct Archivator::Impl
 {
-    Configuration::ProjectConfiguration & mainProjectConfiguration;
+    UtilFunctionClass & m_utilClass;
 
     ArchiveDirectory mainArchiveDir;
     QThread * processThread {nullptr};
     bool isArchived {false};
 
-    Impl(Configuration::ProjectConfiguration & mainProjectConfiguration) :
-        mainProjectConfiguration {mainProjectConfiguration}
+    Impl(UtilFunctionClass & utilClass) :
+        m_utilClass{utilClass}
     {
         mainArchiveDir.dirName = "Projects";
         mainArchiveDir.archivePath = "Projects";
@@ -53,7 +51,7 @@ struct Archivator::Impl
 
         if (processThread->isRunning())
         {
-            if (!processThread->wait(mainProjectConfiguration.intSettings["Archive thread timeout"]))
+            if (!processThread->wait(m_utilClass.projectConfiguration().intSettings["Archive thread timeout"]))
                 processThread->exit(1);
         }
 
@@ -70,14 +68,14 @@ struct Archivator::Impl
             fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.h"))    ||
             fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.cpp"))  ||
             fileName.contains(QRegExp("[A-Za-z0-9]+\\.pro.user")) ||
-            (fileName == "Makefile")                              ||
-            (
-                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.h"))   &&
-                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.cpp")) &&
-                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.ui"))  &&
-                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pro")) &&
-                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pri"))
-            )
+            (fileName == "Makefile")                              // ||
+//            (
+//                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.h"))   &&
+//                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.cpp")) &&
+//                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.ui"))  &&
+//                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pro")) &&
+//                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.pri"))
+//            )
         )
         {
             return false;
@@ -143,10 +141,9 @@ struct Archivator::Impl
     }
 };
 
-Archivator::Archivator(Configuration::ProjectConfiguration & mainProjectConfiguration, QObject * parent) :
+Archivator::Archivator(UtilFunctionClass & utilClass, QObject * parent) :
     QObject(parent),
-    m_pImpl {new Impl(mainProjectConfiguration)},
-    mainProjectConfiguration(mainProjectConfiguration)
+    m_pImpl {new Impl(utilClass)}
 {
 
 }
@@ -221,21 +218,14 @@ void Archivator::archive(const QString & resultPath)
 
             const QString basePathInTmp = QString("./%1").arg(m_pImpl->mainArchiveDir.dirName);
 
-            // Create temporary directory for them
-            const QString mkdirCommand = "mkdir " + basePathInTmp + " &> /dev/null";
-            system(mkdirCommand.toUtf8().data());
+            QStringList dirArgs;
+            dirArgs << basePathInTmp << "&> /dev/null";
 
-            if (!QFileInfo(basePathInTmp).exists())
+            // Create temporary directory for them
+            if (!m_pImpl->m_utilClass.invoke("mkdir", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
             {
                 qDebug() << "[ARCHIVATOR] Error: directory not created";
                 return;
-            }
-
-            QString mkProjectDirCommand;
-            for (auto child : m_pImpl->mainArchiveDir.children)
-            {
-                mkProjectDirCommand = QString("mkdir %1/%2 &> /dev/null").arg(m_pImpl->mainArchiveDir.archivePath, child.dirName);
-                system(mkdirCommand.toUtf8().data());
             }
 
             m_pImpl->setupDirsRecursive(m_pImpl->mainArchiveDir);
@@ -254,28 +244,14 @@ void Archivator::archive(const QString & resultPath)
             ;
             qDebug() << "[ARCHIVATOR] Archivator command: [" << "zip" << zipArgs.join(" ") << "]";
 
-            packProcess.setArguments(zipArgs);
+            if (m_pImpl->m_utilClass.invoke("zip", zipArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
+                qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
 
-            packProcess.start();
+            qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
 
-            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP program timeout"]))
-            {
-                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP program timeout"]))
-                {
-                    packProcess.kill();
-                }
-                if (!packProcess.exitCode())
-                {
-                    qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
-                    const QString rmCommand = QString("rm %1 -R").arg(basePathInTmp);
-                    system(rmCommand.toUtf8().data());
-                    m_pImpl->isArchived = true;
-                }
-                else
-                {
-                    qDebug() << "[ARCHIVATOR] Error creating archive: [\033[32mSTDOUT\033[0m" << packProcess.readAllStandardOutput() << "] | [\033[31mSTDERR\033[0m" << packProcess.readAllStandardOutput() << "]";
-                }
-            }
+            dirArgs << "-R";
+            m_pImpl->m_utilClass.invoke("rm", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]);
+
             emit this->archiveComplete();
         }
     );
@@ -317,11 +293,11 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
 
             m_pImpl->searchRecursive(QDir(projectDirPath), projectArhiveDir);
 
-            // Create temporary directory for them
-            const QString mkdirCommand = "mkdir " + basePathInTmp + " &> /dev/null";
-            system(mkdirCommand.toUtf8().data());
+            QStringList dirArgs;
+            dirArgs << basePathInTmp << "&> /dev/null";
 
-            if (!QFileInfo(basePathInTmp).exists())
+            // Create temporary directory for them
+            if (!m_pImpl->m_utilClass.invoke("mkdir", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
             {
                 qDebug() << "[ARCHIVATOR] Error: directory not created";
                 return;
@@ -330,12 +306,10 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
             m_pImpl->setupDirsRecursive(projectArhiveDir);
             m_pImpl->copyFilesRecursive(projectArhiveDir);
 
-            // Archive them
-            QProcess packProcess;
-            packProcess.setProgram("zip");
-
-            QStringList zipArgs;
             const QString zipRecursivelyArg = "-r", zipUpdateExistArg = "-u";
+
+            // Archive them
+            QStringList zipArgs;
             zipArgs << zipRecursivelyArg
                     << zipUpdateExistArg
                     << resultPath
@@ -343,29 +317,14 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
             ;
             qDebug() << "[ARCHIVATOR] Archivator command: [" << "zip" << zipArgs.join(" ") << "]";
 
-            packProcess.setArguments(zipArgs);
+            if (m_pImpl->m_utilClass.invoke("zip", zipArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
+                qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
 
-            packProcess.start();
+            dirArgs << "-R";
+            m_pImpl->m_utilClass.invoke("rm", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]);
 
-            if (packProcess.waitForStarted(mainProjectConfiguration.intSettings["ZIP program timeout"]))
-            {
-                if (!packProcess.waitForFinished(mainProjectConfiguration.intSettings["ZIP program timeout"]))
-                {
-                    packProcess.kill();
-                }
+            m_pImpl->isArchived = true;
 
-                if (!packProcess.exitCode())
-                {
-                    qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
-                    const QString rmCommand = QString("rm %1 -R").arg(basePathInTmp);
-                    system(rmCommand.toUtf8().data());
-                    m_pImpl->isArchived = true;
-                }
-                else
-                {
-                    qDebug() << "[ARCHIVATOR] Error creating archive: [\033[32mSTDOUT\033[0m" << packProcess.readAllStandardOutput() << "] | [\033[31mSTDERR\033[0m" << packProcess.readAllStandardOutput() << "]";
-                }
-            }
             emit this->archiveComplete();
         }
     );

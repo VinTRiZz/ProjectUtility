@@ -5,6 +5,7 @@
 #include <QString>
 #include <QObject>
 
+#include "utilfunctionclass.h"
 #include "projectsettings.h"
 
 namespace FileWork
@@ -14,7 +15,7 @@ class Archivator : public QObject
 {
     Q_OBJECT
 public:
-    Archivator(Configuration::ProjectConfiguration & mainProjectConfiguration, QObject * parent = nullptr);
+    Archivator(UtilFunctionClass & utilClass, QObject * parent = nullptr);
     ~Archivator();
 
     bool addFile(const QString & path);
@@ -34,8 +35,6 @@ signals:
 private:
     struct Impl;
     std::unique_ptr<Impl> m_pImpl;
-
-    Configuration::ProjectConfiguration & mainProjectConfiguration;
 };
 
 }

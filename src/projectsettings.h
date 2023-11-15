@@ -14,7 +14,7 @@ struct ProjectConfiguration
     {
         // Main configurations
         { "Backup directory for changes", "./saveChangesBackup"},
-        { "Log file name for build", "buildLog.txt"},
+        { "Log file name", "buildLog.txt"},
         { "Configuration file path", "DepsSearcherConfig.ini" },
         { "Default base path", "/home/lazarev_as/workspace/project"},
 

@@ -442,7 +442,8 @@ BUILD/moc_mainwindow.cpp: src/filework/projectdirectoryfileinterface.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Документы/Projects/Qt/DepsSearcher/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/gui/mainwindow.h -o BUILD/moc_mainwindow.cpp
 
-BUILD/moc_archivator.cpp: src/projectsettings.h \
+BUILD/moc_archivator.cpp: src/utilfunctionclass.h \
+		src/projectsettings.h \
 		src/extendedtypes.h \
 		src/filework/archivator.h \
 		BUILD/moc_predefs.h \
@@ -519,6 +520,7 @@ BUILD/mainwindow.o: src/gui/mainwindow.cpp src/gui/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/mainwindow.o src/gui/mainwindow.cpp
 
 BUILD/archivator.o: src/filework/archivator.cpp src/filework/archivator.h \
+		src/utilfunctionclass.h \
 		src/projectsettings.h \
 		src/extendedtypes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/archivator.o src/filework/archivator.cpp

@@ -141,6 +141,7 @@ void FileSearcher::parseFindOutput()
 void FileSearcher::findProjectFiles()
 {
     findOutput.clear();
+    filesFound.clear();
 
     QStringList findArgs;
     findArgs << currentBasePath << "-name" << "*.pro";
@@ -158,6 +159,8 @@ void FileSearcher::findProjectFiles()
             anotherFile.clear();
         }
     }
+
+    qDebug() << "[FILE SEARCHER] Found" << filesFound.size() << "files";
 }
 
 void FileSearcher::findFiles()

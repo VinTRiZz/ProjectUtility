@@ -419,7 +419,7 @@ void MainWindow::buildComplete(const QString &projectName, const bool result)
     }
     else
     {
-        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле %2").arg(projectName, m_fileInterface.mainConfig().strSettings["Log file name for build"]));
+        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле %2").arg(projectName, m_fileInterface.mainConfig().strSettings["Log file name"]));
         m_progressPercent.store(100);
         ui->progressBar->setValue(100);
     }
@@ -614,13 +614,13 @@ void MainWindow::updateProjectList()
         return;
     }
 
+    ui->avaliableLibs_listWidget->clear();
+    ui->addedLibs_listWidget->clear();
+
     int parsedFilesCount = m_fileInterface.processDirectory(basePath);
 
     if (!parsedFilesCount)
     {
-        ui->avaliableLibs_listWidget->clear();
-        ui->projects_listWidget->clear();
-        ui->addedLibs_listWidget->clear();
         emit printInfo("Ничего не найдено");
         return;
     }

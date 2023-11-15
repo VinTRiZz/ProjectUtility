@@ -145,7 +145,7 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
     if ((m_logFile.fileName() < 2) || (!what.size()))
         return;
 
-    const QString logFileName = mainProjectConfiguration->strSettings["Log file name for build"];
+    const QString logFileName = mainProjectConfiguration->strSettings["Log file name"];
 
     if (logFileName != m_logFile.fileName())
     {

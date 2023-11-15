@@ -22,7 +22,7 @@ using namespace FileWork;
 
 struct ProjectDirectoryFileInterface::Impl
 {
-    Configuration::ProjectConfiguration mainProjectConfiguration {Configuration::ProjectConfiguration()};
+    Configuration::ProjectConfiguration mainProjectConfiguration { Configuration::ProjectConfiguration() };
 
     std::thread * processThread {nullptr};
 
@@ -32,25 +32,23 @@ struct ProjectDirectoryFileInterface::Impl
 
     QString currentBasePath;
 
-    UtilFunctionClass & m_utilClass;
+    UtilFunctionClass & m_utilClass{ UtilFunctionClass::getInstance(&apps, &libs, &mainProjectConfiguration)};
 
     FileSearcher m_searcher{ apps, libs, m_utilClass};
     DependsWorker m_dependsWorker {apps, libs};
 
     BuildManager m_buildManager;
-    Archivator m_archivator {mainProjectConfiguration};
+    Archivator m_archivator {m_utilClass};
 
     BackupManager m_backupManager {mainProjectConfiguration};
 
     GraphWidget::DependencyGraphWidget * m_pGraphWidget;
 
     Impl(QObject * parent, GraphWidget::DependencyGraphWidget * displayWidget) :
-        mainProjectConfiguration { Configuration::ProjectConfiguration() },
-        m_utilClass( UtilFunctionClass::getInstance(&apps, &libs, &mainProjectConfiguration) ),
         m_buildManager{parent},
         m_pGraphWidget(displayWidget)
     {
-        m_utilClass.setLogFile( QDir::currentPath() + "/" + mainProjectConfiguration.strSettings["Log file name for build"] );
+        m_utilClass.setLogFile( QDir::currentPath() + "/" + mainProjectConfiguration.strSettings["Log file name"] );
     }
 
     void setPath(const QString & path)
