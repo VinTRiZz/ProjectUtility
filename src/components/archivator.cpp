@@ -36,8 +36,8 @@ struct Archivator::Impl
     Impl(UtilFunctionClass & utilClass) :
         m_utilClass{utilClass}
     {
-        mainArchiveDir.dirName = "Projects";
-        mainArchiveDir.archivePath = "Projects";
+        mainArchiveDir.dirName = m_utilClass.projectConfiguration().strSettings["Program default directory"] + "/Projects";
+        mainArchiveDir.archivePath = m_utilClass.projectConfiguration().strSettings["Program default directory"] + "/Projects";
     }
 
     void poll()

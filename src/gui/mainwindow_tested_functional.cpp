@@ -100,16 +100,23 @@ void MainWindow::archiveComplete(bool result)
 
 void MainWindow::archive()
 {
+    QString archivePath = ui->archivePath_lineEdit->text();
+    if (archivePath[0] == '.')
+    {
+        archivePath.remove(0, 1);
+        archivePath = m_fileInterface.configuration().strSettings["Program default directory"] + "/" + archivePath;
+    } else if (archivePath[0] != '/')
+    {
+        archivePath = m_fileInterface.configuration().strSettings["Program default directory"] + "/" + archivePath;
+    }
+
     if (ui->archiveAll_radioButton->isChecked())
     {
-        const QString archivePath = ui->archivePath_lineEdit->text();
 
         m_fileInterface.archiveAllProjects(archivePath);
 
     } else if (ui->archiveSelected_radioButton->isChecked())
     {
-        const QString archivePath = ui->archivePath_lineEdit->text();
-
         QStringList projectNames;
         auto selectedItems = ui->projects_listWidget->selectedItems();
 
@@ -128,7 +135,6 @@ void MainWindow::archive()
             return;
         }
 
-        const QString archivePath = ui->archivePath_lineEdit->text();
         const QString projectName = pItem->text();
 
         m_fileInterface.archiveProject(projectName, archivePath);
