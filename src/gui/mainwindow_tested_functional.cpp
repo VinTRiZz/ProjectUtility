@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
 // -------------------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------------------- //
 // ------------------------------------ Remove files ------------------------------------ //
@@ -14,35 +13,63 @@ void MainWindow::removeFiles()
         return;
     }
 
+    emit updatePercent(0);
+
     emit printInfo("Анализ директорий...");
 
-    int filesToRemove = FileWork::FILE_REMOVE_TYPE::NO_FILE;
+    int filesToRemove = DependsSearcher::FILE_REMOVE_TYPE::NO_FILE;
 
     if (ui->bin_checkBox->isChecked())
-        filesToRemove |= FileWork::FILE_REMOVE_TYPE::BIN;
+        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::BIN;
 
     if (ui->build_checkBox->isChecked())
-        filesToRemove |= FileWork::FILE_REMOVE_TYPE::BUILD;
+        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::BUILD;
 
     if (ui->lib_checkBox->isChecked())
-        filesToRemove |= FileWork::FILE_REMOVE_TYPE::LIB;
+        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::LIB;
 
     if (ui->makeFiles_checkBox->isChecked())
-        filesToRemove |= FileWork::FILE_REMOVE_TYPE::MAKEFILE;
+        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::MAKEFILE;
 
     if (ui->qmakeStash_checkBox->isChecked())
-        filesToRemove |= FileWork::FILE_REMOVE_TYPE::QMAKE_STASH;
+        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::QMAKE_STASH;
 
     QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentDirectory(), filesToRemove);
+    emit updatePercent(33);
 
     emit printInfo("Очистка от ошибок, если имеются...");
-
     m_cleaner.clearFromMistakes(fileList);
+    emit updatePercent(66);
 
     emit printInfo("Удаление...");
-
     m_cleaner.removeFiles(fileList);
     emit printInfo("Файлы удалены");
+    emit updatePercent(100);
+}
+
+void MainWindow::generateProject()
+{
+    DependsSearcher::ProjectBaseConfiguration config;
+
+    config.projectName = ui->projectName_lineEdit->text();
+    config.baseDir = ui->projectPath_lineEdit->text();
+
+    QFileInfo dirTester(config.baseDir);
+    if (config.baseDir.isEmpty() || !dirTester.exists() || !dirTester.isDir())
+    {
+        emit printInfo("Ошибка: путь до директории, в которой нужно создать проект, пустой или неверный. Проект не создан");
+        return;
+    }
+
+    config.hasDeps = ui->hasDeps_checkBox->isChecked();
+    config.isLibrary = ui->generateLib_checkBox->isChecked();
+    config.hasGui = ui->hasGui_checkBox->isChecked();
+    config.hasBuildPri = ui->hasBuildPri_checkBox->isChecked();
+
+    if (m_fileInterface.generateProject(config))
+        emit printInfo("Проект создан");
+    else
+        emit printInfo("Ошибка создания проекта! Проверьте введённые данные");
 }
 
 

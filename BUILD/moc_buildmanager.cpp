@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../src/filework/buildmanager.h"
+#include "../src/components/buildmanager.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -20,30 +20,30 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_FileWork__BuildManager_t {
+struct qt_meta_stringdata_DependsSearcher__BuildManager_t {
     QByteArrayData data[5];
-    char stringdata0[62];
+    char stringdata0[69];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_FileWork__BuildManager_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_DependsSearcher__BuildManager_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_FileWork__BuildManager_t qt_meta_stringdata_FileWork__BuildManager = {
+static const qt_meta_stringdata_DependsSearcher__BuildManager_t qt_meta_stringdata_DependsSearcher__BuildManager = {
     {
-QT_MOC_LITERAL(0, 0, 22), // "FileWork::BuildManager"
-QT_MOC_LITERAL(1, 23, 13), // "buildComplete"
-QT_MOC_LITERAL(2, 37, 0), // ""
-QT_MOC_LITERAL(3, 38, 11), // "projectName"
-QT_MOC_LITERAL(4, 50, 11) // "buildResult"
+QT_MOC_LITERAL(0, 0, 29), // "DependsSearcher::BuildManager"
+QT_MOC_LITERAL(1, 30, 13), // "buildComplete"
+QT_MOC_LITERAL(2, 44, 0), // ""
+QT_MOC_LITERAL(3, 45, 11), // "projectName"
+QT_MOC_LITERAL(4, 57, 11) // "buildResult"
 
     },
-    "FileWork::BuildManager\0buildComplete\0"
-    "\0projectName\0buildResult"
+    "DependsSearcher::BuildManager\0"
+    "buildComplete\0\0projectName\0buildResult"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_FileWork__BuildManager[] = {
+static const uint qt_meta_data_DependsSearcher__BuildManager[] = {
 
  // content:
        7,       // revision
@@ -65,7 +65,7 @@ static const uint qt_meta_data_FileWork__BuildManager[] = {
        0        // eod
 };
 
-void FileWork::BuildManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void DependsSearcher::BuildManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         BuildManager *_t = static_cast<BuildManager *>(_o);
@@ -86,26 +86,26 @@ void FileWork::BuildManager::qt_static_metacall(QObject *_o, QMetaObject::Call _
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject FileWork::BuildManager::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_FileWork__BuildManager.data,
-      qt_meta_data_FileWork__BuildManager,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject DependsSearcher::BuildManager::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_DependsSearcher__BuildManager.data,
+      qt_meta_data_DependsSearcher__BuildManager,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *FileWork::BuildManager::metaObject() const
+const QMetaObject *DependsSearcher::BuildManager::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *FileWork::BuildManager::qt_metacast(const char *_clname)
+void *DependsSearcher::BuildManager::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_FileWork__BuildManager.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_DependsSearcher__BuildManager.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
 
-int FileWork::BuildManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int DependsSearcher::BuildManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -123,7 +123,7 @@ int FileWork::BuildManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a
 }
 
 // SIGNAL 0
-void FileWork::BuildManager::buildComplete(const QString & _t1, const bool _t2)
+void DependsSearcher::BuildManager::buildComplete(const QString & _t1, const bool _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

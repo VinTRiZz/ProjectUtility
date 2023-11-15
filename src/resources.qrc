@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/gui">
+        <file>resourceFiles/templates_gui/main.cpp</file>
+        <file>resourceFiles/templates_gui/mainwindow.cpp</file>
+        <file>resourceFiles/templates_gui/mainwindow.h</file>
+        <file>resourceFiles/templates_gui/mainwindow.ui</file>
+    </qresource>
+    <qresource prefix="/console">
+        <file>resourceFiles/templates_console/main.cpp</file>
+    </qresource>
+</RCC>

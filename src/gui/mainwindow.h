@@ -10,8 +10,9 @@
 #include <atomic>
 #include <QDebug>
 
-#include "filework/projectdirectoryfileinterface.h"
-#include "filework/cleaner.h"
+#include "components/projectdirectoryfileinterface.h"
+#include "components/cleaner.h"
+#include "components/projectbasegenerator.h"
 
 namespace Ui {
 class MainWindow;
@@ -59,6 +60,7 @@ private slots:
 
     // Etc
     void removeFiles();
+    void generateProject();
 
     // Settings
     void settingClicked();
@@ -70,9 +72,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    FileWork::ProjectDirectoryFileInterface m_fileInterface;
+    DependsSearcher::ProjectDirectoryFileInterface m_fileInterface;
     GraphWidget::DependencyGraphWidget * m_depGraphWidget;
-    FileWork::Cleaner m_cleaner;
+    DependsSearcher::Cleaner m_cleaner;
 
     QString basePath;
 

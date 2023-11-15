@@ -17,23 +17,26 @@ struct ProjectConfiguration
         { "Log file name", "DepSearcher.log"},
         { "Configuration file path", "DepsSearcherConfig.ini" },
         { "Default base path", "/home/lazarev_as/workspace/project"},
+        { "Program default directory", QDir::currentPath().toUtf8().data() },
+        { "Default main template path", "$$PWD/../../template.pri"},
 
         // Builder
         { "Make bin path", "/usr/bin/make"},
-        { "Make args", "-j8"},
         { "QMake bin path", "/usr/bin/qmake"},
 
+        // Arguments
+        { "Make args", "-j8"},
         { "QMake Default args", "-spec linux-g++"}, // \-spec linux\-g\+\+
         { "QMake args", ""}, // Adds in settings tile
         { "QMake Debug args", "CONFIG+=debug CONFIG+=qml_debug"},
         { "QMake Release args", "CONFIG+=qtquickcompiler"},
 
+        // Directories
         { "Build directory path", "/BUILD"},
         { "Bin directory path", "/BIN"},
         { "Lib directory path", "/LIB"},
         { "Library directory path", "/Libraries"},
-        { "App directory path", "/Apps"},
-        { "Program default directory", QDir::currentPath().toUtf8().data() }
+        { "App directory path", "/Apps"}
     };
 
     std::map<QString, IntSetting> intSettings =

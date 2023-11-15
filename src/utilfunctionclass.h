@@ -9,7 +9,7 @@
 
 #include "projectsettings.h"
 
-namespace FileWork
+namespace DependsSearcher
 {
 
 struct Project

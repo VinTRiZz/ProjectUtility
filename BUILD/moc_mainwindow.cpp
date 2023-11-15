@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[32];
-    char stringdata0[437];
+    QByteArrayData data[35];
+    char stringdata0[476];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,52 +32,55 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
-QT_MOC_LITERAL(1, 11, 18), // "addSelectedLibrary"
-QT_MOC_LITERAL(2, 30, 0), // ""
-QT_MOC_LITERAL(3, 31, 21), // "removeSelectedLibrary"
-QT_MOC_LITERAL(4, 53, 15), // "fillProjectList"
-QT_MOC_LITERAL(5, 69, 18), // "loadDependencyList"
-QT_MOC_LITERAL(6, 88, 11), // "projectName"
-QT_MOC_LITERAL(7, 100, 11), // "saveChanges"
-QT_MOC_LITERAL(8, 112, 11), // "removeFiles"
-QT_MOC_LITERAL(9, 124, 16), // "searchForLibrary"
-QT_MOC_LITERAL(10, 141, 11), // "changedText"
-QT_MOC_LITERAL(11, 153, 16), // "searchForProject"
-QT_MOC_LITERAL(12, 170, 16), // "searchForSetting"
-QT_MOC_LITERAL(13, 187, 11), // "changedMenu"
-QT_MOC_LITERAL(14, 199, 8), // "QAction*"
-QT_MOC_LITERAL(15, 208, 10), // "menuAction"
-QT_MOC_LITERAL(16, 219, 5), // "build"
-QT_MOC_LITERAL(17, 225, 7), // "rebuild"
-QT_MOC_LITERAL(18, 233, 9), // "printInfo"
-QT_MOC_LITERAL(19, 243, 4), // "what"
-QT_MOC_LITERAL(20, 248, 15), // "archiveComplete"
-QT_MOC_LITERAL(21, 264, 6), // "result"
-QT_MOC_LITERAL(22, 271, 7), // "archive"
-QT_MOC_LITERAL(23, 279, 15), // "projectSelected"
-QT_MOC_LITERAL(24, 295, 13), // "buildComplete"
-QT_MOC_LITERAL(25, 309, 25), // "recursiveDependencySearch"
-QT_MOC_LITERAL(26, 335, 14), // "settingClicked"
-QT_MOC_LITERAL(27, 350, 21), // "updateSelectedSetting"
-QT_MOC_LITERAL(28, 372, 18), // "saveSettingsToFile"
-QT_MOC_LITERAL(29, 391, 18), // "restoreSettingsAll"
-QT_MOC_LITERAL(30, 410, 14), // "restoreSetting"
-QT_MOC_LITERAL(31, 425, 11) // "reloadGraph"
+QT_MOC_LITERAL(1, 11, 11), // "changedMenu"
+QT_MOC_LITERAL(2, 23, 0), // ""
+QT_MOC_LITERAL(3, 24, 8), // "QAction*"
+QT_MOC_LITERAL(4, 33, 10), // "menuAction"
+QT_MOC_LITERAL(5, 44, 9), // "printInfo"
+QT_MOC_LITERAL(6, 54, 4), // "what"
+QT_MOC_LITERAL(7, 59, 11), // "reloadGraph"
+QT_MOC_LITERAL(8, 71, 13), // "updatePercent"
+QT_MOC_LITERAL(9, 85, 8), // "newValue"
+QT_MOC_LITERAL(10, 94, 18), // "addSelectedLibrary"
+QT_MOC_LITERAL(11, 113, 21), // "removeSelectedLibrary"
+QT_MOC_LITERAL(12, 135, 15), // "fillProjectList"
+QT_MOC_LITERAL(13, 151, 18), // "loadDependencyList"
+QT_MOC_LITERAL(14, 170, 11), // "projectName"
+QT_MOC_LITERAL(15, 182, 11), // "saveChanges"
+QT_MOC_LITERAL(16, 194, 16), // "searchForLibrary"
+QT_MOC_LITERAL(17, 211, 11), // "changedText"
+QT_MOC_LITERAL(18, 223, 16), // "searchForProject"
+QT_MOC_LITERAL(19, 240, 16), // "searchForSetting"
+QT_MOC_LITERAL(20, 257, 25), // "recursiveDependencySearch"
+QT_MOC_LITERAL(21, 283, 5), // "build"
+QT_MOC_LITERAL(22, 289, 7), // "rebuild"
+QT_MOC_LITERAL(23, 297, 13), // "buildComplete"
+QT_MOC_LITERAL(24, 311, 6), // "result"
+QT_MOC_LITERAL(25, 318, 15), // "archiveComplete"
+QT_MOC_LITERAL(26, 334, 7), // "archive"
+QT_MOC_LITERAL(27, 342, 15), // "projectSelected"
+QT_MOC_LITERAL(28, 358, 11), // "removeFiles"
+QT_MOC_LITERAL(29, 370, 15), // "generateProject"
+QT_MOC_LITERAL(30, 386, 14), // "settingClicked"
+QT_MOC_LITERAL(31, 401, 21), // "updateSelectedSetting"
+QT_MOC_LITERAL(32, 423, 18), // "saveSettingsToFile"
+QT_MOC_LITERAL(33, 442, 18), // "restoreSettingsAll"
+QT_MOC_LITERAL(34, 461, 14) // "restoreSetting"
 
     },
-    "MainWindow\0addSelectedLibrary\0\0"
+    "MainWindow\0changedMenu\0\0QAction*\0"
+    "menuAction\0printInfo\0what\0reloadGraph\0"
+    "updatePercent\0newValue\0addSelectedLibrary\0"
     "removeSelectedLibrary\0fillProjectList\0"
     "loadDependencyList\0projectName\0"
-    "saveChanges\0removeFiles\0searchForLibrary\0"
-    "changedText\0searchForProject\0"
-    "searchForSetting\0changedMenu\0QAction*\0"
-    "menuAction\0build\0rebuild\0printInfo\0"
-    "what\0archiveComplete\0result\0archive\0"
-    "projectSelected\0buildComplete\0"
-    "recursiveDependencySearch\0settingClicked\0"
+    "saveChanges\0searchForLibrary\0changedText\0"
+    "searchForProject\0searchForSetting\0"
+    "recursiveDependencySearch\0build\0rebuild\0"
+    "buildComplete\0result\0archiveComplete\0"
+    "archive\0projectSelected\0removeFiles\0"
+    "generateProject\0settingClicked\0"
     "updateSelectedSetting\0saveSettingsToFile\0"
-    "restoreSettingsAll\0restoreSetting\0"
-    "reloadGraph"
+    "restoreSettingsAll\0restoreSetting"
 };
 #undef QT_MOC_LITERAL
 
@@ -87,7 +90,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      24,   14, // methods
+      26,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -95,49 +98,53 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  134,    2, 0x08 /* Private */,
-       3,    0,  135,    2, 0x08 /* Private */,
-       4,    0,  136,    2, 0x08 /* Private */,
-       5,    1,  137,    2, 0x08 /* Private */,
-       7,    0,  140,    2, 0x08 /* Private */,
-       8,    0,  141,    2, 0x08 /* Private */,
-       9,    1,  142,    2, 0x08 /* Private */,
-      11,    1,  145,    2, 0x08 /* Private */,
-      12,    1,  148,    2, 0x08 /* Private */,
-      13,    1,  151,    2, 0x08 /* Private */,
-      16,    0,  154,    2, 0x08 /* Private */,
-      17,    0,  155,    2, 0x08 /* Private */,
-      18,    1,  156,    2, 0x08 /* Private */,
-      20,    1,  159,    2, 0x08 /* Private */,
-      22,    0,  162,    2, 0x08 /* Private */,
-      23,    0,  163,    2, 0x08 /* Private */,
-      24,    2,  164,    2, 0x08 /* Private */,
-      25,    0,  169,    2, 0x08 /* Private */,
-      26,    0,  170,    2, 0x08 /* Private */,
-      27,    0,  171,    2, 0x08 /* Private */,
-      28,    0,  172,    2, 0x08 /* Private */,
-      29,    0,  173,    2, 0x08 /* Private */,
-      30,    0,  174,    2, 0x08 /* Private */,
-      31,    0,  175,    2, 0x08 /* Private */,
+       1,    1,  144,    2, 0x08 /* Private */,
+       5,    1,  147,    2, 0x08 /* Private */,
+       7,    0,  150,    2, 0x08 /* Private */,
+       8,    1,  151,    2, 0x08 /* Private */,
+      10,    0,  154,    2, 0x08 /* Private */,
+      11,    0,  155,    2, 0x08 /* Private */,
+      12,    0,  156,    2, 0x08 /* Private */,
+      13,    1,  157,    2, 0x08 /* Private */,
+      15,    0,  160,    2, 0x08 /* Private */,
+      16,    1,  161,    2, 0x08 /* Private */,
+      18,    1,  164,    2, 0x08 /* Private */,
+      19,    1,  167,    2, 0x08 /* Private */,
+      20,    0,  170,    2, 0x08 /* Private */,
+      21,    0,  171,    2, 0x08 /* Private */,
+      22,    0,  172,    2, 0x08 /* Private */,
+      23,    2,  173,    2, 0x08 /* Private */,
+      25,    1,  178,    2, 0x08 /* Private */,
+      26,    0,  181,    2, 0x08 /* Private */,
+      27,    0,  182,    2, 0x08 /* Private */,
+      28,    0,  183,    2, 0x08 /* Private */,
+      29,    0,  184,    2, 0x08 /* Private */,
+      30,    0,  185,    2, 0x08 /* Private */,
+      31,    0,  186,    2, 0x08 /* Private */,
+      32,    0,  187,    2, 0x08 /* Private */,
+      33,    0,  188,    2, 0x08 /* Private */,
+      34,    0,  189,    2, 0x08 /* Private */,
 
  // slots: parameters
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   10,
-    QMetaType::Void, QMetaType::QString,   10,
-    QMetaType::Void, QMetaType::QString,   10,
-    QMetaType::Void, 0x80000000 | 14,   15,
+    QMetaType::Void, QMetaType::Float,    9,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   19,
-    QMetaType::Void, QMetaType::Bool,   21,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   14,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   17,
+    QMetaType::Void, QMetaType::QString,   17,
+    QMetaType::Void, QMetaType::QString,   17,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString, QMetaType::Bool,    6,   21,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString, QMetaType::Bool,   14,   24,
+    QMetaType::Void, QMetaType::Bool,   24,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -155,30 +162,32 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         MainWindow *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->addSelectedLibrary(); break;
-        case 1: _t->removeSelectedLibrary(); break;
-        case 2: _t->fillProjectList(); break;
-        case 3: _t->loadDependencyList((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 4: _t->saveChanges(); break;
-        case 5: _t->removeFiles(); break;
-        case 6: _t->searchForLibrary((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 7: _t->searchForProject((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 8: _t->searchForSetting((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 9: _t->changedMenu((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
-        case 10: _t->build(); break;
-        case 11: _t->rebuild(); break;
-        case 12: _t->printInfo((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 13: _t->archiveComplete((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 14: _t->archive(); break;
-        case 15: _t->projectSelected(); break;
-        case 16: _t->buildComplete((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
-        case 17: _t->recursiveDependencySearch(); break;
-        case 18: _t->settingClicked(); break;
-        case 19: _t->updateSelectedSetting(); break;
-        case 20: _t->saveSettingsToFile(); break;
-        case 21: _t->restoreSettingsAll(); break;
-        case 22: _t->restoreSetting(); break;
-        case 23: _t->reloadGraph(); break;
+        case 0: _t->changedMenu((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
+        case 1: _t->printInfo((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 2: _t->reloadGraph(); break;
+        case 3: _t->updatePercent((*reinterpret_cast< float(*)>(_a[1]))); break;
+        case 4: _t->addSelectedLibrary(); break;
+        case 5: _t->removeSelectedLibrary(); break;
+        case 6: _t->fillProjectList(); break;
+        case 7: _t->loadDependencyList((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 8: _t->saveChanges(); break;
+        case 9: _t->searchForLibrary((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 10: _t->searchForProject((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 11: _t->searchForSetting((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 12: _t->recursiveDependencySearch(); break;
+        case 13: _t->build(); break;
+        case 14: _t->rebuild(); break;
+        case 15: _t->buildComplete((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 16: _t->archiveComplete((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 17: _t->archive(); break;
+        case 18: _t->projectSelected(); break;
+        case 19: _t->removeFiles(); break;
+        case 20: _t->generateProject(); break;
+        case 21: _t->settingClicked(); break;
+        case 22: _t->updateSelectedSetting(); break;
+        case 23: _t->saveSettingsToFile(); break;
+        case 24: _t->restoreSettingsAll(); break;
+        case 25: _t->restoreSetting(); break;
         default: ;
         }
     }
@@ -209,13 +218,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 24)
+        if (_id < 26)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 24;
+        _id -= 26;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 24)
+        if (_id < 26)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 24;
+        _id -= 26;
     }
     return _id;
 }

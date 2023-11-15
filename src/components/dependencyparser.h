@@ -1,0 +1,35 @@
+#ifndef DEPENDENCYPARSER_H
+#define DEPENDENCYPARSER_H
+
+#include "utilfunctionclass.h"
+
+namespace DependsSearcher
+{
+
+class DependencyParser
+{
+public:
+    DependencyParser(QVector<Project> & apps, QVector<Project> & libs);
+    ~DependencyParser();
+
+    void setPath(const QString & path);
+
+    void parseAllDepends();
+
+    void parseDepends(Project & proj);
+
+    void writeDepends(Project & proj);
+
+private:
+    QVector<Project> & apps;
+    QVector<Project> & libs;
+    QVector<QString> allLibrariesParsed;
+
+    QString currentBasePath;
+
+    UtilFunctionClass & m_utilClass;
+};
+
+}
+
+#endif // DEPENDENCYPARSER_H

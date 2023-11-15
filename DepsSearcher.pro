@@ -27,14 +27,17 @@ INCLUDEPATH += src
 SOURCES += \
         src/*.cpp \
         src/gui/*.cpp \
-        src/filework/*.cpp
+        src/components/*.cpp
 
 HEADERS += \
         src/*.h \
         src/gui/*.h \
-        src/filework/*.h
+        src/components/*.h
 
 FORMS += \
         src/gui/*.ui
+
+RESOURCES += \
+    src/*.qrc
 
 include(build.pri)

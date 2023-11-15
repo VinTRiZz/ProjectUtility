@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../src/filework/archivator.h"
+#include "../src/components/archivator.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -20,29 +20,29 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_FileWork__Archivator_t {
+struct qt_meta_stringdata_DependsSearcher__Archivator_t {
     QByteArrayData data[4];
-    char stringdata0[45];
+    char stringdata0[52];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_FileWork__Archivator_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_DependsSearcher__Archivator_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_FileWork__Archivator_t qt_meta_stringdata_FileWork__Archivator = {
+static const qt_meta_stringdata_DependsSearcher__Archivator_t qt_meta_stringdata_DependsSearcher__Archivator = {
     {
-QT_MOC_LITERAL(0, 0, 20), // "FileWork::Archivator"
-QT_MOC_LITERAL(1, 21, 15), // "archiveComplete"
-QT_MOC_LITERAL(2, 37, 0), // ""
-QT_MOC_LITERAL(3, 38, 6) // "result"
+QT_MOC_LITERAL(0, 0, 27), // "DependsSearcher::Archivator"
+QT_MOC_LITERAL(1, 28, 15), // "archiveComplete"
+QT_MOC_LITERAL(2, 44, 0), // ""
+QT_MOC_LITERAL(3, 45, 6) // "result"
 
     },
-    "FileWork::Archivator\0archiveComplete\0"
+    "DependsSearcher::Archivator\0archiveComplete\0"
     "\0result"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_FileWork__Archivator[] = {
+static const uint qt_meta_data_DependsSearcher__Archivator[] = {
 
  // content:
        7,       // revision
@@ -64,7 +64,7 @@ static const uint qt_meta_data_FileWork__Archivator[] = {
        0        // eod
 };
 
-void FileWork::Archivator::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void DependsSearcher::Archivator::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         Archivator *_t = static_cast<Archivator *>(_o);
@@ -85,26 +85,26 @@ void FileWork::Archivator::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject FileWork::Archivator::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_FileWork__Archivator.data,
-      qt_meta_data_FileWork__Archivator,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject DependsSearcher::Archivator::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_DependsSearcher__Archivator.data,
+      qt_meta_data_DependsSearcher__Archivator,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *FileWork::Archivator::metaObject() const
+const QMetaObject *DependsSearcher::Archivator::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *FileWork::Archivator::qt_metacast(const char *_clname)
+void *DependsSearcher::Archivator::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_FileWork__Archivator.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_DependsSearcher__Archivator.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
 
-int FileWork::Archivator::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int DependsSearcher::Archivator::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -122,7 +122,7 @@ int FileWork::Archivator::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void FileWork::Archivator::archiveComplete(bool _t1)
+void DependsSearcher::Archivator::archiveComplete(bool _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

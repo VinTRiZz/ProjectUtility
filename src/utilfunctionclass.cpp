@@ -5,7 +5,7 @@
 #include <QProcess>
 #include <QDebug>
 
-using namespace FileWork;
+using namespace DependsSearcher;
 
 UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration) :
     apps(initApps),

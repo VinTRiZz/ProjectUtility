@@ -20,6 +20,7 @@ void MainWindow::setupSignals()
     CONNECT_CLICKED(rebuild, rebuild);
     CONNECT_CLICKED(archive, archive);
     CONNECT_CLICKED(reloadGraph, reloadGraph);
+    CONNECT_CLICKED(generateProject, generateProject);
 
     connect(ui->projects_listWidget, &QListWidget::currentTextChanged, this, &MainWindow::loadDependencyList);
     connect(ui->projects_listWidget, &QListWidget::clicked, this, &MainWindow::projectSelected);
@@ -35,8 +36,8 @@ void MainWindow::setupSignals()
     connect(ui->apps_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
     connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
 
-    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
-    connect(&m_fileInterface, &FileWork::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
+    connect(&m_fileInterface, &DependsSearcher::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
+    connect(&m_fileInterface, &DependsSearcher::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
 
     connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
 }
@@ -62,6 +63,7 @@ void MainWindow::removeButtonFocuses()
     REMOVE_BUTTON_FOCUS(archive);
     REMOVE_BUTTON_FOCUS(reloadGraph);
     REMOVE_BUTTON_FOCUS(cleanOutput);
+    REMOVE_BUTTON_FOCUS(generateProject);
 }
 
 

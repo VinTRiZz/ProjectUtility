@@ -1,24 +1,33 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#define CURRENT_VERSION_STRING "v.1.3.3"
+#define CURRENT_VERSION_STRING "v.1.4.3"
+
+enum MENU_INDEX
+{
+    DEPENDS,
+    MISC,
+    GENERATORS,
+    SETTINGS
+};
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_depGraphWidget(new GraphWidget::DependencyGraphWidget(this)),
-    m_fileInterface(this, m_depGraphWidget)
+    m_fileInterface(this)
 {
     ui->setupUi(this);
 
+    ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::DEPENDS);
+
+    m_depGraphWidget = new GraphWidget::DependencyGraphWidget(this);
     this->setWindowTitle( this->windowTitle() + CURRENT_VERSION_STRING );
+    emit updatePercent(0);
+    ui->graph_scrollArea->setWidget(m_depGraphWidget);
+
+    m_fileInterface.setGraphWidget(m_depGraphWidget);
 
     m_fileInterface.loadConfiguration();
-
-    ui->menu_stackedWidget->setCurrentIndex(0);
-    m_progressPercent.store(100);
-
-    ui->graph_scrollArea->setWidget(m_depGraphWidget);
 
     setupAvailableLibrariesView();
     setupSignals();
@@ -45,13 +54,16 @@ void MainWindow::changedMenu(QAction *menuAction)
 {
     if (menuAction->text() == "Зависимости проекта")
     {
-        ui->menu_stackedWidget->setCurrentIndex(0);
-    } else if (menuAction->text() == "Сборка, чистка и архивация")
+        ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::DEPENDS);
+    } else if (menuAction->text() == "Разное")
     {
-        ui->menu_stackedWidget->setCurrentIndex(1);
+        ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::MISC);
+    } else if (menuAction->text() == "Генератор проектов")
+    {
+        ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::GENERATORS);
     } else if (menuAction->text() == "Настройки")
     {
-        ui->menu_stackedWidget->setCurrentIndex(2);
+        ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::SETTINGS);
     }
 }
 

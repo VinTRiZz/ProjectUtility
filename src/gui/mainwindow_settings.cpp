@@ -89,10 +89,10 @@ void MainWindow::updateSelectedSetting()
     }
     else
     {
-        if ((settingName.contains("path")) && (settingValue.front().toLatin1() != '/') && !settingValue.isEmpty())
+        if ((settingName.contains("path")) && !settingValue.isEmpty())
         {
-            *pStrSetting = "/";
-            *pStrSetting += settingValue;
+            if ((settingValue.front().toLatin1() != '/'))
+                *pStrSetting = "/" + settingValue;
         }
         else
         {
@@ -163,6 +163,7 @@ void MainWindow::setupSettings()
         ui->settingList_listWidget->addItem(intSetting.first);
 
     ui->basePath_lineEdit->setText(m_fileInterface.mainConfig().strSettings["Default base path"]);
+    ui->projectPath_lineEdit->setText(m_fileInterface.mainConfig().strSettings["Program default directory"]);
 
     connect(ui->settingList_listWidget, &QListWidget::clicked, this, &MainWindow::settingClicked);
     connect(ui->settingAccept_pushButton, &QPushButton::clicked, this, &MainWindow::updateSelectedSetting);
