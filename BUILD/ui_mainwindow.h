@@ -330,6 +330,7 @@ public:
         search_lineEdit->setObjectName(QStringLiteral("search_lineEdit"));
         sizePolicy.setHeightForWidth(search_lineEdit->sizePolicy().hasHeightForWidth());
         search_lineEdit->setSizePolicy(sizePolicy);
+        search_lineEdit->setFocusPolicy(Qt::ClickFocus);
         search_lineEdit->setStyleSheet(QStringLiteral(""));
         search_lineEdit->setAlignment(Qt::AlignCenter);
 
@@ -390,6 +391,7 @@ public:
         recursiveSearch_lineEdit->setObjectName(QStringLiteral("recursiveSearch_lineEdit"));
         sizePolicy.setHeightForWidth(recursiveSearch_lineEdit->sizePolicy().hasHeightForWidth());
         recursiveSearch_lineEdit->setSizePolicy(sizePolicy);
+        recursiveSearch_lineEdit->setFocusPolicy(Qt::ClickFocus);
         recursiveSearch_lineEdit->setAlignment(Qt::AlignCenter);
 
         verticalLayout_6->addWidget(recursiveSearch_lineEdit);
@@ -656,6 +658,7 @@ public:
         archivePath_lineEdit->setObjectName(QStringLiteral("archivePath_lineEdit"));
         sizePolicy.setHeightForWidth(archivePath_lineEdit->sizePolicy().hasHeightForWidth());
         archivePath_lineEdit->setSizePolicy(sizePolicy);
+        archivePath_lineEdit->setFocusPolicy(Qt::ClickFocus);
         archivePath_lineEdit->setStyleSheet(QStringLiteral("color: rgb(215, 215, 215);"));
         archivePath_lineEdit->setAlignment(Qt::AlignCenter);
 
@@ -704,6 +707,7 @@ public:
 
         settingSearch_lineEdit = new QLineEdit(widget_6);
         settingSearch_lineEdit->setObjectName(QStringLiteral("settingSearch_lineEdit"));
+        settingSearch_lineEdit->setFocusPolicy(Qt::ClickFocus);
         settingSearch_lineEdit->setAlignment(Qt::AlignCenter);
 
         gridLayout_4->addWidget(settingSearch_lineEdit, 5, 0, 1, 1);
@@ -770,6 +774,7 @@ public:
 
         settingValue_lineEdit = new QLineEdit(widget_6);
         settingValue_lineEdit->setObjectName(QStringLiteral("settingValue_lineEdit"));
+        settingValue_lineEdit->setFocusPolicy(Qt::ClickFocus);
         settingValue_lineEdit->setAlignment(Qt::AlignCenter);
 
         verticalLayout_14->addWidget(settingValue_lineEdit);
@@ -821,6 +826,7 @@ public:
         sizePolicy.setHeightForWidth(basePath_lineEdit->sizePolicy().hasHeightForWidth());
         basePath_lineEdit->setSizePolicy(sizePolicy);
         basePath_lineEdit->setMaximumSize(QSize(350, 16777215));
+        basePath_lineEdit->setFocusPolicy(Qt::ClickFocus);
         basePath_lineEdit->setStyleSheet(QStringLiteral("color: rgb(167, 167, 167);"));
         basePath_lineEdit->setAlignment(Qt::AlignCenter);
 
@@ -869,6 +875,7 @@ public:
         sizePolicy1.setHeightForWidth(searchProject_lineEdit->sizePolicy().hasHeightForWidth());
         searchProject_lineEdit->setSizePolicy(sizePolicy1);
         searchProject_lineEdit->setMaximumSize(QSize(500, 16777215));
+        searchProject_lineEdit->setFocusPolicy(Qt::ClickFocus);
         searchProject_lineEdit->setStyleSheet(QStringLiteral(""));
         searchProject_lineEdit->setAlignment(Qt::AlignCenter);
 
@@ -970,9 +977,9 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
-        projectControl_action->setText(QApplication::translate("MainWindow", "\320\241\320\261\320\276\321\200\320\272\320\260, \321\207\320\270\321\201\321\202\320\272\320\260 \320\270 \320\260\321\200\321\205\320\270\320\262\320\260\321\206\320\270\321\217", nullptr));
-        depends_action->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\270 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Depends searcher ", nullptr));
+        projectControl_action->setText(QApplication::translate("MainWindow", "\320\227\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\270 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
+        depends_action->setText(QApplication::translate("MainWindow", "\320\241\320\261\320\276\321\200\320\272\320\260, \321\207\320\270\321\201\321\202\320\272\320\260 \320\270 \320\260\321\200\321\205\320\270\320\262\320\260\321\206\320\270\321\217", nullptr));
         action->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\200\320\265\320\262\320\276 \320\267\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\265\320\271", nullptr));
         action_2->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "\320\224\320\276\321\201\321\202\321\203\320\277\320\275\321\213\320\265 \320\261\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));

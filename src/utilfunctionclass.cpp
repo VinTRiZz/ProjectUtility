@@ -170,23 +170,17 @@ bool UtilFunctionClass::hasRecurseDepend(QStringList &dependQuery, Project *pPar
 {
     Project * depProj {nullptr};
     int dependQuerySize = dependQuery.size();
+    bool recurseExist;
     for (QString & depName : pParent->depends)
     {
-        if (dependQuery.contains(depName))
-        {
-            dependQuery << depName;
-            return true;
-        }
+        recurseExist = dependQuery.contains(depName);
         dependQuery << depName;
 
-        for (Project & lib : *libs)
-        {
-            if (lib.name == depName)
-            {
-                depProj = &lib;
-                break;
-            }
-        }
+        if (recurseExist)
+            return true;
+
+        // Find library by name
+        depProj = getProject(depName);
 
         if (depProj)
         {

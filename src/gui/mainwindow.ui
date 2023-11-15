@@ -206,6 +206,9 @@ QListWidget:item:hover
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="focusPolicy">
+               <enum>Qt::ClickFocus</enum>
+              </property>
               <property name="styleSheet">
                <string notr="true"/>
               </property>
@@ -308,6 +311,9 @@ QListWidget:item:hover
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::ClickFocus</enum>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -782,6 +788,9 @@ border-color: rgb(186, 186, 186);</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">color: rgb(215, 215, 215);</string>
              </property>
@@ -873,6 +882,9 @@ border-color: rgb(186, 186, 186);</string>
            </item>
            <item row="5" column="0">
             <widget class="QLineEdit" name="settingSearch_lineEdit">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
@@ -969,6 +981,9 @@ border-color: rgb(186, 186, 186);</string>
                  </item>
                  <item>
                   <widget class="QLineEdit" name="settingValue_lineEdit">
+                   <property name="focusPolicy">
+                    <enum>Qt::ClickFocus</enum>
+                   </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
                    </property>
@@ -1038,6 +1053,9 @@ border-color: rgb(186, 186, 186);</string>
             <width>350</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
           </property>
           <property name="styleSheet">
            <string notr="true">color: rgb(167, 167, 167);</string>
@@ -1149,6 +1167,9 @@ border-color: rgb(186, 186, 186);</string>
           <width>500</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -1339,12 +1360,12 @@ border-color: rgb(186, 186, 186);</string>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="projectControl_action">
    <property name="text">
-    <string>Сборка, чистка и архивация</string>
+    <string>Зависимости проекта</string>
    </property>
   </action>
   <action name="depends_action">
    <property name="text">
-    <string>Зависимости проекта</string>
+    <string>Сборка, чистка и архивация</string>
    </property>
   </action>
   <action name="action">
