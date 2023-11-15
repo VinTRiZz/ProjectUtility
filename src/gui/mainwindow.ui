@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1021</width>
-    <height>715</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="cursor">
    <cursorShape>ArrowCursor</cursorShape>
@@ -643,8 +649,8 @@ QListWidget:item:hover
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>474</width>
-             <height>617</height>
+             <width>330</width>
+             <height>534</height>
             </rect>
            </property>
           </widget>
@@ -669,6 +675,19 @@ QListWidget:item:hover
         <property name="spacing">
          <number>3</number>
         </property>
+        <item row="2" column="0">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="2">
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
@@ -940,6 +959,19 @@ QListWidget:item:hover
           </layout>
          </widget>
         </item>
+        <item row="1" column="1" rowspan="2">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>119</width>
+            <height>431</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="1" column="0">
          <widget class="QWidget" name="widget_4" native="true">
           <property name="sizePolicy">
@@ -1069,92 +1101,106 @@ border-color: rgb(186, 186, 186);</string>
           </layout>
          </widget>
         </item>
-        <item row="2" column="0">
-         <spacer name="verticalSpacer_2">
+        <item row="3" column="0" colspan="3">
+         <widget class="QProgressBar" name="progressBar">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="1" rowspan="2">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>119</width>
-            <height>431</height>
-           </size>
-          </property>
-         </spacer>
+         </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="templateCreate_page">
-       <layout class="QGridLayout" name="gridLayout_6">
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>354</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
+       <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_5">
-          <property name="horizontalSpacing">
-           <number>6</number>
-          </property>
-          <item row="0" column="1" colspan="2">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Добавить в проект</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" rowspan="2" colspan="2">
-           <widget class="QWidget" name="widget_8" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_18">
+         <layout class="QVBoxLayout" name="verticalLayout_17">
+          <item>
+           <widget class="QWidget" name="widget_7" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_16">
              <item>
-              <widget class="QCheckBox" name="hasDeps_checkBox">
+              <widget class="QLabel" name="label_13">
                <property name="text">
-                <string>deps.pri</string>
+                <string>Тип проекта для генерации</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="hasBuildPri_checkBox">
+              <widget class="QCheckBox" name="generateLib_checkBox">
                <property name="text">
-                <string>build.pri</string>
+                <string>Библиотека</string>
                </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="hasGui_checkBox">
-               <property name="text">
-                <string>GUI</string>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
             </layout>
            </widget>
           </item>
-          <item row="3" column="1" colspan="2">
+          <item>
+           <widget class="QLineEdit" name="projectName_lineEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>SampleProject</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>Название проекта</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="projectPath_lineEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>Директория для проекта</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="generateProject_pushButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Сгенерировать</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer_7">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -1167,69 +1213,98 @@ border-color: rgb(186, 186, 186);</string>
             </property>
            </spacer>
           </item>
-          <item row="3" column="0">
-           <widget class="QPushButton" name="generateProject_pushButton">
+         </layout>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>354</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="1">
+         <layout class="QVBoxLayout" name="verticalLayout_18">
+          <item>
+           <widget class="QLabel" name="label_14">
             <property name="text">
-             <string>Сгенерировать</string>
+             <string>Добавить в проект</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" rowspan="3">
-           <layout class="QVBoxLayout" name="verticalLayout_17">
-            <item>
-             <widget class="QWidget" name="widget_7" native="true">
-              <layout class="QVBoxLayout" name="verticalLayout_16">
-               <item>
-                <widget class="QLabel" name="label_13">
-                 <property name="text">
-                  <string>Тип проекта для генерации</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="generateLib_checkBox">
-                 <property name="text">
-                  <string>Библиотека</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="projectName_lineEdit">
-              <property name="text">
-               <string>SampleProject</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="placeholderText">
-               <string>Название проекта</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="projectPath_lineEdit">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="placeholderText">
-               <string>Директория для проекта</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <item>
+           <widget class="QWidget" name="widget_8" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <widget class="QCheckBox" name="hasDeps_checkBox">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>9</y>
+               <width>69</width>
+               <height>19</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>deps.pri</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="hasBuildPri_checkBox">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>34</y>
+               <width>70</width>
+               <height>19</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>build.pri</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="hasGui_checkBox">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>59</y>
+               <width>44</width>
+               <height>19</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>GUI</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
-        <item row="1" column="0">
+        <item row="1" column="0" colspan="2">
          <spacer name="verticalSpacer_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -1249,18 +1324,21 @@ border-color: rgb(186, 186, 186);</string>
         <item row="0" column="0" colspan="2">
          <widget class="QWidget" name="widget_6" native="true">
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="4" column="1">
-            <spacer name="verticalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
+           <item row="1" column="0" rowspan="4">
+            <widget class="QListWidget" name="settingList_listWidget">
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>324</height>
-              </size>
+             <property name="verticalScrollMode">
+              <enum>QAbstractItemView::ScrollPerPixel</enum>
              </property>
-            </spacer>
+             <property name="horizontalScrollMode">
+              <enum>QAbstractItemView::ScrollPerPixel</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_16">
@@ -1278,6 +1356,19 @@ border-color: rgb(186, 186, 186);</string>
              </property>
             </widget>
            </item>
+           <item row="4" column="1">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>324</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item row="5" column="0">
             <widget class="QLineEdit" name="settingSearch_lineEdit">
              <property name="focusPolicy">
@@ -1288,22 +1379,6 @@ border-color: rgb(186, 186, 186);</string>
              </property>
              <property name="placeholderText">
               <string>Поиск настройки</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" rowspan="4">
-            <widget class="QListWidget" name="settingList_listWidget">
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
-             </property>
-             <property name="verticalScrollMode">
-              <enum>QAbstractItemView::ScrollPerPixel</enum>
-             </property>
-             <property name="horizontalScrollMode">
-              <enum>QAbstractItemView::ScrollPerPixel</enum>
-             </property>
-             <property name="sortingEnabled">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1424,6 +1499,22 @@ border-color: rgb(186, 186, 186);</string>
              </item>
             </layout>
            </item>
+           <item row="0" column="2">
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1462,25 +1553,6 @@ border-color: rgb(186, 186, 186);</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="4">
-     <widget class="QProgressBar" name="progressBar">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -1488,7 +1560,7 @@ border-color: rgb(186, 186, 186);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1021</width>
+     <width>800</width>
      <height>23</height>
     </rect>
    </property>
