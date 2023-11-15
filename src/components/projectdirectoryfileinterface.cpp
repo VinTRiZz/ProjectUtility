@@ -382,7 +382,7 @@ bool ProjectDirectoryFileInterface::hasDependRecurse(const QString &projName, co
     return m_pImpl->m_utilClass.hasDepend(pProj, depName);
 }
 
-Configuration::ProjectConfiguration &ProjectDirectoryFileInterface::mainConfig()
+Configuration::ProjectConfiguration &ProjectDirectoryFileInterface::configuration()
 {
     return m_pImpl->mainProjectConfiguration;
 }

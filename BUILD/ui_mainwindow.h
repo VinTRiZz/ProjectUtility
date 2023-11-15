@@ -121,7 +121,16 @@ public:
     QSpacerItem *verticalSpacer;
     QWidget *templateCreate_page;
     QGridLayout *gridLayout_6;
+    QSpacerItem *horizontalSpacer_4;
     QGridLayout *gridLayout_5;
+    QLabel *label_14;
+    QWidget *widget_8;
+    QVBoxLayout *verticalLayout_18;
+    QCheckBox *hasDeps_checkBox;
+    QCheckBox *hasBuildPri_checkBox;
+    QCheckBox *hasGui_checkBox;
+    QSpacerItem *verticalSpacer_7;
+    QPushButton *generateProject_pushButton;
     QVBoxLayout *verticalLayout_17;
     QWidget *widget_7;
     QVBoxLayout *verticalLayout_16;
@@ -129,14 +138,6 @@ public:
     QCheckBox *generateLib_checkBox;
     QLineEdit *projectName_lineEdit;
     QLineEdit *projectPath_lineEdit;
-    QLabel *label_14;
-    QPushButton *generateProject_pushButton;
-    QWidget *widget_8;
-    QVBoxLayout *verticalLayout_18;
-    QCheckBox *hasDeps_checkBox;
-    QCheckBox *hasBuildPri_checkBox;
-    QCheckBox *hasGui_checkBox;
-    QSpacerItem *horizontalSpacer_4;
     QSpacerItem *verticalSpacer_5;
     QWidget *settings_page;
     QGridLayout *gridLayout_3;
@@ -564,7 +565,7 @@ public:
         graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 46, 28));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 474, 617));
         graph_scrollArea->setWidget(scrollAreaWidgetContents);
 
         horizontalLayout_4->addWidget(graph_scrollArea);
@@ -820,9 +821,53 @@ public:
         gridLayout_6->setSpacing(6);
         gridLayout_6->setContentsMargins(11, 11, 11, 11);
         gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
+        horizontalSpacer_4 = new QSpacerItem(354, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_6->addItem(horizontalSpacer_4, 0, 1, 1, 1);
+
         gridLayout_5 = new QGridLayout();
         gridLayout_5->setSpacing(6);
         gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
+        gridLayout_5->setHorizontalSpacing(6);
+        label_14 = new QLabel(templateCreate_page);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setAlignment(Qt::AlignCenter);
+
+        gridLayout_5->addWidget(label_14, 0, 1, 1, 2);
+
+        widget_8 = new QWidget(templateCreate_page);
+        widget_8->setObjectName(QStringLiteral("widget_8"));
+        verticalLayout_18 = new QVBoxLayout(widget_8);
+        verticalLayout_18->setSpacing(6);
+        verticalLayout_18->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_18->setObjectName(QStringLiteral("verticalLayout_18"));
+        hasDeps_checkBox = new QCheckBox(widget_8);
+        hasDeps_checkBox->setObjectName(QStringLiteral("hasDeps_checkBox"));
+
+        verticalLayout_18->addWidget(hasDeps_checkBox);
+
+        hasBuildPri_checkBox = new QCheckBox(widget_8);
+        hasBuildPri_checkBox->setObjectName(QStringLiteral("hasBuildPri_checkBox"));
+
+        verticalLayout_18->addWidget(hasBuildPri_checkBox);
+
+        hasGui_checkBox = new QCheckBox(widget_8);
+        hasGui_checkBox->setObjectName(QStringLiteral("hasGui_checkBox"));
+
+        verticalLayout_18->addWidget(hasGui_checkBox);
+
+
+        gridLayout_5->addWidget(widget_8, 1, 1, 2, 2);
+
+        verticalSpacer_7 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_5->addItem(verticalSpacer_7, 3, 1, 1, 2);
+
+        generateProject_pushButton = new QPushButton(templateCreate_page);
+        generateProject_pushButton->setObjectName(QStringLiteral("generateProject_pushButton"));
+
+        gridLayout_5->addWidget(generateProject_pushButton, 3, 0, 1, 1);
+
         verticalLayout_17 = new QVBoxLayout();
         verticalLayout_17->setSpacing(6);
         verticalLayout_17->setObjectName(QStringLiteral("verticalLayout_17"));
@@ -860,49 +905,10 @@ public:
         verticalLayout_17->addWidget(projectPath_lineEdit);
 
 
-        gridLayout_5->addLayout(verticalLayout_17, 0, 0, 2, 1);
-
-        label_14 = new QLabel(templateCreate_page);
-        label_14->setObjectName(QStringLiteral("label_14"));
-        label_14->setAlignment(Qt::AlignCenter);
-
-        gridLayout_5->addWidget(label_14, 0, 1, 1, 2);
-
-        generateProject_pushButton = new QPushButton(templateCreate_page);
-        generateProject_pushButton->setObjectName(QStringLiteral("generateProject_pushButton"));
-
-        gridLayout_5->addWidget(generateProject_pushButton, 2, 0, 1, 1);
-
-        widget_8 = new QWidget(templateCreate_page);
-        widget_8->setObjectName(QStringLiteral("widget_8"));
-        verticalLayout_18 = new QVBoxLayout(widget_8);
-        verticalLayout_18->setSpacing(6);
-        verticalLayout_18->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_18->setObjectName(QStringLiteral("verticalLayout_18"));
-        hasDeps_checkBox = new QCheckBox(widget_8);
-        hasDeps_checkBox->setObjectName(QStringLiteral("hasDeps_checkBox"));
-
-        verticalLayout_18->addWidget(hasDeps_checkBox);
-
-        hasBuildPri_checkBox = new QCheckBox(widget_8);
-        hasBuildPri_checkBox->setObjectName(QStringLiteral("hasBuildPri_checkBox"));
-
-        verticalLayout_18->addWidget(hasBuildPri_checkBox);
-
-        hasGui_checkBox = new QCheckBox(widget_8);
-        hasGui_checkBox->setObjectName(QStringLiteral("hasGui_checkBox"));
-
-        verticalLayout_18->addWidget(hasGui_checkBox);
-
-
-        gridLayout_5->addWidget(widget_8, 1, 1, 2, 2);
+        gridLayout_5->addLayout(verticalLayout_17, 0, 0, 3, 1);
 
 
         gridLayout_6->addLayout(gridLayout_5, 0, 0, 1, 1);
-
-        horizontalSpacer_4 = new QSpacerItem(354, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_6->addItem(horizontalSpacer_4, 0, 1, 1, 1);
 
         verticalSpacer_5 = new QSpacerItem(20, 393, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -1142,16 +1148,16 @@ public:
         archivePath_lineEdit->setText(QApplication::translate("MainWindow", "ProjectsArchive", nullptr));
         archivePath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \320\260\321\200\321\205\320\270\320\262\320\260", nullptr));
         archive_pushButton->setText(QApplication::translate("MainWindow", "\320\220\321\200\321\205\320\270\320\262\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
+        label_14->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214 \320\262 \320\277\321\200\320\276\320\265\320\272\321\202", nullptr));
+        hasDeps_checkBox->setText(QApplication::translate("MainWindow", "deps.pri", nullptr));
+        hasBuildPri_checkBox->setText(QApplication::translate("MainWindow", "build.pri", nullptr));
+        hasGui_checkBox->setText(QApplication::translate("MainWindow", "GUI", nullptr));
+        generateProject_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\263\320\265\320\275\320\265\321\200\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
         label_13->setText(QApplication::translate("MainWindow", "\320\242\320\270\320\277 \320\277\321\200\320\276\320\265\320\272\321\202\320\260 \320\264\320\273\321\217 \320\263\320\265\320\275\320\265\321\200\320\260\321\206\320\270\320\270", nullptr));
         generateLib_checkBox->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\260", nullptr));
         projectName_lineEdit->setText(QApplication::translate("MainWindow", "SampleProject", nullptr));
         projectName_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
-        projectPath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \320\264\320\273\321\217 \321\200\320\265\320\267\321\203\320\273\321\214\321\202\320\260\321\202\320\260", nullptr));
-        label_14->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214 \320\262 \320\277\321\200\320\276\320\265\320\272\321\202", nullptr));
-        generateProject_pushButton->setText(QApplication::translate("MainWindow", "\320\241\320\263\320\265\320\275\320\265\321\200\320\270\321\200\320\276\320\262\320\260\321\202\321\214", nullptr));
-        hasDeps_checkBox->setText(QApplication::translate("MainWindow", "deps.pri", nullptr));
-        hasBuildPri_checkBox->setText(QApplication::translate("MainWindow", "build.pri", nullptr));
-        hasGui_checkBox->setText(QApplication::translate("MainWindow", "GUI", nullptr));
+        projectPath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \320\264\320\273\321\217 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
         label_16->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
         settingSearch_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
         label_15->setText(QApplication::translate("MainWindow", "\320\230\320\267\320\274\320\265\320\275\320\265\320\275\320\270\320\265 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));

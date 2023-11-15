@@ -49,6 +49,19 @@ void MainWindow::removeFiles()
 
 void MainWindow::generateProject()
 {
+    if (!m_fileInterface.configuration().strSettings["Default main template path"].isEmpty())
+    {
+        if (QMessageBox::warning(
+                    this, "Внимание",
+                    QString("Проект будет сконфигурирован так, что\nу него будет указано использование\n[ %1 ]\nв качестве общего шаблона. Продолжить?").arg(m_fileInterface.configuration().strSettings["Default main template path"]),
+                    QMessageBox::Yes, QMessageBox::No
+            ) == QMessageBox::No)
+        {
+            emit printInfo("Генерация отменена");
+            return;
+        }
+    }
+
     DependsSearcher::ProjectBaseConfiguration config;
 
     config.projectName = ui->projectName_lineEdit->text();
@@ -67,7 +80,7 @@ void MainWindow::generateProject()
     config.hasBuildPri = ui->hasBuildPri_checkBox->isChecked();
 
     if (m_fileInterface.generateProject(config))
-        emit printInfo("Проект создан");
+        emit printInfo(QString("Проект создан по пути:\n %1").arg(config.baseDir));
     else
         emit printInfo("Ошибка создания проекта! Проверьте введённые данные");
 }

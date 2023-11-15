@@ -643,8 +643,8 @@ QListWidget:item:hover
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>46</width>
-             <height>28</height>
+             <width>474</width>
+             <height>617</height>
             </rect>
            </property>
           </widget>
@@ -1099,9 +1099,82 @@ border-color: rgb(186, 186, 186);</string>
       </widget>
       <widget class="QWidget" name="templateCreate_page">
        <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>354</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="0" rowspan="2">
+          <property name="horizontalSpacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="1" colspan="2">
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>Добавить в проект</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" rowspan="2" colspan="2">
+           <widget class="QWidget" name="widget_8" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_18">
+             <item>
+              <widget class="QCheckBox" name="hasDeps_checkBox">
+               <property name="text">
+                <string>deps.pri</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="hasBuildPri_checkBox">
+               <property name="text">
+                <string>build.pri</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="hasGui_checkBox">
+               <property name="text">
+                <string>GUI</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="2">
+           <spacer name="verticalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="generateProject_pushButton">
+            <property name="text">
+             <string>Сгенерировать</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" rowspan="3">
            <layout class="QVBoxLayout" name="verticalLayout_17">
             <item>
              <widget class="QWidget" name="widget_7" native="true">
@@ -1148,70 +1221,13 @@ border-color: rgb(186, 186, 186);</string>
                <set>Qt::AlignCenter</set>
               </property>
               <property name="placeholderText">
-               <string>Путь для результата</string>
+               <string>Директория для проекта</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
-          <item row="0" column="1" colspan="2">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Добавить в проект</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="generateProject_pushButton">
-            <property name="text">
-             <string>Сгенерировать</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" rowspan="2" colspan="2">
-           <widget class="QWidget" name="widget_8" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_18">
-             <item>
-              <widget class="QCheckBox" name="hasDeps_checkBox">
-               <property name="text">
-                <string>deps.pri</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="hasBuildPri_checkBox">
-               <property name="text">
-                <string>build.pri</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="hasGui_checkBox">
-               <property name="text">
-                <string>GUI</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
          </layout>
-        </item>
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>354</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="1" column="0">
          <spacer name="verticalSpacer_5">

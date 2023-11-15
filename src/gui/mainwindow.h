@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include <QMessageBox>
 #include <QFileInfo>
 #include <QThread>
 #include <QValidator>

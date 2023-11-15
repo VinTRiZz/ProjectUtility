@@ -51,7 +51,7 @@ public:
 
     bool hasDependRecurse(const QString &projName, const QString &depName);
 
-    Configuration::ProjectConfiguration & mainConfig();
+    Configuration::ProjectConfiguration & configuration();
     void saveCurrentConfiguration();
     void loadConfiguration();
 
