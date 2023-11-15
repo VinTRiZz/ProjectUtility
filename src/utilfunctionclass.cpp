@@ -152,14 +152,18 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
         setLogFile(logFileName);
     }
 
+    QByteArray writeBuffer = "\n---------------------------------------------------------------------------\n";
+    writeBuffer += what;
+    writeBuffer += "\n---------------------------------------------------------------------------\n";
+
     m_logFile.open(QIODevice::WriteOnly | QIODevice::Append);
     if (m_logFile.isOpen())
     {
-        m_logFile.write(QByteArray("\n---------------------------------------------------------------------------\n"));
-        m_logFile.write( what );
-        m_logFile.write(QByteArray("\n---------------------------------------------------------------------------\n"));
+        m_logFile.write( writeBuffer );
     }
     m_logFile.close();
+
+    qDebug() << "[UTIL CLASS] [BEGIN LOGGED DATA]" << writeBuffer.data() << "[UTIL CLASS] [END LOGGED DATA]";
 }
 
 bool UtilFunctionClass::hasRecurseDepend(QStringList &dependQuery, Project *pParent)

@@ -355,11 +355,6 @@ void ProjectDirectoryFileInterface::archiveAllProjects(const QString & resultPat
     m_pImpl->m_archivator.archive(resultPath);
 }
 
-bool ProjectDirectoryFileInterface::archiveSucceed() const
-{
-    return m_pImpl->m_archivator.archived();
-}
-
 bool ProjectDirectoryFileInterface::hasDependRecurse(const QString &projName, const QString &depName)
 {
     Project * pProj = m_pImpl->m_utilClass.getProject(projName);
@@ -429,15 +424,16 @@ void ProjectDirectoryFileInterface::loadConfiguration()
     {
         writeBuffer = configFile.value(configPair.first).toString();
         writeBuffer = QByteArray::fromBase64(writeBuffer.toUtf8());
+
         configPair.second = writeBuffer;
+        if (writeBuffer.isEmpty())
+            configPair.second = Configuration::defaultProjectConfiguration.strSettings[configPair.first]; // If configuration not found, setup as default
     }
     configFile.endGroup();
 
     configFile.beginGroup("IntSettings");
     for (auto & configPair : m_pImpl->mainProjectConfiguration.intSettings)
-    {
         configPair.second = configFile.value(configPair.first).toInt();
-    }
     configFile.endGroup();
     qDebug() << "[FILE INTERFACE] Setting loaded";
 }

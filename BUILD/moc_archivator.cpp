@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_FileWork__Archivator_t {
-    QByteArrayData data[3];
-    char stringdata0[38];
+    QByteArrayData data[4];
+    char stringdata0[45];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,11 +33,12 @@ static const qt_meta_stringdata_FileWork__Archivator_t qt_meta_stringdata_FileWo
     {
 QT_MOC_LITERAL(0, 0, 20), // "FileWork::Archivator"
 QT_MOC_LITERAL(1, 21, 15), // "archiveComplete"
-QT_MOC_LITERAL(2, 37, 0) // ""
+QT_MOC_LITERAL(2, 37, 0), // ""
+QT_MOC_LITERAL(3, 38, 6) // "result"
 
     },
     "FileWork::Archivator\0archiveComplete\0"
-    ""
+    "\0result"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,10 +56,10 @@ static const uint qt_meta_data_FileWork__Archivator[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   19,    2, 0x06 /* Public */,
+       1,    1,   19,    2, 0x06 /* Public */,
 
  // signals: parameters
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::Bool,    3,
 
        0        // eod
 };
@@ -69,20 +70,19 @@ void FileWork::Archivator::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         Archivator *_t = static_cast<Archivator *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->archiveComplete(); break;
+        case 0: _t->archiveComplete((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            using _t = void (Archivator::*)();
+            using _t = void (Archivator::*)(bool );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Archivator::archiveComplete)) {
                 *result = 0;
                 return;
             }
         }
     }
-    Q_UNUSED(_a);
 }
 
 QT_INIT_METAOBJECT const QMetaObject FileWork::Archivator::staticMetaObject = {
@@ -122,9 +122,10 @@ int FileWork::Archivator::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void FileWork::Archivator::archiveComplete()
+void FileWork::Archivator::archiveComplete(bool _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

@@ -32,7 +32,6 @@ struct Archivator::Impl
 
     ArchiveDirectory mainArchiveDir;
     QThread * processThread {nullptr};
-    bool isArchived {false};
 
     Impl(UtilFunctionClass & utilClass) :
         m_utilClass{utilClass}
@@ -214,17 +213,16 @@ void Archivator::archive(const QString & resultPath)
     m_pImpl->processThread = QThread::create(
         [this, resultPath]()
         {
-            m_pImpl->isArchived = false;
-
-            const QString basePathInTmp = QString("./%1").arg(m_pImpl->mainArchiveDir.dirName);
+            const QString basePathInTmp = "./Projects";
 
             QStringList dirArgs;
-            dirArgs << basePathInTmp << "&> /dev/null";
+            dirArgs << basePathInTmp;
 
             // Create temporary directory for them
             if (!m_pImpl->m_utilClass.invoke("mkdir", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
             {
-                qDebug() << "[ARCHIVATOR] Error: directory not created";
+                qDebug() << "[ARCHIVATOR] Error: Temporary directory not created";
+                emit this->archiveComplete(false);
                 return;
             }
 
@@ -245,14 +243,15 @@ void Archivator::archive(const QString & resultPath)
             qDebug() << "[ARCHIVATOR] Archivator command: [" << "zip" << zipArgs.join(" ") << "]";
 
             if (m_pImpl->m_utilClass.invoke("zip", zipArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
+            {
                 qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
-
-            qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
+                emit this->archiveComplete(true);
+            }
+            else
+                emit this->archiveComplete(false);
 
             dirArgs << "-R";
             m_pImpl->m_utilClass.invoke("rm", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]);
-
-            emit this->archiveComplete();
         }
     );
 
@@ -280,12 +279,10 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
     m_pImpl->processThread = QThread::create(
         [this, projectDirPath, resultPath]()
         {
-            m_pImpl->isArchived = false;
-
             // Search for project files
             QDir projectDir(projectDirPath);
 
-            const QString basePathInTmp = QString("./%1").arg(projectDir.dirName());
+            const QString basePathInTmp = "./Projects";
 
             ArchiveDirectory projectArhiveDir;
             projectArhiveDir.dirName = projectDir.dirName();
@@ -294,12 +291,13 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
             m_pImpl->searchRecursive(QDir(projectDirPath), projectArhiveDir);
 
             QStringList dirArgs;
-            dirArgs << basePathInTmp << "&> /dev/null";
+            dirArgs << basePathInTmp;
 
             // Create temporary directory for them
             if (!m_pImpl->m_utilClass.invoke("mkdir", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
             {
                 qDebug() << "[ARCHIVATOR] Error: directory not created";
+                emit this->archiveComplete(false);
                 return;
             }
 
@@ -318,21 +316,17 @@ void Archivator::archive(const QString &projectDirPath, const QString &resultPat
             qDebug() << "[ARCHIVATOR] Archivator command: [" << "zip" << zipArgs.join(" ") << "]";
 
             if (m_pImpl->m_utilClass.invoke("zip", zipArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]))
+            {
                 qDebug() << "[ARCHIVATOR] Archive created:" << resultPath;
+                emit this->archiveComplete(true);
+            }
+            else
+                emit this->archiveComplete(false);
 
             dirArgs << "-R";
             m_pImpl->m_utilClass.invoke("rm", dirArgs, m_pImpl->m_utilClass.projectConfiguration().intSettings["ZIP program timeout"]);
-
-            m_pImpl->isArchived = true;
-
-            emit this->archiveComplete();
         }
     );
 
     m_pImpl->processThread->start();
-}
-
-bool Archivator::archived() const
-{
-    return m_pImpl->isArchived;
 }

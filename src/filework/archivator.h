@@ -27,10 +27,8 @@ public:
 
     void poll();
 
-    bool archived() const;
-
 signals:
-    void archiveComplete();
+    void archiveComplete(bool result);
 
 private:
     struct Impl;

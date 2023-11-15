@@ -40,7 +40,7 @@ private slots:
 
     void printInfo(const QString & what);
 
-    void archiveComplete();
+    void archiveComplete(bool result);
     void archive();
     void projectSelected();
 

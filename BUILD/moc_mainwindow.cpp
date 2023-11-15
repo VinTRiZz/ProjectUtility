@@ -52,10 +52,10 @@ QT_MOC_LITERAL(17, 225, 7), // "rebuild"
 QT_MOC_LITERAL(18, 233, 9), // "printInfo"
 QT_MOC_LITERAL(19, 243, 4), // "what"
 QT_MOC_LITERAL(20, 248, 15), // "archiveComplete"
-QT_MOC_LITERAL(21, 264, 7), // "archive"
-QT_MOC_LITERAL(22, 272, 15), // "projectSelected"
-QT_MOC_LITERAL(23, 288, 13), // "buildComplete"
-QT_MOC_LITERAL(24, 302, 6), // "result"
+QT_MOC_LITERAL(21, 264, 6), // "result"
+QT_MOC_LITERAL(22, 271, 7), // "archive"
+QT_MOC_LITERAL(23, 279, 15), // "projectSelected"
+QT_MOC_LITERAL(24, 295, 13), // "buildComplete"
 QT_MOC_LITERAL(25, 309, 25), // "recursiveDependencySearch"
 QT_MOC_LITERAL(26, 335, 14), // "settingClicked"
 QT_MOC_LITERAL(27, 350, 21), // "updateSelectedSetting"
@@ -72,8 +72,8 @@ QT_MOC_LITERAL(31, 425, 11) // "reloadGraph"
     "changedText\0searchForProject\0"
     "searchForSetting\0changedMenu\0QAction*\0"
     "menuAction\0build\0rebuild\0printInfo\0"
-    "what\0archiveComplete\0archive\0"
-    "projectSelected\0buildComplete\0result\0"
+    "what\0archiveComplete\0result\0archive\0"
+    "projectSelected\0buildComplete\0"
     "recursiveDependencySearch\0settingClicked\0"
     "updateSelectedSetting\0saveSettingsToFile\0"
     "restoreSettingsAll\0restoreSetting\0"
@@ -108,17 +108,17 @@ static const uint qt_meta_data_MainWindow[] = {
       16,    0,  154,    2, 0x08 /* Private */,
       17,    0,  155,    2, 0x08 /* Private */,
       18,    1,  156,    2, 0x08 /* Private */,
-      20,    0,  159,    2, 0x08 /* Private */,
-      21,    0,  160,    2, 0x08 /* Private */,
-      22,    0,  161,    2, 0x08 /* Private */,
-      23,    2,  162,    2, 0x08 /* Private */,
-      25,    0,  167,    2, 0x08 /* Private */,
-      26,    0,  168,    2, 0x08 /* Private */,
-      27,    0,  169,    2, 0x08 /* Private */,
-      28,    0,  170,    2, 0x08 /* Private */,
-      29,    0,  171,    2, 0x08 /* Private */,
-      30,    0,  172,    2, 0x08 /* Private */,
-      31,    0,  173,    2, 0x08 /* Private */,
+      20,    1,  159,    2, 0x08 /* Private */,
+      22,    0,  162,    2, 0x08 /* Private */,
+      23,    0,  163,    2, 0x08 /* Private */,
+      24,    2,  164,    2, 0x08 /* Private */,
+      25,    0,  169,    2, 0x08 /* Private */,
+      26,    0,  170,    2, 0x08 /* Private */,
+      27,    0,  171,    2, 0x08 /* Private */,
+      28,    0,  172,    2, 0x08 /* Private */,
+      29,    0,  173,    2, 0x08 /* Private */,
+      30,    0,  174,    2, 0x08 /* Private */,
+      31,    0,  175,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -134,10 +134,10 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,   19,
+    QMetaType::Void, QMetaType::Bool,   21,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString, QMetaType::Bool,    6,   24,
+    QMetaType::Void, QMetaType::QString, QMetaType::Bool,    6,   21,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -168,7 +168,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 10: _t->build(); break;
         case 11: _t->rebuild(); break;
         case 12: _t->printInfo((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 13: _t->archiveComplete(); break;
+        case 13: _t->archiveComplete((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 14: _t->archive(); break;
         case 15: _t->projectSelected(); break;
         case 16: _t->buildComplete((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;

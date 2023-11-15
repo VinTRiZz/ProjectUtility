@@ -10,6 +10,8 @@
 
 #include <QValidator>
 
+#define CURRENT_VERSION_STRING "v.1.2.2"
+
 #define REMOVE_BUTTON_FOCUS(buttonName)                     ui->buttonName##_pushButton->setFocusPolicy(Qt::NoFocus)
 #define CONNECT_CLICKED(buttonName, mainWindowFunction)    connect(ui->buttonName##_pushButton, &QPushButton::clicked, this, &MainWindow::mainWindowFunction)
 
@@ -20,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_fileInterface(this, m_depGraphWidget)
 {
     ui->setupUi(this);
+
+    this->setWindowTitle( this->windowTitle() + CURRENT_VERSION_STRING );
 
     m_fileInterface.loadConfiguration();
 
@@ -350,9 +354,9 @@ void MainWindow::printInfo(const QString & what)
     qDebug() << "[USER ACTION]" << what;
 }
 
-void MainWindow::archiveComplete()
+void MainWindow::archiveComplete(bool result)
 {
-    if (m_fileInterface.archiveSucceed())
+    if (result)
         emit printInfo("Архив создан");
     else
         emit printInfo("Ошибка создания архива");

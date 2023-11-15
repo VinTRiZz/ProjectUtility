@@ -46,8 +46,6 @@ public:
     void archiveSelectedProjects(const QStringList & projectNames, const QString & resultPath);
     void archiveAllProjects(const QString & resultPath);
 
-    bool archiveSucceed() const;
-
     bool hasDependRecurse(const QString &projName, const QString &depName);
 
     Configuration::ProjectConfiguration & mainConfig();
@@ -57,7 +55,7 @@ public:
     void reloadGraph();
 
 signals:
-    void archiveComplete();
+    void archiveComplete(bool result);
     void buildComplete(const QString & projectName, bool buildResult);
 
 private:
