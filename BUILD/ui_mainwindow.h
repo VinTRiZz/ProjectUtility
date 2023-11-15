@@ -45,7 +45,7 @@ public:
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QStackedWidget *menu_stackedWidget;
-    QWidget *page;
+    QWidget *deps_page;
     QHBoxLayout *horizontalLayout_4;
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout;
@@ -64,7 +64,7 @@ public:
     QSpacerItem *verticalSpacer_4;
     QScrollArea *graph_scrollArea;
     QWidget *scrollAreaWidgetContents;
-    QWidget *page_2;
+    QWidget *misc_page;
     QGridLayout *gridLayout_2;
     QSpacerItem *horizontalSpacer_3;
     QVBoxLayout *verticalLayout_9;
@@ -103,7 +103,8 @@ public:
     QPushButton *archive_pushButton;
     QSpacerItem *verticalSpacer_2;
     QSpacerItem *verticalSpacer;
-    QWidget *page_3;
+    QWidget *templateCreate_page;
+    QWidget *settings_page;
     QGridLayout *gridLayout_3;
     QWidget *widget_6;
     QGridLayout *gridLayout_4;
@@ -292,9 +293,9 @@ public:
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         menu_stackedWidget = new QStackedWidget(centralWidget);
         menu_stackedWidget->setObjectName(QStringLiteral("menu_stackedWidget"));
-        page = new QWidget();
-        page->setObjectName(QStringLiteral("page"));
-        horizontalLayout_4 = new QHBoxLayout(page);
+        deps_page = new QWidget();
+        deps_page->setObjectName(QStringLiteral("deps_page"));
+        horizontalLayout_4 = new QHBoxLayout(deps_page);
         horizontalLayout_4->setSpacing(3);
         horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
@@ -305,7 +306,7 @@ public:
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(1);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        label_3 = new QLabel(page);
+        label_3 = new QLabel(deps_page);
         label_3->setObjectName(QStringLiteral("label_3"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
@@ -316,7 +317,7 @@ public:
 
         verticalLayout->addWidget(label_3);
 
-        avaliableLibs_listWidget = new QListWidget(page);
+        avaliableLibs_listWidget = new QListWidget(deps_page);
         avaliableLibs_listWidget->setObjectName(QStringLiteral("avaliableLibs_listWidget"));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
@@ -326,7 +327,7 @@ public:
 
         verticalLayout->addWidget(avaliableLibs_listWidget);
 
-        search_lineEdit = new QLineEdit(page);
+        search_lineEdit = new QLineEdit(deps_page);
         search_lineEdit->setObjectName(QStringLiteral("search_lineEdit"));
         sizePolicy.setHeightForWidth(search_lineEdit->sizePolicy().hasHeightForWidth());
         search_lineEdit->setSizePolicy(sizePolicy);
@@ -342,21 +343,21 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(2);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        add_pushButton = new QPushButton(page);
+        add_pushButton = new QPushButton(deps_page);
         add_pushButton->setObjectName(QStringLiteral("add_pushButton"));
         sizePolicy.setHeightForWidth(add_pushButton->sizePolicy().hasHeightForWidth());
         add_pushButton->setSizePolicy(sizePolicy);
 
         horizontalLayout_2->addWidget(add_pushButton);
 
-        remove_pushButton = new QPushButton(page);
+        remove_pushButton = new QPushButton(deps_page);
         remove_pushButton->setObjectName(QStringLiteral("remove_pushButton"));
         sizePolicy.setHeightForWidth(remove_pushButton->sizePolicy().hasHeightForWidth());
         remove_pushButton->setSizePolicy(sizePolicy);
 
         horizontalLayout_2->addWidget(remove_pushButton);
 
-        saveChanges_pushButton = new QPushButton(page);
+        saveChanges_pushButton = new QPushButton(deps_page);
         saveChanges_pushButton->setObjectName(QStringLiteral("saveChanges_pushButton"));
         sizePolicy.setHeightForWidth(saveChanges_pushButton->sizePolicy().hasHeightForWidth());
         saveChanges_pushButton->setSizePolicy(sizePolicy);
@@ -369,7 +370,7 @@ public:
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(2);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        label_2 = new QLabel(page);
+        label_2 = new QLabel(deps_page);
         label_2->setObjectName(QStringLiteral("label_2"));
         sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
         label_2->setSizePolicy(sizePolicy);
@@ -377,7 +378,7 @@ public:
 
         verticalLayout_2->addWidget(label_2);
 
-        addedLibs_listWidget = new QListWidget(page);
+        addedLibs_listWidget = new QListWidget(deps_page);
         addedLibs_listWidget->setObjectName(QStringLiteral("addedLibs_listWidget"));
         sizePolicy1.setHeightForWidth(addedLibs_listWidget->sizePolicy().hasHeightForWidth());
         addedLibs_listWidget->setSizePolicy(sizePolicy1);
@@ -387,7 +388,7 @@ public:
 
         verticalLayout_6->addLayout(verticalLayout_2);
 
-        recursiveSearch_lineEdit = new QLineEdit(page);
+        recursiveSearch_lineEdit = new QLineEdit(deps_page);
         recursiveSearch_lineEdit->setObjectName(QStringLiteral("recursiveSearch_lineEdit"));
         sizePolicy.setHeightForWidth(recursiveSearch_lineEdit->sizePolicy().hasHeightForWidth());
         recursiveSearch_lineEdit->setSizePolicy(sizePolicy);
@@ -396,7 +397,7 @@ public:
 
         verticalLayout_6->addWidget(recursiveSearch_lineEdit);
 
-        reloadGraph_pushButton = new QPushButton(page);
+        reloadGraph_pushButton = new QPushButton(deps_page);
         reloadGraph_pushButton->setObjectName(QStringLiteral("reloadGraph_pushButton"));
 
         verticalLayout_6->addWidget(reloadGraph_pushButton);
@@ -408,7 +409,7 @@ public:
 
         horizontalLayout_4->addLayout(verticalLayout_6);
 
-        graph_scrollArea = new QScrollArea(page);
+        graph_scrollArea = new QScrollArea(deps_page);
         graph_scrollArea->setObjectName(QStringLiteral("graph_scrollArea"));
         QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
         sizePolicy2.setHorizontalStretch(0);
@@ -427,10 +428,10 @@ public:
 
         horizontalLayout_4->addWidget(graph_scrollArea);
 
-        menu_stackedWidget->addWidget(page);
-        page_2 = new QWidget();
-        page_2->setObjectName(QStringLiteral("page_2"));
-        gridLayout_2 = new QGridLayout(page_2);
+        menu_stackedWidget->addWidget(deps_page);
+        misc_page = new QWidget();
+        misc_page->setObjectName(QStringLiteral("misc_page"));
+        gridLayout_2 = new QGridLayout(misc_page);
         gridLayout_2->setSpacing(3);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
@@ -445,7 +446,7 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(3);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        widget_3 = new QWidget(page_2);
+        widget_3 = new QWidget(misc_page);
         widget_3->setObjectName(QStringLiteral("widget_3"));
         sizePolicy1.setHeightForWidth(widget_3->sizePolicy().hasHeightForWidth());
         widget_3->setSizePolicy(sizePolicy1);
@@ -479,7 +480,7 @@ public:
 
         horizontalLayout->addWidget(widget_3);
 
-        widget_2 = new QWidget(page_2);
+        widget_2 = new QWidget(misc_page);
         widget_2->setObjectName(QStringLiteral("widget_2"));
         sizePolicy1.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
         widget_2->setSizePolicy(sizePolicy1);
@@ -520,19 +521,19 @@ public:
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setSpacing(2);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-        build_pushButton = new QPushButton(page_2);
+        build_pushButton = new QPushButton(misc_page);
         build_pushButton->setObjectName(QStringLiteral("build_pushButton"));
         build_pushButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_4->addWidget(build_pushButton);
 
-        rebuild_pushButton = new QPushButton(page_2);
+        rebuild_pushButton = new QPushButton(misc_page);
         rebuild_pushButton->setObjectName(QStringLiteral("rebuild_pushButton"));
         rebuild_pushButton->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_4->addWidget(rebuild_pushButton);
 
-        progressBar = new QProgressBar(page_2);
+        progressBar = new QProgressBar(misc_page);
         progressBar->setObjectName(QStringLiteral("progressBar"));
         sizePolicy.setHeightForWidth(progressBar->sizePolicy().hasHeightForWidth());
         progressBar->setSizePolicy(sizePolicy);
@@ -548,7 +549,7 @@ public:
 
         gridLayout_2->addLayout(verticalLayout_9, 0, 0, 1, 1);
 
-        widget_5 = new QWidget(page_2);
+        widget_5 = new QWidget(misc_page);
         widget_5->setObjectName(QStringLiteral("widget_5"));
         widget_5->setStyleSheet(QStringLiteral(""));
         verticalLayout_3 = new QVBoxLayout(widget_5);
@@ -608,7 +609,7 @@ public:
 
         gridLayout_2->addWidget(widget_5, 0, 1, 1, 1);
 
-        widget_4 = new QWidget(page_2);
+        widget_4 = new QWidget(misc_page);
         widget_4->setObjectName(QStringLiteral("widget_4"));
         sizePolicy1.setHeightForWidth(widget_4->sizePolicy().hasHeightForWidth());
         widget_4->setSizePolicy(sizePolicy1);
@@ -681,14 +682,17 @@ public:
 
         gridLayout_2->addItem(verticalSpacer, 1, 1, 2, 1);
 
-        menu_stackedWidget->addWidget(page_2);
-        page_3 = new QWidget();
-        page_3->setObjectName(QStringLiteral("page_3"));
-        gridLayout_3 = new QGridLayout(page_3);
+        menu_stackedWidget->addWidget(misc_page);
+        templateCreate_page = new QWidget();
+        templateCreate_page->setObjectName(QStringLiteral("templateCreate_page"));
+        menu_stackedWidget->addWidget(templateCreate_page);
+        settings_page = new QWidget();
+        settings_page->setObjectName(QStringLiteral("settings_page"));
+        gridLayout_3 = new QGridLayout(settings_page);
         gridLayout_3->setSpacing(6);
         gridLayout_3->setContentsMargins(11, 11, 11, 11);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        widget_6 = new QWidget(page_3);
+        widget_6 = new QWidget(settings_page);
         widget_6->setObjectName(QStringLiteral("widget_6"));
         gridLayout_4 = new QGridLayout(widget_6);
         gridLayout_4->setSpacing(6);
@@ -811,7 +815,7 @@ public:
 
         gridLayout_3->addWidget(widget_6, 0, 0, 1, 2);
 
-        menu_stackedWidget->addWidget(page_3);
+        menu_stackedWidget->addWidget(settings_page);
 
         gridLayout->addWidget(menu_stackedWidget, 0, 3, 5, 1);
 
@@ -969,7 +973,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        menu_stackedWidget->setCurrentIndex(0);
+        menu_stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1038,7 +1042,7 @@ public:
         apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
         label_9->setText(QApplication::translate("MainWindow", "\320\241\320\276\320\276\320\261\321\211\320\265\320\275\320\270\321\217 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
         cleanOutput_pushButton->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214 \320\262\321\213\320\262\320\276\320\264", nullptr));
-        menu->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\320\275\321\216", nullptr));
+        menu->setTitle(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\274\320\265\320\275\321\216", nullptr));
     } // retranslateUi
 
 };
