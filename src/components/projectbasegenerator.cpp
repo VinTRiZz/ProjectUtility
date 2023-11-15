@@ -1,5 +1,6 @@
 #include "projectbasegenerator.h"
 
+#include <QFileInfo>
 #include <QTextStream>
 #include <QDebug>
 

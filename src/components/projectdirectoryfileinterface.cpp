@@ -396,15 +396,16 @@ void ProjectDirectoryFileInterface::saveCurrentConfiguration()
     QString writeBuffer;
 
     configFile.beginGroup("StringSettings");
-    for (const auto & configPair : m_pImpl->mainProjectConfiguration.strSettings)
+    for (auto & configPair : m_pImpl->mainProjectConfiguration.strSettings)
     {
+        qDebug() << "[FILE INTERFACE] Saving setting:" << configPair.first << "Its value:" << configPair.second;
         writeBuffer = configPair.second.toUtf8().toBase64();
         configFile.setValue(configPair.first, writeBuffer);
     }
     configFile.endGroup();
 
     configFile.beginGroup("IntSettings");
-    for (const auto & configPair : m_pImpl->mainProjectConfiguration.intSettings)
+    for (auto & configPair : m_pImpl->mainProjectConfiguration.intSettings)
     {
         configFile.setValue(configPair.first, QString::number(configPair.second));
     }
@@ -430,10 +431,15 @@ void ProjectDirectoryFileInterface::loadConfiguration()
     configFile.beginGroup("StringSettings");
     for (auto & configPair : m_pImpl->mainProjectConfiguration.strSettings)
     {
+        configPair.second = "";
+
         writeBuffer = configFile.value(configPair.first).toString();
         writeBuffer = QByteArray::fromBase64(writeBuffer.toUtf8());
 
         configPair.second = writeBuffer;
+
+        qDebug() << "[FILE INTERFACE] Read setting:" << configPair.first << "Its value:" << configPair.second;
+
         if (writeBuffer.isEmpty())
             configPair.second = Configuration::defaultProjectConfiguration.strSettings[configPair.first]; // If configuration not found, setup as default
     }
@@ -441,7 +447,10 @@ void ProjectDirectoryFileInterface::loadConfiguration()
 
     configFile.beginGroup("IntSettings");
     for (auto & configPair : m_pImpl->mainProjectConfiguration.intSettings)
+    {
+        configPair.second = Configuration::defaultProjectConfiguration.intSettings[configPair.first];
         configPair.second = configFile.value(configPair.first).toInt();
+    }
     configFile.endGroup();
     qDebug() << "[FILE INTERFACE] Setting loaded";
 }

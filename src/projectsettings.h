@@ -3,7 +3,7 @@
 
 #include "extendedtypes.h"
 
-#include <QDir>
+#include <QCoreApplication>
 
 namespace Configuration
 {
@@ -16,8 +16,8 @@ struct ProjectConfiguration
         { "Backup directory for changes", "./saveChangesBackup"},
         { "Log file name", "DepSearcher.log"},
         { "Configuration file path", "DepsSearcherConfig.ini" },
-        { "Default base path", "/home/lazarev_as/workspace/project"},
-        { "Program default directory", QDir::currentPath().toUtf8().data() },
+        { "Default base path", QCoreApplication::applicationDirPath().toUtf8().data()},
+        { "Program default directory", QCoreApplication::applicationDirPath().toUtf8().data() },
         { "Default main template path", "$$PWD/../../template.pri"},
 
         // Builder

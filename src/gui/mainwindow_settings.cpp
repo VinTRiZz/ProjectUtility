@@ -89,10 +89,13 @@ void MainWindow::updateSelectedSetting()
     }
     else
     {
+        qDebug() << "[MAINWINDOW] Updating setting from" << *pStrSetting << "to" << settingValue;
         if ((settingName.contains("path")) && !settingValue.isEmpty())
         {
             if ((settingValue.front().toLatin1() != '/'))
                 *pStrSetting = "/" + settingValue;
+            else
+                *pStrSetting = settingValue;
         }
         else
         {
