@@ -63,10 +63,11 @@ struct Archivator::Impl
         if (fileName.contains("/")) // Input must be only names
             return false;
 
-        if (fileName.contains(QRegExp("ui_[A-Za-z0-9]+\\.h"))     ||
-            fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.h"))    ||
+        if (fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.h"))    ||
             fileName.contains(QRegExp("moc_[A-Za-z0-9]+\\.cpp"))  ||
             fileName.contains(QRegExp("[A-Za-z0-9]+\\.pro.user")) ||
+            fileName.contains(QRegExp("[A-Za-z0-9]+\\.o")) ||
+            // fileName.contains(QRegExp("ui_[A-Za-z0-9]+\\.h"))     ||
             (fileName == "Makefile")                              // ||
 //            (
 //                !fileName.contains(QRegExp("[A-Za-z0-9]+\\.h"))   &&
