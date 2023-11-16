@@ -169,8 +169,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
 
         srcFileStream << "SOURCES += src/*.cpp \\" << endl
                       << "           src/gui/*.cpp" << endl
-                      << "HEADERS += src/*.h \\" << endl
-                      << "           src/gui/*.h"
+                      << "HEADERS += src/gui/*.h" << endl
         ;
 
         if (config.hasGui)
@@ -205,6 +204,11 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         }
 
         proFile.close();
+
+        // Change ownership because of QtCreator mess
+        commandArgs.last() = "$(whoami)";
+        commandArgs << config.baseDir + "/" + projectName;
+        m_utilClass.invoke("chown", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]);
 
         qDebug() << "[PROJECT GENERATOR] Project generated";
         return true;

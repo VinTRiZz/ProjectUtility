@@ -433,15 +433,19 @@ void ProjectDirectoryFileInterface::loadConfiguration()
     {
         configPair.second = "";
 
+        if (!configFile.contains(configPair.first))
+        {
+            configPair.second = Configuration::defaultProjectConfiguration.strSettings[configPair.first]; // If configuration not found, setup as default
+            continue;
+        }
+
         writeBuffer = configFile.value(configPair.first).toString();
+
         writeBuffer = QByteArray::fromBase64(writeBuffer.toUtf8());
 
         configPair.second = writeBuffer;
 
         qDebug() << "[FILE INTERFACE] Read setting:" << configPair.first << "Its value:" << configPair.second;
-
-        if (writeBuffer.isEmpty())
-            configPair.second = Configuration::defaultProjectConfiguration.strSettings[configPair.first]; // If configuration not found, setup as default
     }
     configFile.endGroup();
 
