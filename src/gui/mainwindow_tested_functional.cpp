@@ -53,7 +53,7 @@ void MainWindow::generateProject()
     {
         if (QMessageBox::warning(
                     this, "Внимание",
-                    QString("Проект будет сконфигурирован так, что\nу него будет указано использование\n[ %1 ]\nв качестве общего шаблона. Продолжить?").arg(m_fileInterface.configuration().strSettings["Default main template path"]),
+                    QString("Проект будет сконфигурирован так, что\nу него будет указано использование\n[  %1  ]\nв качестве общего шаблона. Продолжить?").arg(m_fileInterface.configuration().strSettings["Default main template path"]),
                     QMessageBox::Yes, QMessageBox::No
             ) == QMessageBox::No)
         {
@@ -109,6 +109,9 @@ void MainWindow::archive()
     {
         archivePath = m_fileInterface.configuration().strSettings["Program default directory"] + "/" + archivePath;
     }
+
+    if (!archivePath.contains(".zip"))
+        archivePath += ".zip";
 
     if (ui->archiveAll_radioButton->isChecked())
     {

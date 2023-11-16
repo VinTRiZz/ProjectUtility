@@ -166,7 +166,7 @@ void MainWindow::setupSettings()
         ui->settingList_listWidget->addItem(intSetting.first);
 
     ui->basePath_lineEdit->setText(m_fileInterface.configuration().strSettings["Default base path"]);
-    ui->projectPath_lineEdit->setText(m_fileInterface.configuration().strSettings["Program default directory"]);
+    ui->projectPath_lineEdit->setText(m_fileInterface.configuration().strSettings["Default base path"]);
 
     connect(ui->settingList_listWidget, &QListWidget::clicked, this, &MainWindow::settingClicked);
     connect(ui->settingAccept_pushButton, &QPushButton::clicked, this, &MainWindow::updateSelectedSetting);

@@ -38,6 +38,6 @@ FORMS += \
         src/gui/*.ui
 
 RESOURCES += \
-    src/*.qrc
+        src/resources.qrc
 
 include(build.pri)

@@ -116,10 +116,17 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         // Create basic files
         if (config.hasGui)
         {
+            commandArgs.last() = projectBaseDir + "/src/gui";
+            if (!m_utilClass.invoke("mkdir", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]))
+            {
+                qDebug() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
+                throw std::runtime_error("GUI dir create error");
+            }
+
             if (
-                    !QFile::copy(":/gui/resourceFiles/templates_gui/mainwindow.h", projectBaseDir + "/src/mainwindow.h") ||
-                    !QFile::copy(":/gui/resourceFiles/templates_gui/mainwindow.cpp", projectBaseDir + "/src/mainwindow.cpp") ||
-                    !QFile::copy(":/gui/resourceFiles/templates_gui/mainwindow.ui", projectBaseDir + "/src/mainwindow.ui")
+                    !QFile::copy(":/gui/resourceFiles/templates_gui/mainwindow.h", projectBaseDir + "/src/gui/mainwindow.h") ||
+                    !QFile::copy(":/gui/resourceFiles/templates_gui/mainwindow.cpp", projectBaseDir + "/src/gui/mainwindow.cpp") ||
+                    !QFile::copy(":/gui/resourceFiles/templates_gui/mainwindow.ui", projectBaseDir + "/src/gui/mainwindow.ui")
                 )
             {
                 qDebug() << "[PROJECT GENERATOR] Error creating GUI files";
@@ -160,10 +167,14 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         srcFile.open(QIODevice::WriteOnly);
         QTextStream srcFileStream(&srcFile);
 
-        srcFileStream << "SOURCES += src/*.cpp" << endl << "HEADERS += src/*.h" << endl;
+        srcFileStream << "SOURCES += src/*.cpp \\" << endl
+                      << "           src/gui/*.cpp" << endl
+                      << "HEADERS += src/*.h \\" << endl
+                      << "           src/gui/*.h"
+        ;
 
         if (config.hasGui)
-            srcFileStream << "FORMS += src/*.ui" << endl;
+            srcFileStream << "FORMS += src/gui/*.ui" << endl;
 
         srcFile.close();
 
