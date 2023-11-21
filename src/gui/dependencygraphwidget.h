@@ -5,10 +5,6 @@
 #include "utilfunctionclass.h"
 #include <memory>
 
-namespace Ui {
-class DependencyGraphWidget;
-}
-
 namespace GraphWidget
 {
 
@@ -61,8 +57,6 @@ signals:
     void updated();
 
 private:
-    Ui::DependencyGraphWidget *ui;
-
     struct Impl;
     std::unique_ptr<Impl> m_pImpl;
 

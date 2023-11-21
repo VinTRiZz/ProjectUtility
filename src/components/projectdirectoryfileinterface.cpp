@@ -216,6 +216,7 @@ ProjectDirectoryFileInterface::ProjectDirectoryFileInterface(QObject * parent) :
 {
     connect(&m_pImpl->m_archivator, &Archivator::archiveComplete, this, &ProjectDirectoryFileInterface::archiveComplete);
     connect(&m_pImpl->m_buildManager, &BuildManager::buildComplete, this, &ProjectDirectoryFileInterface::buildComplete);
+    connect(&m_pImpl->m_utilClass, &UtilFunctionClass::log, this, &ProjectDirectoryFileInterface::log);
 }
 
 ProjectDirectoryFileInterface::~ProjectDirectoryFileInterface()

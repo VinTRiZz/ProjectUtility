@@ -22,8 +22,9 @@ struct Project
     QStringList depends;
 };
 
-class UtilFunctionClass
+class UtilFunctionClass : public QObject
 {
+    Q_OBJECT
 public:
     void logParsedProjects();
 
@@ -33,6 +34,7 @@ public:
     void setLogFile(const QString &logPath);
 
     void writeLog(const QByteArray & what);
+    void writeLog(const QString & what);
 
     bool hasRecurseDepend(QStringList & dependQuery, Project * pParent);
 
@@ -50,6 +52,10 @@ public:
 
     static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr, Configuration::ProjectConfiguration * mainProjectConfiguration = nullptr);
     ~UtilFunctionClass();
+
+signals:
+    void log(const QString & what);
+
 private:
     QVector<Project> * apps;
     QVector<Project> * libs;
@@ -60,8 +66,8 @@ private:
 
     QFile m_logFile;
 
-    UtilFunctionClass();
-    UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration);
+    UtilFunctionClass(QObject * parent = nullptr);
+    UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration, QObject * parent = nullptr);
 };
 
 }

@@ -1,5 +1,4 @@
 #include "dependencygraphwidget.h"
-#include "ui_dependencygraphwidget.h"
 
 #include <QDebug>
 
@@ -250,18 +249,14 @@ struct DependencyGraphWidget::Impl
 
 DependencyGraphWidget::DependencyGraphWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::DependencyGraphWidget),
     m_pImpl {new Impl}
 {
-    ui->setupUi(this);
-
     m_pImpl->m_paintTools.setDefaultSettings();
 }
 
 DependencyGraphWidget::~DependencyGraphWidget()
 {
     m_pImpl->clear();
-    delete ui;
 }
 
 void DependencyGraphWidget::setHead(const QString &headName)

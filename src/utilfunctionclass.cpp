@@ -7,7 +7,8 @@
 
 using namespace DependsSearcher;
 
-UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration) :
+UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration, QObject * parent) :
+    QObject(parent),
     apps(initApps),
     libs(initLibs),
     mainProjectConfiguration(mainProjectConfiguration)
@@ -20,7 +21,8 @@ UtilFunctionClass::~UtilFunctionClass()
 
 }
 
-UtilFunctionClass::UtilFunctionClass()
+UtilFunctionClass::UtilFunctionClass(QObject * parent) :
+    QObject(parent)
 {
 
 }
@@ -68,7 +70,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList & args,
     if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["Start process timeout"]))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
-        writeLog("Invoke timeout");
+        writeLog(QString("Invoke timeout"));
         return false;
     }
 
@@ -104,7 +106,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList & args,
     if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["Start process timeout"]))
     {
         qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
-        writeLog("Invoke timeout");
+        writeLog(QString("Invoke timeout"));
         return false;
     }
 
@@ -162,6 +164,36 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
         m_logFile.write( writeBuffer );
     }
     m_logFile.close();
+
+    emit log(what);
+
+    qDebug() << "[UTIL CLASS] [BEGIN LOGGED DATA]" << writeBuffer.data() << "[UTIL CLASS] [END LOGGED DATA]";
+}
+
+void UtilFunctionClass::writeLog(const QString &what)
+{
+    if ((m_logFile.fileName() < 2) || (!what.size()))
+        return;
+
+    const QString logFileName = mainProjectConfiguration->strSettings["Log file name"];
+
+    if (logFileName != m_logFile.fileName())
+    {
+        setLogFile(logFileName);
+    }
+
+    QByteArray writeBuffer = "\n---------------------------------------------------------------------------\n";
+    writeBuffer += what.toUtf8().data();
+    writeBuffer += "\n---------------------------------------------------------------------------\n";
+
+    m_logFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    if (m_logFile.isOpen())
+    {
+        m_logFile.write( writeBuffer );
+    }
+    m_logFile.close();
+
+    emit log(what);
 
     qDebug() << "[UTIL CLASS] [BEGIN LOGGED DATA]" << writeBuffer.data() << "[UTIL CLASS] [END LOGGED DATA]";
 }

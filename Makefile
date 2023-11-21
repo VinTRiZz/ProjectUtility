@@ -67,6 +67,7 @@ SOURCES       = src/main.cpp \
 		src/components/filesearcher.cpp \
 		src/components/projectbasegenerator.cpp \
 		src/components/projectdirectoryfileinterface.cpp BUILD/qrc_resources.cpp \
+		BUILD/moc_utilfunctionclass.cpp \
 		BUILD/moc_dependencygraphwidget.cpp \
 		BUILD/moc_mainwindow.cpp \
 		BUILD/moc_archivator.cpp \
@@ -90,6 +91,7 @@ OBJECTS       = BUILD/main.o \
 		BUILD/projectbasegenerator.o \
 		BUILD/projectdirectoryfileinterface.o \
 		BUILD/qrc_resources.o \
+		BUILD/moc_utilfunctionclass.o \
 		BUILD/moc_dependencygraphwidget.o \
 		BUILD/moc_mainwindow.o \
 		BUILD/moc_archivator.o \
@@ -156,7 +158,6 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -280,7 +281,6 @@ Makefile: DepsSearcher.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -368,7 +368,6 @@ Makefile: DepsSearcher.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -448,7 +447,14 @@ BUILD/qrc_resources.cpp: src/resources.qrc \
 		src/resourceFiles/templates_gui/mainwindow.ui \
 		src/resourceFiles/templates_gui/mainwindow.h \
 		BUILD/ui_mainwindow.h \
-		src/resourceFiles/templates_gui/mainwindow.h
+		src/gui/mainwindow.h \
+		src/components/projectdirectoryfileinterface.h \
+		src/gui/dependencygraphwidget.h \
+		src/utilfunctionclass.h \
+		src/projectsettings.h \
+		src/extendedtypes.h \
+		src/components/projectbasegenerator.h \
+		src/components/cleaner.h
 	/usr/lib/qt5/bin/rcc -name resources src/resources.qrc -o BUILD/qrc_resources.cpp
 
 compiler_qmlcache_make_all:
@@ -462,9 +468,16 @@ compiler_moc_predefs_clean:
 BUILD/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -W -dM -E -o BUILD/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: BUILD/moc_dependencygraphwidget.cpp BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+compiler_moc_header_make_all: BUILD/moc_utilfunctionclass.cpp BUILD/moc_dependencygraphwidget.cpp BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) BUILD/moc_dependencygraphwidget.cpp BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+	-$(DEL_FILE) BUILD/moc_utilfunctionclass.cpp BUILD/moc_dependencygraphwidget.cpp BUILD/moc_mainwindow.cpp BUILD/moc_archivator.cpp BUILD/moc_buildmanager.cpp BUILD/moc_projectdirectoryfileinterface.cpp
+BUILD/moc_utilfunctionclass.cpp: src/projectsettings.h \
+		src/extendedtypes.h \
+		src/utilfunctionclass.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Документы/Projects/Qt/DepsSearcher/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher -I/home/lazarev_as/Документы/Projects/Qt/DepsSearcher/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/utilfunctionclass.h -o BUILD/moc_utilfunctionclass.cpp
+
 BUILD/moc_dependencygraphwidget.cpp: src/utilfunctionclass.h \
 		src/projectsettings.h \
 		src/extendedtypes.h \
@@ -550,8 +563,7 @@ BUILD/utilfunctionclass.o: src/utilfunctionclass.cpp src/utilfunctionclass.h \
 BUILD/dependencygraphwidget.o: src/gui/dependencygraphwidget.cpp src/gui/dependencygraphwidget.h \
 		src/utilfunctionclass.h \
 		src/projectsettings.h \
-		src/extendedtypes.h \
-		BUILD/ui_dependencygraphwidget.h
+		src/extendedtypes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/dependencygraphwidget.o src/gui/dependencygraphwidget.cpp
 
 BUILD/mainwindow.o: src/gui/mainwindow.cpp src/gui/mainwindow.h \
@@ -673,6 +685,9 @@ BUILD/projectdirectoryfileinterface.o: src/components/projectdirectoryfileinterf
 
 BUILD/qrc_resources.o: BUILD/qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/qrc_resources.o BUILD/qrc_resources.cpp
+
+BUILD/moc_utilfunctionclass.o: BUILD/moc_utilfunctionclass.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_utilfunctionclass.o BUILD/moc_utilfunctionclass.cpp
 
 BUILD/moc_dependencygraphwidget.o: BUILD/moc_dependencygraphwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_dependencygraphwidget.o BUILD/moc_dependencygraphwidget.cpp

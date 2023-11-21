@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[35];
-    char stringdata0[476];
+    QByteArrayData data[36];
+    char stringdata0[480];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -61,11 +61,12 @@ QT_MOC_LITERAL(26, 334, 7), // "archive"
 QT_MOC_LITERAL(27, 342, 15), // "projectSelected"
 QT_MOC_LITERAL(28, 358, 11), // "removeFiles"
 QT_MOC_LITERAL(29, 370, 15), // "generateProject"
-QT_MOC_LITERAL(30, 386, 14), // "settingClicked"
-QT_MOC_LITERAL(31, 401, 21), // "updateSelectedSetting"
-QT_MOC_LITERAL(32, 423, 18), // "saveSettingsToFile"
-QT_MOC_LITERAL(33, 442, 18), // "restoreSettingsAll"
-QT_MOC_LITERAL(34, 461, 14) // "restoreSetting"
+QT_MOC_LITERAL(30, 386, 3), // "log"
+QT_MOC_LITERAL(31, 390, 14), // "settingClicked"
+QT_MOC_LITERAL(32, 405, 21), // "updateSelectedSetting"
+QT_MOC_LITERAL(33, 427, 18), // "saveSettingsToFile"
+QT_MOC_LITERAL(34, 446, 18), // "restoreSettingsAll"
+QT_MOC_LITERAL(35, 465, 14) // "restoreSetting"
 
     },
     "MainWindow\0changedMenu\0\0QAction*\0"
@@ -78,7 +79,7 @@ QT_MOC_LITERAL(34, 461, 14) // "restoreSetting"
     "recursiveDependencySearch\0build\0rebuild\0"
     "buildComplete\0result\0archiveComplete\0"
     "archive\0projectSelected\0removeFiles\0"
-    "generateProject\0settingClicked\0"
+    "generateProject\0log\0settingClicked\0"
     "updateSelectedSetting\0saveSettingsToFile\0"
     "restoreSettingsAll\0restoreSetting"
 };
@@ -90,7 +91,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      26,   14, // methods
+      27,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -98,32 +99,33 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,  144,    2, 0x08 /* Private */,
-       5,    1,  147,    2, 0x08 /* Private */,
-       7,    0,  150,    2, 0x08 /* Private */,
-       8,    1,  151,    2, 0x08 /* Private */,
-      10,    0,  154,    2, 0x08 /* Private */,
-      11,    0,  155,    2, 0x08 /* Private */,
-      12,    0,  156,    2, 0x08 /* Private */,
-      13,    1,  157,    2, 0x08 /* Private */,
-      15,    0,  160,    2, 0x08 /* Private */,
-      16,    1,  161,    2, 0x08 /* Private */,
-      18,    1,  164,    2, 0x08 /* Private */,
-      19,    1,  167,    2, 0x08 /* Private */,
-      20,    0,  170,    2, 0x08 /* Private */,
-      21,    0,  171,    2, 0x08 /* Private */,
-      22,    0,  172,    2, 0x08 /* Private */,
-      23,    2,  173,    2, 0x08 /* Private */,
-      25,    1,  178,    2, 0x08 /* Private */,
-      26,    0,  181,    2, 0x08 /* Private */,
-      27,    0,  182,    2, 0x08 /* Private */,
-      28,    0,  183,    2, 0x08 /* Private */,
-      29,    0,  184,    2, 0x08 /* Private */,
-      30,    0,  185,    2, 0x08 /* Private */,
-      31,    0,  186,    2, 0x08 /* Private */,
-      32,    0,  187,    2, 0x08 /* Private */,
-      33,    0,  188,    2, 0x08 /* Private */,
-      34,    0,  189,    2, 0x08 /* Private */,
+       1,    1,  149,    2, 0x08 /* Private */,
+       5,    1,  152,    2, 0x08 /* Private */,
+       7,    0,  155,    2, 0x08 /* Private */,
+       8,    1,  156,    2, 0x08 /* Private */,
+      10,    0,  159,    2, 0x08 /* Private */,
+      11,    0,  160,    2, 0x08 /* Private */,
+      12,    0,  161,    2, 0x08 /* Private */,
+      13,    1,  162,    2, 0x08 /* Private */,
+      15,    0,  165,    2, 0x08 /* Private */,
+      16,    1,  166,    2, 0x08 /* Private */,
+      18,    1,  169,    2, 0x08 /* Private */,
+      19,    1,  172,    2, 0x08 /* Private */,
+      20,    0,  175,    2, 0x08 /* Private */,
+      21,    0,  176,    2, 0x08 /* Private */,
+      22,    0,  177,    2, 0x08 /* Private */,
+      23,    2,  178,    2, 0x08 /* Private */,
+      25,    1,  183,    2, 0x08 /* Private */,
+      26,    0,  186,    2, 0x08 /* Private */,
+      27,    0,  187,    2, 0x08 /* Private */,
+      28,    0,  188,    2, 0x08 /* Private */,
+      29,    0,  189,    2, 0x08 /* Private */,
+      30,    1,  190,    2, 0x08 /* Private */,
+      31,    0,  193,    2, 0x08 /* Private */,
+      32,    0,  194,    2, 0x08 /* Private */,
+      33,    0,  195,    2, 0x08 /* Private */,
+      34,    0,  196,    2, 0x08 /* Private */,
+      35,    0,  197,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -147,6 +149,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,    6,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -183,11 +186,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 18: _t->projectSelected(); break;
         case 19: _t->removeFiles(); break;
         case 20: _t->generateProject(); break;
-        case 21: _t->settingClicked(); break;
-        case 22: _t->updateSelectedSetting(); break;
-        case 23: _t->saveSettingsToFile(); break;
-        case 24: _t->restoreSettingsAll(); break;
-        case 25: _t->restoreSetting(); break;
+        case 21: _t->log((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 22: _t->settingClicked(); break;
+        case 23: _t->updateSelectedSetting(); break;
+        case 24: _t->saveSettingsToFile(); break;
+        case 25: _t->restoreSettingsAll(); break;
+        case 26: _t->restoreSetting(); break;
         default: ;
         }
     }
@@ -218,13 +222,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 26)
+        if (_id < 27)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 26;
+        _id -= 27;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 26)
+        if (_id < 27)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 26;
+        _id -= 27;
     }
     return _id;
 }

@@ -62,6 +62,7 @@ private slots:
     // Etc
     void removeFiles();
     void generateProject();
+    void log(const QString & what);
 
     // Settings
     void settingClicked();

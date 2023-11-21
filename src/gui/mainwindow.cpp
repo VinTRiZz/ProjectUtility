@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#define CURRENT_VERSION_STRING "v.1.5.9"
+#define CURRENT_VERSION_STRING "v.1.6.0"
 
 enum MENU_INDEX
 {

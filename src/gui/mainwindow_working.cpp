@@ -40,6 +40,7 @@ void MainWindow::setupSignals()
     connect(&m_fileInterface, &DependsSearcher::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
 
     connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
+    connect(&m_fileInterface, &DependsSearcher::ProjectDirectoryFileInterface::log, this, &MainWindow::log);
 }
 
 

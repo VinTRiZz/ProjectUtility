@@ -35,7 +35,7 @@ bool BuildManager::rebuild(const BuildProjectHandle & proj)
 {
     qDebug() << "[BUILD MANAGER] Cleaning build";
 
-    m_utilClass.writeLog("Project rebuild started");
+    m_utilClass.writeLog(QString("Project rebuild started"));
 
     const QString currentDir = QDir::currentPath();
     const QString projectDir = QFileInfo(proj.project.projectProFilePath).absolutePath();
@@ -101,8 +101,8 @@ bool BuildManager::startBuilding()
                 else
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] No target selected, skipped";
-                    m_utilClass.writeLog("No target selected, skipped");
                     emit buildComplete(proj.project.name, false);
+                    m_utilClass.writeLog(QString("Build project %1 with target %2: [ERROR: NO TARGET SPECIFIED]").arg(proj.project.name, proj.target));
                     break;
                 }
 
@@ -125,6 +125,7 @@ bool BuildManager::startBuilding()
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in qmake";
                     emit buildComplete(proj.project.name, false);
+                    m_utilClass.writeLog(QString("Build project %1 with target %2: [ERROR: QMAKE ERROR]").arg(proj.project.name, proj.target));
                     break;
                 }
 
@@ -135,6 +136,7 @@ bool BuildManager::startBuilding()
                 {
                     qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in make";
                     emit buildComplete(proj.project.name, false);
+                    m_utilClass.writeLog(QString("Build project %1 with target %2: [ERROR: MAKE ERROR]").arg(proj.project.name, proj.target));
                     break;
                 }
 
@@ -143,6 +145,7 @@ bool BuildManager::startBuilding()
                 qDebug() << "[BUILD MANAGER] [BUILD THREAD] Build complete";
 
                 emit buildComplete(proj.project.name, true);
+                m_utilClass.writeLog(QString("Build project %1 with target %2: [SUCCESS]").arg(proj.project.name, proj.target));
 
                 m_startingTask = true;
             }

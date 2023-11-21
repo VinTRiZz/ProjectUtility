@@ -62,6 +62,7 @@ public:
 signals:
     void archiveComplete(bool result);
     void buildComplete(const QString & projectName, bool buildResult);
+    void log(const QString & what);
 
 private:
     struct Impl;
