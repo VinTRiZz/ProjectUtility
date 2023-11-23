@@ -115,6 +115,14 @@ public:
         return *this;
     }
 
+    bool operator ==(const QString & other)
+    {
+        mx.lock();
+        bool result = data == other;
+        mx.unlock();
+        return result;
+    }
+
     operator QString()
     {
         QString result;

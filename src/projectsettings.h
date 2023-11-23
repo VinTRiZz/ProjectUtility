@@ -14,11 +14,12 @@ struct ProjectConfiguration
     {
         // Main configurations
         { "Backup directory for changes", (QCoreApplication::applicationDirPath() + "/saveChangesBackup").toUtf8().data() },
-        { "Log file name", (QCoreApplication::applicationDirPath() + "/DepSearcher.log").toUtf8().data() },
-        { "Configuration file path", (QCoreApplication::applicationDirPath() + "/DepsSearcherConfig.ini").toUtf8().data() },
+        { "Log file name", (QCoreApplication::applicationDirPath() + "/ProjectUtility.log").toUtf8().data() },
+        { "Configuration file path", (QCoreApplication::applicationDirPath() + "/ProjectUtilityConfig.ini").toUtf8().data() },
         { "Default base path", QCoreApplication::applicationDirPath().toUtf8().data()},
         { "Program default directory", QCoreApplication::applicationDirPath().toUtf8().data() },
         { "Default main template path", "$$PWD/../../template.pri"},
+        { "Automatic project list update", "true" },
 
         // Builder
         { "Make bin path", "/usr/bin/make"},

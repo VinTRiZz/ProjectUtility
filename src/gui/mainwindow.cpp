@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#define CURRENT_VERSION_STRING "v.1.6.0"
+#define CURRENT_VERSION_STRING "v.1.6.2"
 
 enum MENU_INDEX
 {
@@ -34,6 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     setupSettings();
 
     removeButtonFocuses();
+
+    if (m_fileInterface.configuration().strSettings["Automatic project list update"] == "true")
+    {
+        emit updateProjectList();
+    }
 }
 
 MainWindow::~MainWindow()

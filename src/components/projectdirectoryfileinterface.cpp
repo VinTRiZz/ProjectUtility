@@ -392,6 +392,11 @@ void ProjectDirectoryFileInterface::saveCurrentConfiguration()
 {
     const QString configPath = m_pImpl->mainProjectConfiguration.strSettings["Configuration file path"];
 
+    if (QFile::remove(configPath))
+    {
+        qDebug() << "[FILE INTERFACE] Previous config file erased";
+    }
+
     qDebug() << "[FILE INTERFACE] Saving settings to path:" << configPath;
     QSettings configFile(configPath, QSettings::Format::IniFormat);
     QString writeBuffer;

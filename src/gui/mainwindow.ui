@@ -20,7 +20,7 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>Depends searcher </string>
+   <string>Project Utility </string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget
