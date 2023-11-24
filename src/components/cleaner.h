@@ -6,7 +6,7 @@
 #include "utilfunctionclass.h"
 #include "projectsettings.h"
 
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 enum FILE_REMOVE_TYPE
@@ -22,7 +22,7 @@ enum FILE_REMOVE_TYPE
 class Cleaner // Cleans projects from makefiles and object files, etc
 {
 public:
-    Cleaner();
+    Cleaner(UtilFunctionClass &utilClass);
     ~Cleaner();
 
     void removeFiles(const QStringList & filesToRemove);

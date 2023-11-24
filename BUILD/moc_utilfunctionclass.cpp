@@ -20,29 +20,29 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_DependsSearcher__UtilFunctionClass_t {
+struct qt_meta_stringdata_ProjectUtility__UtilFunctionClass_t {
     QByteArrayData data[4];
-    char stringdata0[45];
+    char stringdata0[44];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_DependsSearcher__UtilFunctionClass_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_ProjectUtility__UtilFunctionClass_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_DependsSearcher__UtilFunctionClass_t qt_meta_stringdata_DependsSearcher__UtilFunctionClass = {
+static const qt_meta_stringdata_ProjectUtility__UtilFunctionClass_t qt_meta_stringdata_ProjectUtility__UtilFunctionClass = {
     {
-QT_MOC_LITERAL(0, 0, 34), // "DependsSearcher::UtilFunction..."
-QT_MOC_LITERAL(1, 35, 3), // "log"
-QT_MOC_LITERAL(2, 39, 0), // ""
-QT_MOC_LITERAL(3, 40, 4) // "what"
+QT_MOC_LITERAL(0, 0, 33), // "ProjectUtility::UtilFunctionC..."
+QT_MOC_LITERAL(1, 34, 3), // "log"
+QT_MOC_LITERAL(2, 38, 0), // ""
+QT_MOC_LITERAL(3, 39, 4) // "what"
 
     },
-    "DependsSearcher::UtilFunctionClass\0"
-    "log\0\0what"
+    "ProjectUtility::UtilFunctionClass\0log\0"
+    "\0what"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_DependsSearcher__UtilFunctionClass[] = {
+static const uint qt_meta_data_ProjectUtility__UtilFunctionClass[] = {
 
  // content:
        7,       // revision
@@ -59,24 +59,24 @@ static const uint qt_meta_data_DependsSearcher__UtilFunctionClass[] = {
        1,    1,   19,    2, 0x06 /* Public */,
 
  // signals: parameters
-    QMetaType::Void, QMetaType::QString,    3,
+    QMetaType::Void, QMetaType::QVariant,    3,
 
        0        // eod
 };
 
-void DependsSearcher::UtilFunctionClass::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void ProjectUtility::UtilFunctionClass::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         UtilFunctionClass *_t = static_cast<UtilFunctionClass *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->log((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 0: _t->log((*reinterpret_cast< const QVariant(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            using _t = void (UtilFunctionClass::*)(const QString & );
+            using _t = void (UtilFunctionClass::*)(const QVariant & );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&UtilFunctionClass::log)) {
                 *result = 0;
                 return;
@@ -85,26 +85,26 @@ void DependsSearcher::UtilFunctionClass::qt_static_metacall(QObject *_o, QMetaOb
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject DependsSearcher::UtilFunctionClass::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_DependsSearcher__UtilFunctionClass.data,
-      qt_meta_data_DependsSearcher__UtilFunctionClass,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject ProjectUtility::UtilFunctionClass::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_ProjectUtility__UtilFunctionClass.data,
+      qt_meta_data_ProjectUtility__UtilFunctionClass,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *DependsSearcher::UtilFunctionClass::metaObject() const
+const QMetaObject *ProjectUtility::UtilFunctionClass::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *DependsSearcher::UtilFunctionClass::qt_metacast(const char *_clname)
+void *ProjectUtility::UtilFunctionClass::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_DependsSearcher__UtilFunctionClass.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_ProjectUtility__UtilFunctionClass.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
 
-int DependsSearcher::UtilFunctionClass::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int ProjectUtility::UtilFunctionClass::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -122,7 +122,7 @@ int DependsSearcher::UtilFunctionClass::qt_metacall(QMetaObject::Call _c, int _i
 }
 
 // SIGNAL 0
-void DependsSearcher::UtilFunctionClass::log(const QString & _t1)
+void ProjectUtility::UtilFunctionClass::log(const QVariant & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

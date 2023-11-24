@@ -36,11 +36,12 @@ void MainWindow::setupSignals()
     connect(ui->apps_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
     connect(ui->libs_radioButton, &QRadioButton::clicked, this, &MainWindow::fillProjectList);
 
-    connect(&m_fileInterface, &DependsSearcher::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
-    connect(&m_fileInterface, &DependsSearcher::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
+    connect(&m_fileInterface, &ProjectUtility::ProjectDirectoryFileInterface::archiveComplete, this, &MainWindow::archiveComplete);
+    connect(&m_fileInterface, &ProjectUtility::ProjectDirectoryFileInterface::buildComplete, this, &MainWindow::buildComplete);
 
     connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->notifications_listWidget, &QListWidget::clear);
-    connect(&m_fileInterface, &DependsSearcher::ProjectDirectoryFileInterface::log, this, &MainWindow::log);
+    connect(ui->cleanOutput_pushButton, &QPushButton::clicked, ui->log_plainTextEdit, &QPlainTextEdit::clear);
+    connect(&m_fileInterface, &ProjectUtility::ProjectDirectoryFileInterface::log, this, &MainWindow::log);
 }
 
 

@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <QDebug>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
 ProjectBaseGenerator::ProjectBaseGenerator(UtilFunctionClass & utilClass) :
     m_utilClass(utilClass)
@@ -12,7 +12,7 @@ ProjectBaseGenerator::ProjectBaseGenerator(UtilFunctionClass & utilClass) :
 
 }
 
-DependsSearcher::ProjectBaseGenerator::~ProjectBaseGenerator()
+ProjectUtility::ProjectBaseGenerator::~ProjectBaseGenerator()
 {
 
 }
@@ -26,7 +26,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
 
     try
     {
-        qDebug() << "[PROJECT GENERATOR] Started generating project" << projectName << "by path" << config.baseDir;
+        m_utilClass.logChannel() << "[PROJECT GENERATOR] Started generating project" << projectName << "by path" << config.baseDir;
 
         const QString projectBaseDir = config.baseDir + "/" + projectName;
 
@@ -36,7 +36,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         commandArgs << projectBaseDir;
         if (!m_utilClass.invoke("mkdir", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]))
         {
-            qDebug() << "[PROJECT GENERATOR] Error creating project directory:" << commandArgs.join(""); // Command args must has 1 arg here
+            m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating project directory:" << commandArgs.join(""); // Command args must has 1 arg here
             throw std::runtime_error("Base dir create error");
         }
 
@@ -70,14 +70,14 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
             commandArgs.last() = projectBaseDir + "/include";
             if (!m_utilClass.invoke("mkdir", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]))
             {
-                qDebug() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
+                m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
                 throw std::runtime_error("Include dir create error");
             }
 
             commandArgs.last() = projectBaseDir + "/include/" + projectName;
             if (!m_utilClass.invoke("mkdir", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]))
             {
-                qDebug() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
+                m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
                 throw std::runtime_error("Include-named dir create error");
             }
 
@@ -86,7 +86,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
 
             if (!useFile.isOpen())
             {
-                qDebug() << "[PROJECT GENERATOR] Error creating use.pri:" << useFile.errorString();
+                m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating use.pri:" << useFile.errorString();
                 throw std::runtime_error("use.pri create error");
             }
 
@@ -104,13 +104,13 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         commandArgs.last() = projectBaseDir + "/src";
         if (!m_utilClass.invoke("mkdir", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]))
         {
-            qDebug() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
+            m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
             throw std::runtime_error("Source dir create error");
         }
 
         if (QFileInfo(":/templates").exists())
         {
-            qDebug() << "\033[32mEXIST!\033[0m";
+            m_utilClass.logChannel() << "\033[32mEXIST!\033[0m";
         }
 
         // Create basic files
@@ -119,7 +119,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
             commandArgs.last() = projectBaseDir + "/src/gui";
             if (!m_utilClass.invoke("mkdir", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]))
             {
-                qDebug() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
+                m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating directory:" << commandArgs.join(""); // Command args must has 1 arg here
                 throw std::runtime_error("GUI dir create error");
             }
 
@@ -129,7 +129,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
                     !QFile::copy(":/gui/resourceFiles/templates_gui/mainwindow.ui", projectBaseDir + "/src/gui/mainwindow.ui")
                 )
             {
-                qDebug() << "[PROJECT GENERATOR] Error creating GUI files";
+                m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating GUI files";
                 throw std::runtime_error("GUI copy error");
             }
 
@@ -137,7 +137,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
             {
                 if (!QFile::copy(":/gui/resourceFiles/templates_gui/main.cpp", projectBaseDir + "/src/main.cpp"))
                 {
-                    qDebug() << "[PROJECT GENERATOR] Error creating GUI files";
+                    m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating GUI files";
                     throw std::runtime_error("GUI copy error (main)");
                 }
             }
@@ -146,7 +146,7 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         {
             if (!QFile::copy(":/console/resourceFiles/templates_console/main.cpp", projectBaseDir + "/src/main.cpp"))
             {
-                qDebug() << "[PROJECT GENERATOR] Error creating Console files";
+                m_utilClass.logChannel() << "[PROJECT GENERATOR] Error creating Console files";
                 throw std::runtime_error("Console copy error (main)");
             }
         }
@@ -210,13 +210,13 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         commandArgs << config.baseDir + "/" + projectName;
         m_utilClass.invoke("chown", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]);
 
-        qDebug() << "[PROJECT GENERATOR] Project generated";
+        m_utilClass.logChannel() << "[PROJECT GENERATOR] Project generated";
         return true;
     }
     catch (std::runtime_error & ex)
     {
         // Must be thrown only my errors... Must be
-        qDebug() << "[PROJECT GENERATOR] Got exception with text:" << ex.what();
+        m_utilClass.logChannel() << "[PROJECT GENERATOR] Got exception with text:" << ex.what();
 
         QString test("Base dir create error");
         if (test != ex.what())

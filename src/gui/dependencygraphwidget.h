@@ -58,7 +58,7 @@ signals:
 
 private:
     struct Impl;
-    std::unique_ptr<Impl> m_pImpl;
+    std::unique_ptr<Impl> d;
 
     void drawGraph(DependencyStruct * head);
     void drawObject(const DependencyStruct * object);

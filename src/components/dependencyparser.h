@@ -3,7 +3,7 @@
 
 #include "utilfunctionclass.h"
 
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 class DependencyParser

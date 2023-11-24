@@ -64,7 +64,7 @@ struct PaintTools
         depFont.setPixelSize(10);
         depFont.setBold(true);
 
-        qDebug() << "[DependencyGraphWidget] Default settings set";
+        ProjectUtility::UtilFunctionClass::getInstance().logChannel() << "[DependencyGraphWidget] Default settings set";
     }
 
     void setupForApp()
@@ -195,7 +195,7 @@ struct DependencyGraphWidget::Impl
 //        }
 //        currentHead = pMainNode;
 
-//        qDebug() << "[\033[33mTEST\033[0m] Setup complete";
+//        ProjectUtility::UtilFunctionClass::getInstance().logChannel() << "[\033[33mTEST\033[0m] Setup complete";
 //    }
 
     DependencyStruct * getNode(const QString & name)
@@ -249,108 +249,112 @@ struct DependencyGraphWidget::Impl
 
 DependencyGraphWidget::DependencyGraphWidget(QWidget *parent) :
     QWidget(parent),
-    m_pImpl {new Impl}
+    d {new Impl}
 {
-    m_pImpl->m_paintTools.setDefaultSettings();
+    d->m_paintTools.setDefaultSettings();
 }
 
 DependencyGraphWidget::~DependencyGraphWidget()
 {
-    m_pImpl->clear();
+    d->clear();
 }
 
 void DependencyGraphWidget::setHead(const QString &headName)
 {
-    while (m_pImpl->areDependsUpdating);
-    m_pImpl->areDependsUpdating = true;
+    while (d->areDependsUpdating);
+    d->areDependsUpdating = true;
 
-    m_pImpl->nodeHistory.clear();
-    m_pImpl->currentHead = m_pImpl->getNode(headName);
+    d->nodeHistory.clear();
+    d->currentHead = d->getNode(headName);
 
-    for (DependencyStruct * depNode : m_pImpl->allNodes)
+    for (DependencyStruct * depNode : d->allNodes)
         depNode->position = QRect();
 
-    m_pImpl->areDependsUpdating = false;
+    d->areDependsUpdating = false;
 
-    qDebug() << "[DependencyGraphWidget] Head set to" << m_pImpl->currentHead->name;
+    if (d->currentHead)
+        ProjectUtility::UtilFunctionClass::getInstance().logChannel() << "[DependencyGraphWidget] Head set to" << d->currentHead->name;
+    else
+        ProjectUtility::UtilFunctionClass::getInstance().logChannel() << "[DependencyGraphWidget] Head set error";
+
     update();
 }
 
 void DependencyGraphWidget::setDependsVector(const QVector<DependencyStruct *> & depsVector)
 {
-    m_pImpl->clear();
-    m_pImpl->areDependsUpdating = true;
-    m_pImpl->allNodes = depsVector;
-    m_pImpl->areDependsUpdating = false;
-    qDebug() << "[DependencyGraphWidget] Depends vector replaced";
+    d->clear();
+    d->areDependsUpdating = true;
+    d->allNodes = depsVector;
+    d->areDependsUpdating = false;
+    ProjectUtility::UtilFunctionClass::getInstance().logChannel() << "[DependencyGraphWidget] Depends vector replaced";
     update();
 }
 
 void DependencyGraphWidget::setDefaultSettings()
 {
-    while (m_pImpl->areDependsUpdating);
-    m_pImpl->areDependsUpdating = true;
-    m_pImpl->m_paintTools.setDefaultSettings();
-    m_pImpl->areDependsUpdating = false;
+    while (d->areDependsUpdating);
+    d->areDependsUpdating = true;
+    d->m_paintTools.setDefaultSettings();
+    d->areDependsUpdating = false;
     update();
 }
 
 void DependencyGraphWidget::clear()
 {
-    m_pImpl->clear();
+    d->clear();
     update();
 }
 
 void DependencyGraphWidget::drawObject(const DependencyStruct * object)
 {
     if (object->isApp)
-        m_pImpl->m_paintTools.setupForApp();
+        d->m_paintTools.setupForApp();
     else
-        m_pImpl->m_paintTools.setupForLib();
+        d->m_paintTools.setupForLib();
 
-    m_pImpl->m_paintTools.painter->drawRoundedRect(object->position, 10, 10);
-    m_pImpl->m_paintTools.drawText(object->position, object->name);
+    d->m_paintTools.painter->drawRoundedRect(object->position, 10, 10);
+    d->m_paintTools.drawText(object->position, object->name);
 
-    m_pImpl->m_paintTools.drawDependCount(object->position, object->dependsFrom.size());
+    d->m_paintTools.drawDependCount(object->position, object->dependsFrom.size());
 }
 
 void DependencyGraphWidget::connectDepends(DependencyStruct * head)
 {
-    m_pImpl->m_paintTools.setupForDepLine();
+    d->m_paintTools.setupForDepLine();
 
     for (DependencyStruct * pNode : head->dependsFrom)
-        m_pImpl->m_paintTools.painter->drawLine(head->centerUp(), pNode->centerDown());
+        d->m_paintTools.painter->drawLine(head->centerUp(), pNode->centerDown());
 }
 
 void DependencyGraphWidget::drawHistory()
 {
-    if (!m_pImpl->nodeHistory.size())
+    if (!d->nodeHistory.size())
         return;
 
     int currentY = rect().height() - BLOCK_HEIGHT - BLOCK_SPACE_SIZE;
     DependencyStruct * pBufferNode {nullptr};
-    for (DependencyStruct * pNode : m_pImpl->nodeHistory)
+    for (DependencyStruct * pNode : d->nodeHistory)
     {
         pNode->position.moveTo(rect().center().x() - pNode->position.width() / 2, currentY);
         drawObject(pNode);
 
         if (pBufferNode)
         {
-            m_pImpl->m_paintTools.setupForDepLine();
-            m_pImpl->m_paintTools.painter->drawLine(pBufferNode->centerUp(), pNode->centerDown());
+            d->m_paintTools.setupForDepLine();
+            d->m_paintTools.painter->drawLine(pBufferNode->centerUp(), pNode->centerDown());
         }
         pBufferNode = pNode;
 
         currentY -= BLOCK_HEIGHT + BLOCK_SPACE_SIZE;
     }
 
-    m_pImpl->m_paintTools.setupForDepLine();
-    m_pImpl->m_paintTools.painter->drawLine(pBufferNode->centerUp(), m_pImpl->currentHead->centerDown());
+    d->m_paintTools.setupForDepLine();
+    d->m_paintTools.painter->drawLine(pBufferNode->centerUp(), d->currentHead->centerDown());
 }
 
 void DependencyGraphWidget::drawGraph(DependencyStruct * head)
 {
-    drawObject(m_pImpl->currentHead);
+    drawObject(d->currentHead);
 
     int squareLength = 50, currentXPosLeft = head->centerUp().x() - head->dependsFrom.size() * squareLength;
 
@@ -363,7 +367,7 @@ void DependencyGraphWidget::drawGraph(DependencyStruct * head)
 
     for (DependencyStruct * pNode : head->dependsFrom)
     {
-        squareLength = pNode->name.length() * m_pImpl->m_paintTools.painter->font().pixelSize();
+        squareLength = pNode->name.length() * d->m_paintTools.painter->font().pixelSize();
 
         pNode->position = QRect(currentXPosLeft, DEPENDS_OBJECT_Y, squareLength, DEPENDS_OBJECT_HEIGHT);
 
@@ -379,68 +383,68 @@ void DependencyGraphWidget::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)
 
-    while (m_pImpl->areDependsUpdating);
+    while (d->areDependsUpdating);
 
-    if (!m_pImpl->m_paintTools.painter)
-        m_pImpl->m_paintTools.setupPainter(this);
+    if (!d->m_paintTools.painter)
+        d->m_paintTools.setupPainter(this);
 
-    if (!m_pImpl->m_paintTools.painter->isActive())
-        m_pImpl->m_paintTools.painter->begin(this);
+    if (!d->m_paintTools.painter->isActive())
+        d->m_paintTools.painter->begin(this);
 
     // Draw depends
-    if (m_pImpl->allNodes.size() && m_pImpl->currentHead)
+    if (d->allNodes.size() && d->currentHead)
     {
-            m_pImpl->m_paintTools.drawBackground(rect());
+            d->m_paintTools.drawBackground(rect());
 
-            setMinimumWidth(m_pImpl->currentHead->dependsFrom.size() * 150);
-            setMinimumHeight((m_pImpl->nodeHistory.size() + 2) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE));
+            setMinimumWidth(d->currentHead->dependsFrom.size() * 150);
+            setMinimumHeight((d->nodeHistory.size() + 2) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE));
 
-            const int HEAD_WIDTH = m_pImpl->currentHead->name.length() * m_pImpl->m_paintTools.appFont.pixelSize();
+            const int HEAD_WIDTH = d->currentHead->name.length() * d->m_paintTools.appFont.pixelSize();
 
-            m_pImpl->currentHead->position = QRect(rect().center().x() - HEAD_WIDTH / 2, rect().height() - (m_pImpl->nodeHistory.size() + 1) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE), HEAD_WIDTH, BLOCK_HEIGHT);
+            d->currentHead->position = QRect(rect().center().x() - HEAD_WIDTH / 2, rect().height() - (d->nodeHistory.size() + 1) * (BLOCK_HEIGHT + BLOCK_SPACE_SIZE), HEAD_WIDTH, BLOCK_HEIGHT);
 
-            drawGraph(m_pImpl->currentHead);
+            drawGraph(d->currentHead);
             drawHistory();
     }
 
-    if (m_pImpl->m_paintTools.painter->isActive())
-        m_pImpl->m_paintTools.painter->end();
+    if (d->m_paintTools.painter->isActive())
+        d->m_paintTools.painter->end();
 }
 
 void DependencyGraphWidget::mousePressEvent(QMouseEvent *e)
 {
-    if (!m_pImpl->currentHead)
+    if (!d->currentHead)
         return;
 
     QPoint clickPos = e->pos();
 
-    for (DependencyStruct * pNode : m_pImpl->allNodes)
+    for (DependencyStruct * pNode : d->allNodes)
     {
         if (pNode->position.contains(clickPos))
         {
-            for (DependencyStruct * depNode : m_pImpl->currentHead->dependsFrom)
+            for (DependencyStruct * depNode : d->currentHead->dependsFrom)
                 depNode->position = QRect();
 
-            int nodeIndex = m_pImpl->currentHead->dependsFrom.indexOf(pNode);
+            int nodeIndex = d->currentHead->dependsFrom.indexOf(pNode);
 
             if (nodeIndex > -1)
             {
-                m_pImpl->nodeHistory.push_back(m_pImpl->currentHead);
-                m_pImpl->currentHead = pNode;
+                d->nodeHistory.push_back(d->currentHead);
+                d->currentHead = pNode;
 
-                qDebug() << "[DependencyGraphWidget] Switched to node:" << m_pImpl->currentHead->name;
+                ProjectUtility::UtilFunctionClass::getInstance().logChannel() << "[DependencyGraphWidget] Switched to node:" << d->currentHead->name;
             }
             else
             {
-                nodeIndex = m_pImpl->nodeHistory.indexOf(pNode);
+                nodeIndex = d->nodeHistory.indexOf(pNode);
 
                 if (nodeIndex != -1)
                 {
-                    m_pImpl->currentHead = pNode;
-                    m_pImpl->nodeHistory.remove(nodeIndex, m_pImpl->nodeHistory.size() - nodeIndex);
+                    d->currentHead = pNode;
+                    d->nodeHistory.remove(nodeIndex, d->nodeHistory.size() - nodeIndex);
                 }
 
-                qDebug() << "[DependencyGraphWidget] Returned to node:" << m_pImpl->currentHead->name;
+                ProjectUtility::UtilFunctionClass::getInstance().logChannel() << "[DependencyGraphWidget] Returned to node:" << d->currentHead->name;
             }
             update();
 

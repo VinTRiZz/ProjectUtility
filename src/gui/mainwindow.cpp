@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#define CURRENT_VERSION_STRING "v.1.6.2"
+#define CURRENT_VERSION_STRING "v.1.6.4"
 
 enum MENU_INDEX
 {
@@ -14,7 +14,8 @@ enum MENU_INDEX
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_fileInterface(this)
+    m_fileInterface(this),
+    m_cleaner{ new ProjectUtility::Cleaner(m_fileInterface.utilClass()) }
 {
     ui->setupUi(this);
 
@@ -51,7 +52,7 @@ void MainWindow::printInfo(const QString & what)
     ui->notifications_listWidget->addItem(what);
     ui->notifications_listWidget->scrollToBottom();
 
-    qDebug() << "[USER ACTION]" << what;
+    m_fileInterface.utilClass().logChannel() << "[USER ACTION]" << what;
 }
 
 

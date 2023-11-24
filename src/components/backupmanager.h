@@ -4,16 +4,16 @@
 #include <QString>
 #include <QStringList>
 
-#include "projectsettings.h"
+#include "utilfunctionclass.h"
 
 class QFile;
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 class BackupManager
 {
 public:
-    BackupManager(Configuration::ProjectConfiguration & mainProjectConfiguration);
+    BackupManager(UtilFunctionClass & utilClass);
     ~BackupManager();
 
     bool backup(const QString & projectName, const QString & filePath);
@@ -33,7 +33,7 @@ private:
     void parseFilesList();
     bool processBackupDirectory(const QString & path);
 
-    Configuration::ProjectConfiguration & mainProjectConfiguration;
+    UtilFunctionClass & m_utilClass;
 };
 
 }

@@ -4,10 +4,10 @@
 
 #include <QDebug>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
-Cleaner::Cleaner() :
-    m_utilClass( UtilFunctionClass::getInstance() )
+Cleaner::Cleaner(UtilFunctionClass & utilClass) :
+    m_utilClass( utilClass )
 {
 
 }
@@ -88,7 +88,7 @@ void Cleaner::clearFromMistakes(QStringList &filesToRemove)
             !file.contains("/.qmake.stash")
         )
         {
-            qDebug() << "[REMOVE CHECK] Invalid file:[" << file << "]";
+            UtilFunctionClass::getInstance().logChannel() << "[REMOVE CHECK] Invalid file:[" << file << "]";
             mistakes << file;
         }
     }
@@ -103,7 +103,7 @@ void Cleaner::removeFiles(const QStringList &  filesToRemove)
 {
     for (const QString & file : filesToRemove)
     {
-        qDebug() << "[CLEANER] Removing file or a dir:" << file;
+        m_utilClass.logChannel() << "[CLEANER] Removing file or a dir:" << file;
         system(QString("rm \"%1\" -R").arg(file).toUtf8().data());
     }
 }

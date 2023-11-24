@@ -9,7 +9,7 @@
 
 #include "projectsettings.h"
 
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 struct Project
@@ -33,8 +33,9 @@ public:
 
     void setLogFile(const QString &logPath);
 
-    void writeLog(const QByteArray & what);
-    void writeLog(const QString & what);
+    UtilFunctionClass & logChannel();
+    UtilFunctionClass & operator <<(const QVariant & data);
+    void writeLog(const QVariant & what);
 
     bool hasRecurseDepend(QStringList & dependQuery, Project * pParent);
 
@@ -54,7 +55,7 @@ public:
     ~UtilFunctionClass();
 
 signals:
-    void log(const QString & what);
+    void log(const QVariant & what);
 
 private:
     QVector<Project> * apps;
@@ -65,6 +66,10 @@ private:
     std::atomic<float> processPercent {0};
 
     QFile m_logFile;
+
+    bool outputStarted {false};
+    QVector<QVariant> outputBuffer;
+    void printBuffer();
 
     UtilFunctionClass(QObject * parent = nullptr);
     UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration, QObject * parent = nullptr);

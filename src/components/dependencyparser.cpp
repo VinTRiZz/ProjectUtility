@@ -10,7 +10,7 @@
 
 #include <QDebug>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
 DependencyParser::DependencyParser(QVector<Project> & apps, QVector<Project> & libs):
     apps{apps}, libs{libs},
@@ -31,7 +31,7 @@ void DependencyParser::setPath(const QString &path)
 
 void DependencyParser::parseAllDepends()
 {
-    qDebug() << "[DEPENDS PARSER] Parsing started";
+    m_utilClass.logChannel() << "[DEPENDS PARSER] Parsing started";
 
     QDir::current().cd(currentBasePath);
     if (currentBasePath.size() > 0)
@@ -43,25 +43,25 @@ void DependencyParser::parseAllDepends()
             parseDepends(lib);
     }
 
-    qDebug() << "[DEPENDS PARSER] Parsing complete";
+    m_utilClass.logChannel() << "[DEPENDS PARSER] Parsing complete";
 }
 
 void DependencyParser::parseDepends(Project &proj)
 {
     if (proj.dependFilePath.isEmpty())
     {
-        qDebug() << "[DEPENDS PARSER] No depend file specified for project:" << proj.name;
+        m_utilClass.logChannel() << "[DEPENDS PARSER] No depend file specified for project:" << proj.name;
         return;
     }
 
-    qDebug() << "[DEPENDS PARSER] Opening dep file for project:" << proj.name;
+    m_utilClass.logChannel() << "[DEPENDS PARSER] Opening dep file for project:" << proj.name;
     QFile deps(proj.dependFilePath);
 
     deps.open(QIODevice::ReadOnly);
 
     if (!deps.isOpen())
     {
-        qDebug() << "[DEPENDS PARSER] File not opened with error:" << deps.errorString() << ", path:" << deps.fileName();
+        m_utilClass.logChannel() << "[DEPENDS PARSER] File not opened with error:" << deps.errorString() << ", path:" << deps.fileName();
         return;
     }
 
@@ -130,7 +130,7 @@ void DependencyParser::parseDepends(Project &proj)
     {
         dep.chop(QFileInfo(dep).fileName().size());
         proj.depends << QFileInfo(dep).absoluteDir().dirName();
-        qDebug() << "[DEPENDS PARSER] Parsed dep:" << proj.name << "--->" << proj.depends.last();
+        m_utilClass.logChannel() << "[DEPENDS PARSER] Parsed dep:" << proj.name << "--->" << proj.depends.last();
     }
 
     std::sort(proj.depends.begin(), proj.depends.end(), [](QString & dep_1, QString & dep_2){ return (dep_2 > dep_1); });
@@ -138,18 +138,18 @@ void DependencyParser::parseDepends(Project &proj)
 
 void DependencyParser::writeDepends(Project &proj)
 {
-    qDebug() << "[DEPENDS PARSER] Writing depends for" << proj.name;
+    m_utilClass.logChannel() << "[DEPENDS PARSER] Writing depends for" << proj.name;
 
     QIODevice::OpenMode openMode = QIODevice::Truncate;
 
     if (proj.dependFilePath.isEmpty())
     {
-        qDebug() << "[DEPENDS PARSER] \033[33mWarning\033[0m No depend file specified for project:" << proj.name;
+        m_utilClass.logChannel() << "[DEPENDS PARSER] \033[33mWarning\033[0m No depend file specified for project:" << proj.name;
 
         if (proj.depends.size() == 0)
             return;
 
-        qDebug() << "[DEPENDS PARSER] Depends file will be created";
+        m_utilClass.logChannel() << "[DEPENDS PARSER] Depends file will be created";
 
         openMode = QIODevice::NewOnly;
 
@@ -162,15 +162,15 @@ void DependencyParser::writeDepends(Project &proj)
 
     if (!deps.isOpen())
     {
-        qDebug() << "[DEPENDS PARSER] \033[31mError\033[0m opening depends file:" << proj.dependFilePath;
+        m_utilClass.logChannel() << "[DEPENDS PARSER] \033[31mError\033[0m opening depends file:" << proj.dependFilePath;
         return;
     }
 
     QStringList dependQuery;
     while (m_utilClass.hasRecurseDepend(dependQuery, &proj))
     {
-        qDebug() << "[DEPENDS WORKER] Found recurse in project" << proj.name << "depends:" << dependQuery.join("-->");
-        qDebug() << "[DEPENDS WORKER] Removing recursive depend on project:" << dependQuery.last();
+        m_utilClass.logChannel() << "[DEPENDS WORKER] Found recurse in project" << proj.name << "depends:" << dependQuery.join("-->");
+        m_utilClass.logChannel() << "[DEPENDS WORKER] Removing recursive depend on project:" << dependQuery.last();
         proj.depends.removeOne(dependQuery.last());
         dependQuery.clear();
     }
@@ -204,7 +204,7 @@ void DependencyParser::writeDepends(Project &proj)
         pwdPath += "/..";
     }
 
-    qDebug() << "Base path for config:" << pwdPath;
+    m_utilClass.logChannel() << "Base path for config:" << pwdPath;
 
     for (QString & dep : depList)
     {
@@ -216,7 +216,7 @@ void DependencyParser::writeDepends(Project &proj)
             {
                 if (libraryDep.contains(dep))
                 {
-                    qDebug() << "Found unknown lib:" << libraryDep;
+                    m_utilClass.logChannel() << "Found unknown lib:" << libraryDep;
                     dep = libraryDep;
                 }
             }
@@ -226,7 +226,7 @@ void DependencyParser::writeDepends(Project &proj)
 
         dep = "include(" + pwdPath + dep + ")";
 
-        qDebug() << "Added dep:" << dep;
+        m_utilClass.logChannel() << "Added dep:" << dep;
 
         depsStream << dep << endl;
     }

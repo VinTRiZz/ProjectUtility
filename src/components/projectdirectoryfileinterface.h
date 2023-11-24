@@ -8,7 +8,7 @@
 #include "gui/dependencygraphwidget.h"
 #include "projectbasegenerator.h"
 
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 class ProjectDirectoryFileInterface : public QObject
@@ -17,6 +17,8 @@ class ProjectDirectoryFileInterface : public QObject
 public:
     ProjectDirectoryFileInterface(QObject * parent);
     ~ProjectDirectoryFileInterface();
+
+    UtilFunctionClass & utilClass();
 
     void setGraphWidget(GraphWidget::DependencyGraphWidget * pGraphWidget);
 
@@ -62,11 +64,11 @@ public:
 signals:
     void archiveComplete(bool result);
     void buildComplete(const QString & projectName, bool buildResult);
-    void log(const QString & what);
+    void log(const QVariant & what);
 
 private:
     struct Impl;
-    std::unique_ptr<Impl> m_pImpl;
+    std::unique_ptr<Impl> d;
 };
 
 }

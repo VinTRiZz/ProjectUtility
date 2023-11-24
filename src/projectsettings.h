@@ -52,7 +52,9 @@ struct ProjectConfiguration
         { "Build timeout", 360000000},
 
         // Cleaner
-        { "Find files timeout", 100000}
+        { "Find files timeout", 100000},
+
+        {"Maximum log size in symbols", 10000}
     };
 };
 

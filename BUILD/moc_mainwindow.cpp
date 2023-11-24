@@ -149,7 +149,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QVariant,    6,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -186,7 +186,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 18: _t->projectSelected(); break;
         case 19: _t->removeFiles(); break;
         case 20: _t->generateProject(); break;
-        case 21: _t->log((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 21: _t->log((*reinterpret_cast< const QVariant(*)>(_a[1]))); break;
         case 22: _t->settingClicked(); break;
         case 23: _t->updateSelectedSetting(); break;
         case 24: _t->saveSettingsToFile(); break;

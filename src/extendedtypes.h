@@ -129,7 +129,7 @@ public:
         mx.lock();
         result = data;
         mx.unlock();
-        return data;
+        return result;
     }
 
     bool isEmpty()

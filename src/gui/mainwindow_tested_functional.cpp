@@ -17,32 +17,32 @@ void MainWindow::removeFiles()
 
     emit printInfo("Анализ директорий...");
 
-    int filesToRemove = DependsSearcher::FILE_REMOVE_TYPE::NO_FILE;
+    int filesToRemove = ProjectUtility::FILE_REMOVE_TYPE::NO_FILE;
 
     if (ui->bin_checkBox->isChecked())
-        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::BIN;
+        filesToRemove |= ProjectUtility::FILE_REMOVE_TYPE::BIN;
 
     if (ui->build_checkBox->isChecked())
-        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::BUILD;
+        filesToRemove |= ProjectUtility::FILE_REMOVE_TYPE::BUILD;
 
     if (ui->lib_checkBox->isChecked())
-        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::LIB;
+        filesToRemove |= ProjectUtility::FILE_REMOVE_TYPE::LIB;
 
     if (ui->makeFiles_checkBox->isChecked())
-        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::MAKEFILE;
+        filesToRemove |= ProjectUtility::FILE_REMOVE_TYPE::MAKEFILE;
 
     if (ui->qmakeStash_checkBox->isChecked())
-        filesToRemove |= DependsSearcher::FILE_REMOVE_TYPE::QMAKE_STASH;
+        filesToRemove |= ProjectUtility::FILE_REMOVE_TYPE::QMAKE_STASH;
 
-    QStringList fileList = m_cleaner.getFileList(m_fileInterface.currentDirectory(), filesToRemove);
+    QStringList fileList = m_cleaner->getFileList(m_fileInterface.currentDirectory(), filesToRemove);
     emit updatePercent(33);
 
     emit printInfo("Очистка от ошибок, если имеются...");
-    m_cleaner.clearFromMistakes(fileList);
+    m_cleaner->clearFromMistakes(fileList);
     emit updatePercent(66);
 
     emit printInfo("Удаление...");
-    m_cleaner.removeFiles(fileList);
+    m_cleaner->removeFiles(fileList);
     emit printInfo("Файлы удалены");
     emit updatePercent(100);
 }
@@ -62,7 +62,7 @@ void MainWindow::generateProject()
         }
     }
 
-    DependsSearcher::ProjectBaseConfiguration config;
+    ProjectUtility::ProjectBaseConfiguration config;
 
     config.projectName = ui->projectName_lineEdit->text();
     config.baseDir = ui->projectPath_lineEdit->text();
@@ -85,9 +85,15 @@ void MainWindow::generateProject()
         emit printInfo("Ошибка создания проекта! Проверьте введённые данные");
 }
 
-void MainWindow::log(const QString &what)
+void MainWindow::log(const QVariant &what)
 {
-    ui->log_plainTextEdit->appendPlainText(what);
+    if (ui->log_plainTextEdit->toPlainText().size() < m_fileInterface.configuration().intSettings["Maximum log size in symbols"])
+        ui->log_plainTextEdit->appendPlainText(what.toString());
+    else
+    {
+        ui->notifications_listWidget->clear();
+        ui->log_plainTextEdit->clear();
+    }
 }
 
 

@@ -62,7 +62,7 @@ private slots:
     // Etc
     void removeFiles();
     void generateProject();
-    void log(const QString & what);
+    void log(const QVariant & what);
 
     // Settings
     void settingClicked();
@@ -74,9 +74,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    DependsSearcher::ProjectDirectoryFileInterface m_fileInterface;
+    ProjectUtility::ProjectDirectoryFileInterface m_fileInterface;
     GraphWidget::DependencyGraphWidget * m_depGraphWidget;
-    DependsSearcher::Cleaner m_cleaner;
+    ProjectUtility::Cleaner * m_cleaner;
 
     QString basePath;
 

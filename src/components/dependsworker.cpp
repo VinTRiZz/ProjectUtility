@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
 DependsWorker::DependsWorker(QVector<Project> & apps, QVector<Project> & libs):
     apps{apps}, libs{libs}, m_depParser { apps, libs },
@@ -37,12 +37,12 @@ bool DependsWorker::addLibrary(Project * proj, const QString &libraryName)
     QStringList dependQuery;
     if (m_utilClass.hasRecurseDepend(dependQuery, proj))
     {
-        qDebug() << "[DEPENDS WORKER] Found recursive in project" << proj->name << "depends:" << dependQuery.join("-->");
+        m_utilClass.logChannel() << "[DEPENDS WORKER] Found recursive in project" << proj->name << "depends:" << dependQuery.join("-->");
         proj->depends.removeOne(libraryName);
         return false;
     }
 
-    qDebug() << "[DEPENDS WORKER] [\033[32mAdded\033[0m]: " << proj->name << "--->" << libraryName;
+    m_utilClass.logChannel() << "[DEPENDS WORKER] [\033[32mAdded\033[0m]: " << proj->name << "--->" << libraryName;
     return true;
 }
 
@@ -50,7 +50,7 @@ void DependsWorker::removeLibrary(Project * proj, const QString &libraryName)
 {
     poll();
     proj->depends.removeOne(libraryName);
-    qDebug() << "[DEPENDS WORKER] [\033[31mRemoved\033[0m]: " << proj->name << "-X->" << libraryName;
+    m_utilClass.logChannel() << "[DEPENDS WORKER] [\033[31mRemoved\033[0m]: " << proj->name << "-X->" << libraryName;
 }
 
 void DependsWorker::updateDepends()
@@ -62,7 +62,7 @@ void DependsWorker::updateDepends()
             m_utilClass.setPercent(0);
             float progressPart = (float)(apps.size() + libs.size()) / 100.0f;
 
-            qDebug() << "[DEPENDS WORKER] Updating depends";
+            m_utilClass.logChannel() << "[DEPENDS WORKER] Updating depends";
 
             QStringList dependsBuffer;
 
@@ -80,7 +80,7 @@ void DependsWorker::updateDepends()
                 m_depParser.writeDepends(lib);
                 m_utilClass.increasePercent(progressPart);
             }
-            qDebug() << "[DEPENDS WORKER] Depends updated";
+            m_utilClass.logChannel() << "[DEPENDS WORKER] Depends updated";
             m_utilClass.setPercent(100);
         }
     );
@@ -122,7 +122,7 @@ void DependsWorker::saveChanges()
             m_utilClass.setPercent(0);
             float progressPart = (float)(apps.size() + libs.size()) / 100.0f;
 
-            qDebug() << "[DEPENDS WORKER] Saving changes";
+            m_utilClass.logChannel() << "[DEPENDS WORKER] Saving changes";
             for (Project & app : apps)
             {
                 m_depParser.writeDepends(app);
@@ -134,7 +134,7 @@ void DependsWorker::saveChanges()
                 m_depParser.writeDepends(lib);
                 m_utilClass.increasePercent(progressPart);
             }
-            qDebug() << "[DEPENDS WORKER] Saving complete";
+            m_utilClass.logChannel() << "[DEPENDS WORKER] Saving complete";
             m_utilClass.setPercent(100);
     });
 }

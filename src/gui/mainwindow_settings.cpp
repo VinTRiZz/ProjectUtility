@@ -40,11 +40,13 @@ void MainWindow::settingClicked()
             return;
         ui->settingValue_lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]+"), ui->settingValue_lineEdit));
         ui->settingValue_label->setText(QString::number(*pIntSetting));
+        ui->settingValue_lineEdit->setText(QString::number(*pIntSetting));
     }
     else
     {
         ui->settingValue_lineEdit->setValidator(nullptr);
         ui->settingValue_label->setText(*pStrSetting);
+        ui->settingValue_lineEdit->setText(*pStrSetting);
     }
 
     ui->settingName_label->setText(settingName);
@@ -89,7 +91,7 @@ void MainWindow::updateSelectedSetting()
     }
     else
     {
-        qDebug() << "[MAINWINDOW] Updating setting from" << *pStrSetting << "to" << settingValue;
+        m_fileInterface.utilClass().logChannel() << "[MAINWINDOW] Updating setting from" << (QString)*pStrSetting << "to" << settingValue;
         if ((settingName.contains("path")) && !settingValue.isEmpty())
         {
             if ((settingValue.front().toLatin1() != '/'))

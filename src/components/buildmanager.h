@@ -8,7 +8,7 @@
 #include <QObject>
 #include <QFile>
 
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 struct BuildProjectHandle
@@ -22,7 +22,7 @@ class BuildManager : public QObject
 {
     Q_OBJECT
 public:
-    BuildManager(QObject * parent);
+    BuildManager(QObject * parent, UtilFunctionClass & utilClass);
     ~BuildManager();
 
     bool build(const BuildProjectHandle & proj);

@@ -7,10 +7,10 @@
 
 #include <QDebug>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
-BackupManager::BackupManager(Configuration::ProjectConfiguration & mainProjectConfiguration) :
-    mainProjectConfiguration{mainProjectConfiguration}
+BackupManager::BackupManager(UtilFunctionClass & utilClass) :
+    m_utilClass{utilClass}
 {
 
 }
@@ -38,7 +38,7 @@ BackupManager::~BackupManager()
 
 bool BackupManager::backup(const QString & projectName, const QString &filePath)
 {
-    qDebug() << "[BACKUP] Creating backup for project" << projectName << "file" << QFileInfo(filePath).baseName();
+    m_utilClass.logChannel() << "[BACKUP] Creating backup for project" << projectName << "file" << QFileInfo(filePath).baseName();
 
     const QString mkdirProjectCommand = QString("mkdir %1/%2 &> /dev/null").arg(backupDirectoryPath, projectName);
 
@@ -55,13 +55,13 @@ bool BackupManager::backup(const QString & projectName, const QString &filePath)
     result = QFile::copy(filePath, backupFilePath);
 
     if (!result)
-        qDebug() << "[BACKUP] Error creating backup";
+        m_utilClass.logChannel() << "[BACKUP] Error creating backup";
     return result;
 }
 
 bool BackupManager::load(const QString & projectName, const QString &filePath)
 {
-    qDebug() << "[BACKUP] Loading backup of project" << projectName << "file" << QFileInfo(filePath).baseName();
+    m_utilClass.logChannel() << "[BACKUP] Loading backup of project" << projectName << "file" << QFileInfo(filePath).baseName();
 
     if (filePath.size() < 1)
         return false;
@@ -72,7 +72,7 @@ bool BackupManager::load(const QString & projectName, const QString &filePath)
     result = QFile::copy(backupFilePath, filePath);
 
     if (!result)
-        qDebug() << "[BACKUP] Error loading backup for file:" << QString(backupDirectoryPath + "/%1/%2").arg( projectName, QFileInfo(filePath).baseName() ) << "to path:" << filePath;
+        m_utilClass.logChannel() << "[BACKUP] Error loading backup for file:" << QString(backupDirectoryPath + "/%1/%2").arg( projectName, QFileInfo(filePath).baseName() ) << "to path:" << filePath;
     return result;
 }
 
@@ -102,7 +102,7 @@ bool BackupManager::loadAll()
 
 bool BackupManager::cd(const QString &path)
 {
-    qDebug() << "[BACKUP] Changed backup directory from" << backupDirectoryPath << "to" << path;
+    m_utilClass.logChannel() << "[BACKUP] Changed backup directory from" << backupDirectoryPath << "to" << path;
 
     return processBackupDirectory(path);
 }
@@ -139,10 +139,10 @@ bool BackupManager::processBackupDirectory(const QString & path)
     {
         backupDirectoryPath = path;
         mkdirCommand = QString("mkdir %1 &> /dev/null").arg(backupDirectoryPath);
-        qDebug() << "[BACKUP] Create backup directory result:" << system(mkdirCommand.toUtf8().data()); // Create backup dir
+        m_utilClass.logChannel() << "[BACKUP] Create backup directory result:" << system(mkdirCommand.toUtf8().data()); // Create backup dir
     } else if (!QFileInfo(path).isDir())
     {
-        qDebug() << "[BACKUP] Not a directory:" << path;
+        m_utilClass.logChannel() << "[BACKUP] Not a directory:" << path;
         return false;
     } else
     {

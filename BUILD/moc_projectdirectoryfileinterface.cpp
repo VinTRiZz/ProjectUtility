@@ -20,35 +20,35 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_DependsSearcher__ProjectDirectoryFileInterface_t {
+struct qt_meta_stringdata_ProjectUtility__ProjectDirectoryFileInterface_t {
     QByteArrayData data[9];
-    char stringdata0[118];
+    char stringdata0[117];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_DependsSearcher__ProjectDirectoryFileInterface_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_ProjectUtility__ProjectDirectoryFileInterface_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_DependsSearcher__ProjectDirectoryFileInterface_t qt_meta_stringdata_DependsSearcher__ProjectDirectoryFileInterface = {
+static const qt_meta_stringdata_ProjectUtility__ProjectDirectoryFileInterface_t qt_meta_stringdata_ProjectUtility__ProjectDirectoryFileInterface = {
     {
-QT_MOC_LITERAL(0, 0, 46), // "DependsSearcher::ProjectDirec..."
-QT_MOC_LITERAL(1, 47, 15), // "archiveComplete"
-QT_MOC_LITERAL(2, 63, 0), // ""
-QT_MOC_LITERAL(3, 64, 6), // "result"
-QT_MOC_LITERAL(4, 71, 13), // "buildComplete"
-QT_MOC_LITERAL(5, 85, 11), // "projectName"
-QT_MOC_LITERAL(6, 97, 11), // "buildResult"
-QT_MOC_LITERAL(7, 109, 3), // "log"
-QT_MOC_LITERAL(8, 113, 4) // "what"
+QT_MOC_LITERAL(0, 0, 45), // "ProjectUtility::ProjectDirect..."
+QT_MOC_LITERAL(1, 46, 15), // "archiveComplete"
+QT_MOC_LITERAL(2, 62, 0), // ""
+QT_MOC_LITERAL(3, 63, 6), // "result"
+QT_MOC_LITERAL(4, 70, 13), // "buildComplete"
+QT_MOC_LITERAL(5, 84, 11), // "projectName"
+QT_MOC_LITERAL(6, 96, 11), // "buildResult"
+QT_MOC_LITERAL(7, 108, 3), // "log"
+QT_MOC_LITERAL(8, 112, 4) // "what"
 
     },
-    "DependsSearcher::ProjectDirectoryFileInterface\0"
+    "ProjectUtility::ProjectDirectoryFileInterface\0"
     "archiveComplete\0\0result\0buildComplete\0"
     "projectName\0buildResult\0log\0what"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_DependsSearcher__ProjectDirectoryFileInterface[] = {
+static const uint qt_meta_data_ProjectUtility__ProjectDirectoryFileInterface[] = {
 
  // content:
        7,       // revision
@@ -69,12 +69,12 @@ static const uint qt_meta_data_DependsSearcher__ProjectDirectoryFileInterface[] 
  // signals: parameters
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::QString, QMetaType::Bool,    5,    6,
-    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QVariant,    8,
 
        0        // eod
 };
 
-void DependsSearcher::ProjectDirectoryFileInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void ProjectUtility::ProjectDirectoryFileInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         ProjectDirectoryFileInterface *_t = static_cast<ProjectDirectoryFileInterface *>(_o);
@@ -82,7 +82,7 @@ void DependsSearcher::ProjectDirectoryFileInterface::qt_static_metacall(QObject 
         switch (_id) {
         case 0: _t->archiveComplete((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: _t->buildComplete((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 2: _t->log((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 2: _t->log((*reinterpret_cast< const QVariant(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -102,7 +102,7 @@ void DependsSearcher::ProjectDirectoryFileInterface::qt_static_metacall(QObject 
             }
         }
         {
-            using _t = void (ProjectDirectoryFileInterface::*)(const QString & );
+            using _t = void (ProjectDirectoryFileInterface::*)(const QVariant & );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ProjectDirectoryFileInterface::log)) {
                 *result = 2;
                 return;
@@ -111,26 +111,26 @@ void DependsSearcher::ProjectDirectoryFileInterface::qt_static_metacall(QObject 
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject DependsSearcher::ProjectDirectoryFileInterface::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_DependsSearcher__ProjectDirectoryFileInterface.data,
-      qt_meta_data_DependsSearcher__ProjectDirectoryFileInterface,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject ProjectUtility::ProjectDirectoryFileInterface::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_ProjectUtility__ProjectDirectoryFileInterface.data,
+      qt_meta_data_ProjectUtility__ProjectDirectoryFileInterface,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *DependsSearcher::ProjectDirectoryFileInterface::metaObject() const
+const QMetaObject *ProjectUtility::ProjectDirectoryFileInterface::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *DependsSearcher::ProjectDirectoryFileInterface::qt_metacast(const char *_clname)
+void *ProjectUtility::ProjectDirectoryFileInterface::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_DependsSearcher__ProjectDirectoryFileInterface.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_ProjectUtility__ProjectDirectoryFileInterface.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
 
-int DependsSearcher::ProjectDirectoryFileInterface::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int ProjectUtility::ProjectDirectoryFileInterface::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -148,21 +148,21 @@ int DependsSearcher::ProjectDirectoryFileInterface::qt_metacall(QMetaObject::Cal
 }
 
 // SIGNAL 0
-void DependsSearcher::ProjectDirectoryFileInterface::archiveComplete(bool _t1)
+void ProjectUtility::ProjectDirectoryFileInterface::archiveComplete(bool _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
-void DependsSearcher::ProjectDirectoryFileInterface::buildComplete(const QString & _t1, bool _t2)
+void ProjectUtility::ProjectDirectoryFileInterface::buildComplete(const QString & _t1, bool _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void DependsSearcher::ProjectDirectoryFileInterface::log(const QString & _t1)
+void ProjectUtility::ProjectDirectoryFileInterface::log(const QVariant & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);

@@ -8,7 +8,7 @@
 #include "utilfunctionclass.h"
 #include "projectsettings.h"
 
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 class Archivator : public QObject
@@ -32,7 +32,7 @@ signals:
 
 private:
     struct Impl;
-    std::unique_ptr<Impl> m_pImpl;
+    std::unique_ptr<Impl> d;
 };
 
 }

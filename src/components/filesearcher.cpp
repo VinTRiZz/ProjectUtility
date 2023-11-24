@@ -8,7 +8,7 @@
 #include <QProcess>
 #include <QVector>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
 FileSearcher::FileSearcher(QVector<Project> & apps, QVector<Project> & libs, UtilFunctionClass & utilClass):
     apps{apps}, libs{libs}, m_utilClass {utilClass}
@@ -33,7 +33,7 @@ QString FileSearcher::basePath() const
 
 bool FileSearcher::searchForProjects(const QString &basePath)
 {
-    qDebug() << "[FILE SEARCHER] Searching in directory:" << basePath;
+    m_utilClass.logChannel() << "[FILE SEARCHER] Searching in directory:" << basePath;
     QDir searchDir(basePath);
     QDir projectDir;
 
@@ -63,7 +63,7 @@ bool FileSearcher::searchForProjects(const QString &basePath)
 
         if (foundProj.projectProFilePath.isEmpty())
         {
-            qDebug() << "[FILE SEARCHER] Not a project directory:" << entry;
+            m_utilClass.logChannel() << "[FILE SEARCHER] Not a project directory:" << entry;
             continue;
         }
 
@@ -93,7 +93,7 @@ bool FileSearcher::searchForProjects(const QString &basePath)
 
 void FileSearcher::parseFindOutput()
 {
-    qDebug() << "[FILE SEARCHER] Started parsing find output";
+    m_utilClass.logChannel() << "[FILE SEARCHER] Started parsing find output";
     apps.clear();
     libs.clear();
 
@@ -112,7 +112,7 @@ void FileSearcher::parseFindOutput()
         foundProj.name = projectDir.dirName();
         foundProj.projectProFilePath = proFile;
 
-        qDebug() << "[FILE SEARCHER] Found project:" << foundProj.name;
+        m_utilClass.logChannel() << "[FILE SEARCHER] Found project:" << foundProj.name;
 
         projectFilePos = projectContents.indexOf("deps.pri");
 
@@ -135,7 +135,7 @@ void FileSearcher::parseFindOutput()
             libs.push_back(foundProj);
     }
 
-    qDebug() << "[FILE SEARCHER] Projects replaced";
+    m_utilClass.logChannel() << "[FILE SEARCHER] Projects replaced";
 }
 
 void FileSearcher::findProjectFiles()
@@ -160,7 +160,7 @@ void FileSearcher::findProjectFiles()
         }
     }
 
-    qDebug() << "[FILE SEARCHER] Found" << filesFound.size() << "files";
+    m_utilClass.logChannel() << "[FILE SEARCHER] Found" << filesFound.size() << "files";
 }
 
 void FileSearcher::findFiles()

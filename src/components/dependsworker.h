@@ -8,7 +8,7 @@
 #include <QString>
 #include <thread>
 
-namespace DependsSearcher
+namespace ProjectUtility
 {
 
 class DependsWorker

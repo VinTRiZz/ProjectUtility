@@ -5,7 +5,7 @@
 #include <QProcess>
 #include <QDebug>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
 UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration, QObject * parent) :
     QObject(parent),
@@ -18,7 +18,22 @@ UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Projec
 
 UtilFunctionClass::~UtilFunctionClass()
 {
+    printBuffer();
+}
 
+void UtilFunctionClass::printBuffer()
+{
+    if (!outputBuffer.size())
+        return;
+
+    QString output;
+    for (QVariant part : outputBuffer)
+    {
+        output += part.toString() + " ";
+    }
+    outputBuffer.clear();
+    qDebug() << output.toUtf8().data();
+    writeLog(output);
 }
 
 UtilFunctionClass::UtilFunctionClass(QObject * parent) :
@@ -30,33 +45,33 @@ UtilFunctionClass::UtilFunctionClass(QObject * parent) :
 void UtilFunctionClass::logParsedProjects()
 {
     int currentIteration = 1;
-    qDebug() << "--------------------------------------------------------------------------------------------------------";
-    qDebug() << "\033[32mFound apps:\033[0m";
+    logChannel() << "--------------------------------------------------------------------------------------------------------";
+    logChannel() << "\033[32mFound apps:\033[0m";
     for (Project & app : *apps)
     {
-        qDebug() << "\033[33mAPP N:" << currentIteration++ << "\033[0m"   << endl
-                 << "NAME:  " << app.name                                 << endl
-                 << "PRO:   " << app.projectProFilePath                   << endl
-                 << "DEPS:  " << app.dependFilePath                       << endl
-                 << "DEPON: " << app.depends.join(", ")                   << endl
+        logChannel() << "\033[33mAPP N:" << currentIteration++ << "\033[0m"   << "\n"
+                 << "NAME:  " << app.name                                 << "\n"
+                 << "PRO:   " << app.projectProFilePath                   << "\n"
+                 << "DEPS:  " << app.dependFilePath                       << "\n"
+                 << "DEPON: " << app.depends.join(", ")                   << "\n"
                     ;
     }
 
-    qDebug() << "--------------------------------------------------------------------------------------------------------";
+    logChannel() << "--------------------------------------------------------------------------------------------------------";
 
     currentIteration = 1;
-    qDebug() << "\033[32mFound libraries:\033[0m";
+    logChannel() << "\033[32mFound libraries:\033[0m";
     for (Project & lib : *libs)
     {
-        qDebug() << "\033[33mLIBRARY N:" << currentIteration++ << "\033[0m" << endl
-                 << "NAME: " << lib.name                                    << endl
-                 << "PRO:  " << lib.projectProFilePath                      << endl
-                 << "DEPS: " << lib.dependFilePath                          << endl
+        logChannel() << "\033[33mLIBRARY N:" << currentIteration++ << "\033[0m" << "\n"
+                 << "NAME: " << lib.name                                    << "\n"
+                 << "PRO:  " << lib.projectProFilePath                      << "\n"
+                 << "DEPS: " << lib.dependFilePath                          << "\n"
                  << "USE:  " << lib.useFilePath
-                 << "DEPON: " << lib.depends.join(", ")                   << endl
+                 << "DEPON: " << lib.depends.join(", ")                   << "\n"
                     ;
     }
-    qDebug() << "--------------------------------------------------------------------------------------------------------";
+    logChannel() << "--------------------------------------------------------------------------------------------------------";
 }
 
 bool UtilFunctionClass::invoke(const QString &program, const QStringList & args, const int timeout)
@@ -69,14 +84,14 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList & args,
     invokingProcess.start();
     if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["Start process timeout"]))
     {
-        qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+        logChannel() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog(QString("Invoke timeout"));
         return false;
     }
 
     if (!invokingProcess.waitForFinished(timeout))
     {
-        qDebug() << "[UTIL CLASS] Invoke finish timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+        logChannel() << "[UTIL CLASS] Invoke finish timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
 
         writeLog(invokingProcess.readAllStandardError());
         writeLog(invokingProcess.readAllStandardOutput());
@@ -85,7 +100,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList & args,
 
     if (invokingProcess.exitCode())
     {
-        qDebug() << "[UTIL CLASS] Invoke error (exit code" << invokingProcess.exitCode() << "), program: [" << program << "] args: [" << args.join(" ") << "]";
+        logChannel() << "[UTIL CLASS] Invoke error (exit code" << invokingProcess.exitCode() << "), program: [" << program << "] args: [" << args.join(" ") << "]";
 
         writeLog(invokingProcess.readAllStandardError());
         writeLog(invokingProcess.readAllStandardOutput());
@@ -105,14 +120,14 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList & args,
     invokingProcess.start();
     if (!invokingProcess.waitForStarted(mainProjectConfiguration->intSettings["Start process timeout"]))
     {
-        qDebug() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+        logChannel() << "[UTIL CLASS] Invoke start timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
         writeLog(QString("Invoke timeout"));
         return false;
     }
 
     if (!invokingProcess.waitForFinished(timeout))
     {
-        qDebug() << "[UTIL CLASS] Invoke finish timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
+        logChannel() << "[UTIL CLASS] Invoke finish timeout, program: [" << program << "] args: [" << args.join(" ") << "]";
 
         writeLog(invokingProcess.readAllStandardError());
         writeLog(invokingProcess.readAllStandardOutput());
@@ -121,7 +136,7 @@ bool UtilFunctionClass::invoke(const QString &program, const QStringList & args,
 
     if (invokingProcess.exitCode())
     {
-        qDebug() << "[UTIL CLASS] Invoke error (exit code" << invokingProcess.exitCode() << "), program: [" << program << "] args: [" << args.join(" ") << "]";
+        logChannel() << "[UTIL CLASS] Invoke error (exit code" << invokingProcess.exitCode() << "), program: [" << program << "] args: [" << args.join(" ") << "]";
 
         writeLog(invokingProcess.readAllStandardError());
         writeLog(invokingProcess.readAllStandardOutput());
@@ -142,9 +157,9 @@ void UtilFunctionClass::setLogFile(const QString &logPath)
     }
 }
 
-void UtilFunctionClass::writeLog(const QByteArray &what)
+void UtilFunctionClass::writeLog(const QVariant & what)
 {
-    if ((m_logFile.fileName() < 2) || (!what.size()))
+    if (m_logFile.fileName() < 2)
         return;
 
     const QString logFileName = mainProjectConfiguration->strSettings["Log file name"];
@@ -154,48 +169,33 @@ void UtilFunctionClass::writeLog(const QByteArray &what)
         setLogFile(logFileName);
     }
 
-    QByteArray writeBuffer = "\n---------------------------------------------------------------------------\n";
-    writeBuffer += what;
-    writeBuffer += "\n---------------------------------------------------------------------------\n";
-
     m_logFile.open(QIODevice::WriteOnly | QIODevice::Append);
     if (m_logFile.isOpen())
     {
-        m_logFile.write( writeBuffer );
+        QTextStream logStream(&m_logFile);
+
+        logStream << what.toString() << endl;
     }
     m_logFile.close();
 
     emit log(what);
-
-    qDebug() << "[UTIL CLASS] [BEGIN LOGGED DATA]" << writeBuffer.data() << "[UTIL CLASS] [END LOGGED DATA]";
 }
 
-void UtilFunctionClass::writeLog(const QString &what)
+UtilFunctionClass &UtilFunctionClass::logChannel()
 {
-    if ((m_logFile.fileName() < 2) || (!what.size()))
-        return;
+    outputStarted = true;
+    return *this;
+}
 
-    const QString logFileName = mainProjectConfiguration->strSettings["Log file name"];
-
-    if (logFileName != m_logFile.fileName())
+UtilFunctionClass &UtilFunctionClass::operator <<(const QVariant &data)
+{
+    if (outputStarted)
     {
-        setLogFile(logFileName);
+        printBuffer();
+        outputStarted = false;
     }
-
-    QByteArray writeBuffer = "\n---------------------------------------------------------------------------\n";
-    writeBuffer += what.toUtf8().data();
-    writeBuffer += "\n---------------------------------------------------------------------------\n";
-
-    m_logFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    if (m_logFile.isOpen())
-    {
-        m_logFile.write( writeBuffer );
-    }
-    m_logFile.close();
-
-    emit log(what);
-
-    qDebug() << "[UTIL CLASS] [BEGIN LOGGED DATA]" << writeBuffer.data() << "[UTIL CLASS] [END LOGGED DATA]";
+    outputBuffer.push_back(data);
+    return *this;
 }
 
 bool UtilFunctionClass::hasRecurseDepend(QStringList &dependQuery, Project *pParent)

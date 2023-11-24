@@ -4,11 +4,11 @@
 #include <QDir>
 #include <QThread>
 
-using namespace DependsSearcher;
+using namespace ProjectUtility;
 
-BuildManager::BuildManager(QObject * parent) :
+BuildManager::BuildManager(QObject * parent, UtilFunctionClass &utilClass) :
     QObject(parent),
-    m_utilClass (m_utilClass.getInstance())
+    m_utilClass (utilClass)
 {
 
 }
@@ -20,20 +20,20 @@ BuildManager::~BuildManager()
 
 bool BuildManager::build(const BuildProjectHandle & proj)
 {
-    qDebug() << "[BUILD MANAGER] Adding task:" << proj.project.name << "with target" << proj.target;
+    m_utilClass.logChannel() << "[BUILD MANAGER] Adding task:" << proj.project.name << "with target" << proj.target;
     while (m_startingTask);
 
     m_startingTask = true;
     buildQueue.push_back(proj);
     m_startingTask = false;
 
-    qDebug() << "[BUILD MANAGER] Task add complete";
+    m_utilClass.logChannel() << "[BUILD MANAGER] Task add complete";
     return true;
 }
 
 bool BuildManager::rebuild(const BuildProjectHandle & proj)
 {
-    qDebug() << "[BUILD MANAGER] Cleaning build";
+    m_utilClass.logChannel() << "[BUILD MANAGER] Cleaning build";
 
     m_utilClass.writeLog(QString("Project rebuild started"));
 
@@ -50,21 +50,21 @@ bool BuildManager::rebuild(const BuildProjectHandle & proj)
     QDir::setCurrent(currentDir);
 
     if (!result)
-        qDebug() << "[BUILD MANAGER] (Skipped) Error cleaning";
+        m_utilClass.logChannel() << "[BUILD MANAGER] (Skipped) Error cleaning";
 
-    qDebug() << "[BUILD MANAGER] Build cleaned";
+    m_utilClass.logChannel() << "[BUILD MANAGER] Build cleaned";
     return build(proj);
 }
 
 bool BuildManager::startBuilding()
 {
     poll();
-    qDebug() << "[BUILD MANAGER] Build thread creating";
+    m_utilClass.logChannel() << "[BUILD MANAGER] Build thread creating";
 
     m_pProcessThread = QThread::create(
         [this]()
         {
-            qDebug() << "[BUILD MANAGER] [BUILD THREAD] Created";
+            m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Created";
 
             BuildProjectHandle proj;
 
@@ -73,7 +73,7 @@ bool BuildManager::startBuilding()
             {
                 m_startingTask = false;
 
-                qDebug() << "[BUILD MANAGER] [BUILD THREAD] Asking for project";
+                m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Asking for project";
 
                 while (m_startingTask);
 
@@ -82,7 +82,7 @@ bool BuildManager::startBuilding()
                 buildQueue.pop_front();
                 m_startingTask = false;
 
-                qDebug() << "[BUILD MANAGER] [BUILD THREAD] Building project:" << proj.project.name << "with target" << proj.target;
+                m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Building project:" << proj.project.name << "with target" << proj.target;
 
                 m_utilClass.writeLog(QString("Project build \"%1\" with target \"%2\" started").arg(proj.project.name, proj.target).toUtf8());
 
@@ -100,7 +100,7 @@ bool BuildManager::startBuilding()
                     qmakeArgs << m_utilClass.projectConfiguration().strSettings["QMake Release args"];
                 else
                 {
-                    qDebug() << "[BUILD MANAGER] [BUILD THREAD] No target selected, skipped";
+                    m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] No target selected, skipped";
                     emit buildComplete(proj.project.name, false);
                     m_utilClass.writeLog(QString("Build project %1 with target %2: [ERROR: NO TARGET SPECIFIED]").arg(proj.project.name, proj.target));
                     break;
@@ -118,23 +118,23 @@ bool BuildManager::startBuilding()
                     buildArgs << m_utilClass.projectConfiguration().strSettings["Make args"].toList();
                 }
 
-                qDebug() << "[BUILD MANAGER] [BUILD THREAD] Running qmake";
+                m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Running qmake";
 
                 // Stage 1
                 if (!m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["QMake bin path"], qmakeArgs, proj.timeout))
                 {
-                    qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in qmake";
+                    m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Error in qmake";
                     emit buildComplete(proj.project.name, false);
                     m_utilClass.writeLog(QString("Build project %1 with target %2: [ERROR: QMAKE ERROR]").arg(proj.project.name, proj.target));
                     break;
                 }
 
-                qDebug() << "[BUILD MANAGER] [BUILD THREAD] Running make";
+                m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Running make";
 
                 // Stage 2
                 if (!m_utilClass.invoke(m_utilClass.projectConfiguration().strSettings["Make bin path"], buildArgs, proj.timeout))
                 {
-                    qDebug() << "[BUILD MANAGER] [BUILD THREAD] Error in make";
+                    m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Error in make";
                     emit buildComplete(proj.project.name, false);
                     m_utilClass.writeLog(QString("Build project %1 with target %2: [ERROR: MAKE ERROR]").arg(proj.project.name, proj.target));
                     break;
@@ -142,7 +142,7 @@ bool BuildManager::startBuilding()
 
                 QDir::setCurrent(currentDir);
 
-                qDebug() << "[BUILD MANAGER] [BUILD THREAD] Build complete";
+                m_utilClass.logChannel() << "[BUILD MANAGER] [BUILD THREAD] Build complete";
 
                 emit buildComplete(proj.project.name, true);
                 m_utilClass.writeLog(QString("Build project %1 with target %2: [SUCCESS]").arg(proj.project.name, proj.target));
@@ -154,7 +154,7 @@ bool BuildManager::startBuilding()
         }
     );
 
-    qDebug() << "[BUILD MANAGER] Build thread created, starting";
+    m_utilClass.logChannel() << "[BUILD MANAGER] Build thread created, starting";
     m_pProcessThread->start();
 
     return m_pProcessThread->isRunning();
@@ -177,5 +177,5 @@ void BuildManager::poll()
     m_pProcessThread->deleteLater();
     m_pProcessThread = nullptr;
 
-    qDebug() << "[BUILD MANAGER] Build thread polled";
+    m_utilClass.logChannel() << "[BUILD MANAGER] Build thread polled";
 }
