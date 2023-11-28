@@ -75,7 +75,7 @@ void MainWindow::generateProject()
     }
 
     config.hasDeps = ui->hasDeps_checkBox->isChecked();
-    config.isLibrary = ui->generateLib_checkBox->isChecked();
+    config.isLibrary = ui->genLibrary_radioButton->isChecked();
     config.hasGui = ui->hasGui_checkBox->isChecked();
     config.hasBuildPri = ui->hasBuildPri_checkBox->isChecked();
 

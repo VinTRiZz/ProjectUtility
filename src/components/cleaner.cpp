@@ -83,7 +83,7 @@ void Cleaner::clearFromMistakes(QStringList &filesToRemove)
         if (
             !file.contains("/BIN") &&
             !file.contains("/BUILD") &&
-            !file.contains(QRegExp("\\/[^/]+\\.so[^\\/|\\w]+")) &&
+            !(file.contains(QRegExp("\\/[^/]+\\.so[^\\/|\\w]+")) || file.contains(QRegExp("\\/[^/]+\\.so[^\\/|\\w.]+"))) &&
             !file.contains("/Makefile") &&
             !file.contains("/.qmake.stash")
         )
@@ -106,6 +106,7 @@ void Cleaner::removeFiles(const QStringList &  filesToRemove)
         m_utilClass.logChannel() << "[CLEANER] Removing file or a dir:" << file;
         system(QString("rm \"%1\" -R").arg(file).toUtf8().data());
     }
+    m_utilClass.logChannel() << "[CLEANER] Removing" << filesToRemove.size() << "files completed";
 }
 
 void Cleaner::addFiles(const QString &findOutput, QStringList & resultList)

@@ -422,7 +422,7 @@ QListWidget:item:hover
     <item row="0" column="3" rowspan="5">
      <widget class="QStackedWidget" name="menu_stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="deps_page">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -1214,12 +1214,16 @@ border-color: rgb(186, 186, 186);</string>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="generateLib_checkBox">
+              <widget class="QRadioButton" name="genLibrary_radioButton">
                <property name="text">
                 <string>Библиотека</string>
                </property>
-               <property name="checked">
-                <bool>true</bool>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="genApp_radioButton">
+               <property name="text">
+                <string>Приложение</string>
                </property>
               </widget>
              </item>

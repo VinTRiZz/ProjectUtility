@@ -135,7 +135,8 @@ public:
     QWidget *widget_7;
     QVBoxLayout *verticalLayout_16;
     QLabel *label_13;
-    QCheckBox *generateLib_checkBox;
+    QRadioButton *genLibrary_radioButton;
+    QRadioButton *genApp_radioButton;
     QLineEdit *projectName_lineEdit;
     QLineEdit *projectPath_lineEdit;
     QPushButton *generateProject_pushButton;
@@ -885,11 +886,15 @@ public:
 
         verticalLayout_16->addWidget(label_13);
 
-        generateLib_checkBox = new QCheckBox(widget_7);
-        generateLib_checkBox->setObjectName(QStringLiteral("generateLib_checkBox"));
-        generateLib_checkBox->setChecked(true);
+        genLibrary_radioButton = new QRadioButton(widget_7);
+        genLibrary_radioButton->setObjectName(QStringLiteral("genLibrary_radioButton"));
 
-        verticalLayout_16->addWidget(generateLib_checkBox);
+        verticalLayout_16->addWidget(genLibrary_radioButton);
+
+        genApp_radioButton = new QRadioButton(widget_7);
+        genApp_radioButton->setObjectName(QStringLiteral("genApp_radioButton"));
+
+        verticalLayout_16->addWidget(genApp_radioButton);
 
 
         verticalLayout_17->addWidget(widget_7);
@@ -1095,7 +1100,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        menu_stackedWidget->setCurrentIndex(1);
+        menu_stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1159,7 +1164,8 @@ public:
         hasBuildPri_checkBox->setText(QApplication::translate("MainWindow", "build.pri", nullptr));
         hasGui_checkBox->setText(QApplication::translate("MainWindow", "GUI", nullptr));
         label_13->setText(QApplication::translate("MainWindow", "\320\242\320\270\320\277 \320\277\321\200\320\276\320\265\320\272\321\202\320\260 \320\264\320\273\321\217 \320\263\320\265\320\275\320\265\321\200\320\260\321\206\320\270\320\270", nullptr));
-        generateLib_checkBox->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\260", nullptr));
+        genLibrary_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\260", nullptr));
+        genApp_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\270\320\273\320\276\320\266\320\265\320\275\320\270\320\265", nullptr));
         projectName_lineEdit->setText(QApplication::translate("MainWindow", "SampleProject", nullptr));
         projectName_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
         projectPath_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\320\224\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\217 \320\264\320\273\321\217 \320\277\321\200\320\276\320\265\320\272\321\202\320\260", nullptr));
