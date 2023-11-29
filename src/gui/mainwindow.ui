@@ -649,8 +649,8 @@ QListWidget:item:hover
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>46</width>
-             <height>28</height>
+             <width>437</width>
+             <height>744</height>
             </rect>
            </property>
           </widget>
@@ -1094,6 +1094,7 @@ border-color: rgb(186, 186, 186);</string>
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="page"/>
       <widget class="QWidget" name="templateCreate_page">
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="2">
@@ -1224,6 +1225,9 @@ border-color: rgb(186, 186, 186);</string>
               <widget class="QRadioButton" name="genApp_radioButton">
                <property name="text">
                 <string>Приложение</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -1546,6 +1550,7 @@ border-color: rgb(186, 186, 186);</string>
     </property>
     <addaction name="projectControl_action"/>
     <addaction name="depends_action"/>
+    <addaction name="action_4"/>
     <addaction name="action_2"/>
     <addaction name="action_3"/>
    </widget>
@@ -1575,6 +1580,11 @@ border-color: rgb(186, 186, 186);</string>
   <action name="action_3">
    <property name="text">
     <string>Настройки</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>Код</string>
    </property>
   </action>
  </widget>

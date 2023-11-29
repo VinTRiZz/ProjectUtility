@@ -141,7 +141,7 @@ void MainWindow::buildComplete(const QString &projectName, const bool result)
     }
     else
     {
-        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле %2").arg(projectName, m_fileInterface.configuration().strSettings["Log file name"]));
+        emit printInfo(QString("Ошибка сборки проекта %1. Более полная информация в файле %2").arg(projectName, m_fileInterface.configuration()->strSettings["Log file name"]));
         emit updatePercent(100);
     }
 }

@@ -23,7 +23,7 @@ using namespace ProjectUtility;
 
 struct ProjectDirectoryFileInterface::Impl
 {
-    Configuration::ProjectConfiguration mainProjectConfiguration { Configuration::ProjectConfiguration() };
+    std::shared_ptr<Configuration::ProjectConfiguration> mainProjectConfiguration { std::make_shared<Configuration::ProjectConfiguration>( Configuration::ProjectConfiguration() ) };
 
     std::thread * processThread {nullptr};
 
@@ -33,7 +33,7 @@ struct ProjectDirectoryFileInterface::Impl
 
     QString currentBasePath;
 
-    UtilFunctionClass & m_utilClass{ UtilFunctionClass::getInstance(&apps, &libs, &mainProjectConfiguration)};
+    UtilFunctionClass & m_utilClass{ UtilFunctionClass::getInstance(&apps, &libs, mainProjectConfiguration)};
 
     FileSearcher m_searcher{ apps, libs, m_utilClass};
     DependsWorker m_dependsWorker {apps, libs};
@@ -50,7 +50,7 @@ struct ProjectDirectoryFileInterface::Impl
     Impl(QObject * parent) :
         m_buildManager{parent, m_utilClass}
     {
-        m_utilClass.setLogFile( QDir::currentPath() + "/" + mainProjectConfiguration.strSettings["Log file name"] );
+        m_utilClass.setLogFile( QDir::currentPath() + "/" + mainProjectConfiguration->strSettings["Log file name"] );
     }
 
     void setPath(const QString & path)
@@ -388,14 +388,14 @@ bool ProjectDirectoryFileInterface::hasDependRecurse(const QString &projName, co
     return d->m_utilClass.hasDepend(pProj, depName);
 }
 
-Configuration::ProjectConfiguration &ProjectDirectoryFileInterface::configuration()
+std::shared_ptr<Configuration::ProjectConfiguration> ProjectDirectoryFileInterface::configuration()
 {
     return d->mainProjectConfiguration;
 }
 
 void ProjectDirectoryFileInterface::saveCurrentConfiguration()
 {
-    const QString configPath = d->mainProjectConfiguration.strSettings["Configuration file path"];
+    const QString configPath = d->mainProjectConfiguration->strSettings["Configuration file path"];
 
     if (QFile::remove(configPath))
     {
@@ -407,7 +407,7 @@ void ProjectDirectoryFileInterface::saveCurrentConfiguration()
     QString writeBuffer;
 
     configFile.beginGroup("StringSettings");
-    for (auto & configPair : d->mainProjectConfiguration.strSettings)
+    for (auto & configPair : d->mainProjectConfiguration->strSettings)
     {
         d->m_utilClass.logChannel() << "[FILE INTERFACE] Saving setting:" << configPair.first << "Its value:" << (QString)configPair.second;
         writeBuffer = configPair.second.toUtf8().toBase64();
@@ -416,7 +416,7 @@ void ProjectDirectoryFileInterface::saveCurrentConfiguration()
     configFile.endGroup();
 
     configFile.beginGroup("IntSettings");
-    for (auto & configPair : d->mainProjectConfiguration.intSettings)
+    for (auto & configPair : d->mainProjectConfiguration->intSettings)
     {
         configFile.setValue(configPair.first, QString::number(configPair.second));
     }
@@ -426,7 +426,7 @@ void ProjectDirectoryFileInterface::saveCurrentConfiguration()
 
 void ProjectDirectoryFileInterface::loadConfiguration()
 {
-    const QString configPath = d->mainProjectConfiguration.strSettings["Configuration file path"];
+    const QString configPath = d->mainProjectConfiguration->strSettings["Configuration file path"];
 
     d->m_utilClass.logChannel() << "[FILE INTERFACE] Loading settings by path:" << configPath;
 
@@ -440,7 +440,7 @@ void ProjectDirectoryFileInterface::loadConfiguration()
     QString writeBuffer;
 
     configFile.beginGroup("StringSettings");
-    for (auto & configPair : d->mainProjectConfiguration.strSettings)
+    for (auto & configPair : d->mainProjectConfiguration->strSettings)
     {
         configPair.second = "";
 
@@ -461,7 +461,7 @@ void ProjectDirectoryFileInterface::loadConfiguration()
     configFile.endGroup();
 
     configFile.beginGroup("IntSettings");
-    for (auto & configPair : d->mainProjectConfiguration.intSettings)
+    for (auto & configPair : d->mainProjectConfiguration->intSettings)
     {
         configPair.second = Configuration::defaultProjectConfiguration.intSettings[configPair.first];
         configPair.second = configFile.value(configPair.first).toInt();

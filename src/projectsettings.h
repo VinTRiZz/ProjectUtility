@@ -32,12 +32,9 @@ struct ProjectConfiguration
         { "QMake Debug args", "CONFIG+=debug CONFIG+=qml_debug"},
         { "QMake Release args", "CONFIG+=qtquickcompiler"},
 
-        // Directories
-        { "Build directory path", "/BUILD"},
-        { "Bin directory path", "/BIN"},
-        { "Lib directory path", "/LIB"},
-        { "Library directory path", "/Libraries"},
-        { "App directory path", "/Apps"}
+        // Etc
+        { "Cppcheck arguments", "--verbose --enable=all" }, // cppcheck
+        { "Cppcheck arguments", "--verbose --enable=all" } // cppcheck
     };
 
     std::map<QString, IntSetting> intSettings =

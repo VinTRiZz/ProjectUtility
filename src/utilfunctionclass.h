@@ -5,6 +5,7 @@
 #include <QString>
 #include <QFile>
 
+#include <memory>
 #include <atomic>
 
 #include "projectsettings.h"
@@ -51,7 +52,7 @@ public:
 
     Configuration::ProjectConfiguration & projectConfiguration();
 
-    static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr, Configuration::ProjectConfiguration * mainProjectConfiguration = nullptr);
+    static UtilFunctionClass & getInstance(QVector<Project> * initApps = nullptr, QVector<Project> * initLibs = nullptr, std::shared_ptr<Configuration::ProjectConfiguration> mainProjectConfiguration = std::shared_ptr<Configuration::ProjectConfiguration>());
     ~UtilFunctionClass();
 
 signals:
@@ -61,7 +62,7 @@ private:
     QVector<Project> * apps;
     QVector<Project> * libs;
 
-    Configuration::ProjectConfiguration * mainProjectConfiguration {nullptr};
+    std::shared_ptr<Configuration::ProjectConfiguration> mainProjectConfiguration;
 
     std::atomic<float> processPercent {0};
 
@@ -72,7 +73,7 @@ private:
     void printBuffer();
 
     UtilFunctionClass(QObject * parent = nullptr);
-    UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration, QObject * parent = nullptr);
+    UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, std::shared_ptr<Configuration::ProjectConfiguration> mainProjectConfiguration, QObject * parent = nullptr);
 };
 
 }

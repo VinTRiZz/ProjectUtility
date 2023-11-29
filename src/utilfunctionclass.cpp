@@ -7,7 +7,7 @@
 
 using namespace ProjectUtility;
 
-UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration, QObject * parent) :
+UtilFunctionClass::UtilFunctionClass(QVector<Project> * initApps, QVector<Project> * initLibs, std::shared_ptr<Configuration::ProjectConfiguration> mainProjectConfiguration, QObject * parent) :
     QObject(parent),
     apps(initApps),
     libs(initLibs),
@@ -309,7 +309,7 @@ Configuration::ProjectConfiguration & UtilFunctionClass::projectConfiguration()
     return *mainProjectConfiguration;
 }
 
-UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> * initApps, QVector<Project> * initLibs, Configuration::ProjectConfiguration * mainProjectConfiguration)
+UtilFunctionClass &UtilFunctionClass::getInstance(QVector<Project> * initApps, QVector<Project> * initLibs, std::shared_ptr<Configuration::ProjectConfiguration> mainProjectConfiguration)
 {
     static UtilFunctionClass instance(initApps, initLibs, mainProjectConfiguration);
     return instance;

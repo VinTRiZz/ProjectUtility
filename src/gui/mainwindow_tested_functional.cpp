@@ -49,11 +49,11 @@ void MainWindow::removeFiles()
 
 void MainWindow::generateProject()
 {
-    if (!m_fileInterface.configuration().strSettings["Default main template path"].isEmpty())
+    if (!m_fileInterface.configuration()->strSettings["Default main template path"].isEmpty())
     {
         if (QMessageBox::warning(
                     this, "Внимание",
-                    QString("Проект будет сконфигурирован так, что\nу него будет указано использование\n[  %1  ]\nв качестве общего шаблона. Продолжить?").arg(m_fileInterface.configuration().strSettings["Default main template path"]),
+                    QString("Проект будет сконфигурирован так, что\nу него будет указано использование\n[  %1  ]\nв качестве общего шаблона. Продолжить?").arg(m_fileInterface.configuration()->strSettings["Default main template path"]),
                     QMessageBox::Yes, QMessageBox::No
             ) == QMessageBox::No)
         {
@@ -87,7 +87,7 @@ void MainWindow::generateProject()
 
 void MainWindow::log(const QVariant &what)
 {
-    if (ui->log_plainTextEdit->toPlainText().size() < m_fileInterface.configuration().intSettings["Maximum log size in symbols"])
+    if (ui->log_plainTextEdit->toPlainText().size() < m_fileInterface.configuration()->intSettings["Maximum log size in symbols"])
         ui->log_plainTextEdit->appendPlainText(what.toString());
     else
     {
@@ -115,10 +115,10 @@ void MainWindow::archive()
     if (archivePath[0] == '.')
     {
         archivePath.remove(0, 1);
-        archivePath = m_fileInterface.configuration().strSettings["Program default directory"] + "/" + archivePath;
+        archivePath = m_fileInterface.configuration()->strSettings["Program default directory"] + "/" + archivePath;
     } else if (archivePath[0] != '/')
     {
-        archivePath = m_fileInterface.configuration().strSettings["Program default directory"] + "/" + archivePath;
+        archivePath = m_fileInterface.configuration()->strSettings["Program default directory"] + "/" + archivePath;
     }
 
     if (!archivePath.contains(".zip"))

@@ -1,12 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#define CURRENT_VERSION_STRING "v.1.6.5"
+#define CURRENT_VERSION_STRING "v.1.6.6"
 
 enum MENU_INDEX
 {
     DEPENDS,
     MISC,
+    CODE_ANALYSE,
     GENERATORS,
     SETTINGS
 };
@@ -36,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     removeButtonFocuses();
 
-    if (m_fileInterface.configuration().strSettings["Automatic project list update"] == "true")
+    if (m_fileInterface.configuration()->strSettings["Automatic project list update"] == "true")
     {
         emit updateProjectList();
     }
@@ -64,6 +65,9 @@ void MainWindow::changedMenu(QAction *menuAction)
     } else if (menuAction->text() == "Разное")
     {
         ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::MISC);
+    } else if (menuAction->text() == "Код")
+    {
+        ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::CODE_ANALYSE);
     } else if (menuAction->text() == "Генератор проектов")
     {
         ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::GENERATORS);

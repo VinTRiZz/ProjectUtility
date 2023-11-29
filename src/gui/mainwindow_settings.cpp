@@ -22,7 +22,7 @@ void MainWindow::settingClicked()
     Configuration::StringSetting * pStrSetting {nullptr};
     Configuration::IntSetting * pIntSetting {nullptr};
 
-    for (auto & strSetting : m_fileInterface.configuration().strSettings)
+    for (auto & strSetting : m_fileInterface.configuration()->strSettings)
     {
         if (strSetting.first == settingName)
             pStrSetting = &strSetting.second;
@@ -30,7 +30,7 @@ void MainWindow::settingClicked()
 
     if (!pStrSetting)
     {
-        for (auto & intSetting : m_fileInterface.configuration().intSettings)
+        for (auto & intSetting : m_fileInterface.configuration()->intSettings)
         {
             if (intSetting.first == settingName)
                 pIntSetting = &intSetting.second;
@@ -70,7 +70,7 @@ void MainWindow::updateSelectedSetting()
     Configuration::StringSetting * pStrSetting {nullptr};
     Configuration::IntSetting * pIntSetting {nullptr};
 
-    for (auto & strSetting : m_fileInterface.configuration().strSettings)
+    for (auto & strSetting : m_fileInterface.configuration()->strSettings)
     {
         if (strSetting.first == settingName)
             pStrSetting = &strSetting.second;
@@ -78,7 +78,7 @@ void MainWindow::updateSelectedSetting()
 
     if (!pStrSetting)
     {
-        for (auto & intSetting : m_fileInterface.configuration().intSettings)
+        for (auto & intSetting : m_fileInterface.configuration()->intSettings)
         {
             if (intSetting.first == settingName)
                 pIntSetting = &intSetting.second;
@@ -125,7 +125,7 @@ void MainWindow::restoreSetting()
     Configuration::StringSetting * pStrSetting {nullptr};
     Configuration::IntSetting * pIntSetting {nullptr};
 
-    for (auto & strSetting : m_fileInterface.configuration().strSettings)
+    for (auto & strSetting : m_fileInterface.configuration()->strSettings)
     {
         if (strSetting.first == settingName)
             pStrSetting = &strSetting.second;
@@ -137,7 +137,7 @@ void MainWindow::restoreSetting()
         return;
     }
 
-    for (auto & intSetting : m_fileInterface.configuration().intSettings)
+    for (auto & intSetting : m_fileInterface.configuration()->intSettings)
     {
         if (intSetting.first == settingName)
             pIntSetting = &intSetting.second;
@@ -153,7 +153,7 @@ void MainWindow::restoreSetting()
 
 void MainWindow::restoreSettingsAll()
 {
-    m_fileInterface.configuration() = Configuration::defaultProjectConfiguration;
+    *m_fileInterface.configuration().get() = Configuration::defaultProjectConfiguration;
     emit printInfo("Все настройки возвращены");
 }
 
@@ -161,14 +161,14 @@ void MainWindow::restoreSettingsAll()
 
 void MainWindow::setupSettings()
 {
-    for (auto & strSetting : m_fileInterface.configuration().strSettings)
+    for (auto & strSetting : m_fileInterface.configuration()->strSettings)
         ui->settingList_listWidget->addItem(strSetting.first);
 
-    for (auto & intSetting : m_fileInterface.configuration().intSettings)
+    for (auto & intSetting : m_fileInterface.configuration()->intSettings)
         ui->settingList_listWidget->addItem(intSetting.first);
 
-    ui->basePath_lineEdit->setText(m_fileInterface.configuration().strSettings["Default base path"]);
-    ui->projectPath_lineEdit->setText(m_fileInterface.configuration().strSettings["Default base path"]);
+    ui->basePath_lineEdit->setText(m_fileInterface.configuration()->strSettings["Default base path"]);
+    ui->projectPath_lineEdit->setText(m_fileInterface.configuration()->strSettings["Default base path"]);
 
     connect(ui->settingList_listWidget, &QListWidget::clicked, this, &MainWindow::settingClicked);
     connect(ui->settingAccept_pushButton, &QPushButton::clicked, this, &MainWindow::updateSelectedSetting);

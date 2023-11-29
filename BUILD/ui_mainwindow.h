@@ -44,6 +44,7 @@ public:
     QAction *action;
     QAction *action_2;
     QAction *action_3;
+    QAction *action_4;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QWidget *widget;
@@ -120,6 +121,7 @@ public:
     QSpacerItem *verticalSpacer;
     QProgressBar *progressBar;
     QPlainTextEdit *log_plainTextEdit;
+    QWidget *page;
     QWidget *templateCreate_page;
     QGridLayout *gridLayout_5;
     QSpacerItem *horizontalSpacer_4;
@@ -307,6 +309,8 @@ public:
         action_2->setObjectName(QStringLiteral("action_2"));
         action_3 = new QAction(MainWindow);
         action_3->setObjectName(QStringLiteral("action_3"));
+        action_4 = new QAction(MainWindow);
+        action_4->setObjectName(QStringLiteral("action_4"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral(""));
@@ -568,7 +572,7 @@ public:
         graph_scrollArea->setAlignment(Qt::AlignBottom|Qt::AlignHCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 46, 28));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 437, 744));
         graph_scrollArea->setWidget(scrollAreaWidgetContents);
 
         horizontalLayout_4->addWidget(graph_scrollArea);
@@ -825,6 +829,9 @@ public:
         gridLayout_2->addWidget(log_plainTextEdit, 0, 1, 4, 2);
 
         menu_stackedWidget->addWidget(misc_page);
+        page = new QWidget();
+        page->setObjectName(QStringLiteral("page"));
+        menu_stackedWidget->addWidget(page);
         templateCreate_page = new QWidget();
         templateCreate_page->setObjectName(QStringLiteral("templateCreate_page"));
         gridLayout_5 = new QGridLayout(templateCreate_page);
@@ -893,6 +900,7 @@ public:
 
         genApp_radioButton = new QRadioButton(widget_7);
         genApp_radioButton->setObjectName(QStringLiteral("genApp_radioButton"));
+        genApp_radioButton->setChecked(true);
 
         verticalLayout_16->addWidget(genApp_radioButton);
 
@@ -1095,6 +1103,7 @@ public:
         menuBar->addAction(menu->menuAction());
         menu->addAction(projectControl_action);
         menu->addAction(depends_action);
+        menu->addAction(action_4);
         menu->addAction(action_2);
         menu->addAction(action_3);
 
@@ -1114,6 +1123,7 @@ public:
         action->setText(QApplication::translate("MainWindow", "\320\224\320\265\321\200\320\265\320\262\320\276 \320\267\320\260\320\262\320\270\321\201\320\270\320\274\320\276\321\201\321\202\320\265\320\271", nullptr));
         action_2->setText(QApplication::translate("MainWindow", "\320\223\320\265\320\275\320\265\321\200\320\260\321\202\320\276\321\200 \320\277\321\200\320\276\320\265\320\272\321\202\320\276\320\262", nullptr));
         action_3->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", nullptr));
+        action_4->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\264", nullptr));
         label_5->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\276\320\261\321\200\320\260\320\267\320\270\321\202\321\214 \321\202\320\276\320\273\321\214\320\272\320\276", nullptr));
         libs_radioButton->setText(QApplication::translate("MainWindow", "\320\221\320\270\320\261\320\273\320\270\320\276\321\202\320\265\320\272\320\270", nullptr));
         apps_radioButton->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", nullptr));
