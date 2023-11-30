@@ -7,7 +7,7 @@ enum MENU_INDEX
 {
     DEPENDS,
     MISC,
-    CODE_ANALYSE,
+    TASKLIST,
     GENERATORS,
     SETTINGS
 };
@@ -65,9 +65,9 @@ void MainWindow::changedMenu(QAction *menuAction)
     } else if (menuAction->text() == "Разное")
     {
         ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::MISC);
-    } else if (menuAction->text() == "Код")
+    } else if (menuAction->text() == "Задачи")
     {
-        ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::CODE_ANALYSE);
+        ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::TASKLIST);
     } else if (menuAction->text() == "Генератор проектов")
     {
         ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::GENERATORS);
