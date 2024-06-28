@@ -210,6 +210,18 @@ bool ProjectBaseGenerator::generateProject(const ProjectBaseConfiguration &confi
         commandArgs << config.baseDir + "/" + projectName;
         m_utilClass.invoke("chown", commandArgs, m_utilClass.projectConfiguration().intSettings["Start process timeout"]);
 
+        m_utilClass.logChannel() << "[PROJECT GENERATOR] [ADDITIVE] [DEVELOPER TEST] Creating .gitignore";
+
+        QFile gitignoreFile(projectBaseDir + ".gitignore");
+        QTextStream gitignoreStream(&gitignoreFile);
+        gitignoreStream << "# Ignore temporary" << endl
+                        << "BIN" << endl
+                        << "BUILD" << endl
+                        << "Makefile" << endl
+                        << ".qmake.stash" << endl;
+        gitignoreFile.close();
+        m_utilClass.logChannel() << "[PROJECT GENERATOR] [ADDITIVE] [DEVELOPER TEST] Created .gitignore";
+
         m_utilClass.logChannel() << "[PROJECT GENERATOR] Project generated";
         return true;
     }
