@@ -156,3 +156,51 @@ void MainWindow::archive()
 
     emit printInfo("Архивация запущена");
 }
+
+void MainWindow::setupTaskModel()
+{
+    QVector<QVariant> headerData = {
+        "Название", "Номер", "Дата получения", "Дата сдачи", "Информация"
+    };
+    pTaskModel->setHeaderData(headerData);
+
+//    QVector<QVariant> testData;
+
+//    for (int i = 0; i < d->headItem->columnCount(); i++)
+//    {
+//        testData.push_back(QVariant(i));
+//    }
+
+//    uint nextId = 1;
+//    for (int i = 0; i < 3; i++)
+//    {
+//        testData[0] = QString("Its head %1").arg(i);
+//        addItem(testData, nextId++);
+//    }
+
+//    for (int j = 0; j < 2; j++)
+//    {
+//        testData[0] = QString("Its child %1 of head 1").arg(QString::number(j));
+//        addItem(testData, nextId++, 1);
+//    }
+
+//    for (int k = 0; k < 3; k++)
+//    {
+//        testData[0] = QString("Its child %1 of child 2 of head 1").arg(QString::number(k));
+//        addItem(testData, nextId++, 4);
+//    }
+}
+
+void MainWindow::saveTasks()
+{
+    emit printInfo("Сохраняю задачи");
+    m_taskManager.save();
+    emit printInfo("Задачи сохранены");
+}
+
+void MainWindow::loadTasks()
+{
+    emit printInfo("Загружаю задачи");
+    m_taskManager.load();
+    emit printInfo("Задачи загружены");
+}

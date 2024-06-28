@@ -8,6 +8,8 @@
 #include <QProcess>
 #include <QVector>
 
+#include <algorithm>
+
 using namespace ProjectUtility;
 
 FileSearcher::FileSearcher(QVector<Project> & apps, QVector<Project> & libs, UtilFunctionClass & utilClass):
@@ -126,7 +128,8 @@ void FileSearcher::parseFindOutput()
 
         projectFilePos = projectContents.indexOf("include");
 
-        isLib = (projectFilePos >= 0);
+        isLib = analyseProFile( QFileInfo(proFile).absolutePath() );
+
         foundProj.isLibrary = isLib;
 
         if (!isLib)
@@ -161,6 +164,22 @@ void FileSearcher::findProjectFiles()
     }
 
     m_utilClass.logChannel() << "[FILE SEARCHER] Found" << filesFound.size() << "files";
+}
+
+bool FileSearcher::analyseProFile(const QString &&filePath)
+{
+    QFile f(filePath);
+    f.open(QIODevice::ReadOnly);
+    std::string proFileData = f.readAll().data();
+    const std::string appType {"app"}, libType {"lib"};
+    std::string::iterator posOfDetected = std::search(proFileData.begin(), proFileData.end(), appType.begin(), appType.end());
+    if (posOfDetected == proFileData.end())
+    {
+        posOfDetected = std::search(proFileData.begin(), proFileData.end(), libType.begin(), libType.end());
+        if (posOfDetected == proFileData.end())
+            return false;
+    }
+    return true;
 }
 
 void FileSearcher::findFiles()

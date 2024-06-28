@@ -32,6 +32,7 @@ private:
     QString findOutput;
     QStringList filesFound;
     void findProjectFiles();
+    bool analyseProFile(const QString && filePath);
 };
 
 }

@@ -27,12 +27,14 @@ INCLUDEPATH += src
 SOURCES += \
         src/*.cpp \
         src/gui/*.cpp \
-        src/components/*.cpp
+        src/components/*.cpp \
+        src/treeItemModel/*.cpp
 
 HEADERS += \
         src/*.h \
         src/gui/*.h \
-        src/components/*.h
+        src/components/*.h \
+        src/treeItemModel/*.h
 
 FORMS += \
         src/gui/*.ui

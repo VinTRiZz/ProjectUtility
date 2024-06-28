@@ -3,21 +3,40 @@
 
 #include "extendedtypes.h"
 
-#include <QCoreApplication>
+#include <QApplication>
 
 namespace Configuration
 {
 
 struct ProjectConfiguration
 {
+    ProjectConfiguration() = default;
+    ProjectConfiguration(const QString & basePath)
+    {
+        // Main configurations
+        strSettings["Backup directory for changes"] = (basePath + "/saveChangesBackup").toUtf8().data();
+        strSettings["Log file name"] = (basePath + "/ProjectUtility.log").toUtf8().data();
+        strSettings["Configuration file path"] = (basePath + "/ProjectUtilityConfig.ini").toUtf8().data();
+        strSettings["Default base path"] = basePath.toUtf8().data();
+        strSettings["Program default directory"] = basePath.toUtf8().data();
+    }
+    ~ProjectConfiguration() = default;
+
+    ProjectConfiguration & operator =(const ProjectConfiguration & other)
+    {
+        strSettings = other.strSettings;
+        intSettings = other.intSettings;
+        return *this;
+    }
+
     std::map<QString, StringSetting> strSettings
     {
         // Main configurations
-        { "Backup directory for changes", (QCoreApplication::applicationDirPath() + "/saveChangesBackup").toUtf8().data() },
-        { "Log file name", (QCoreApplication::applicationDirPath() + "/ProjectUtility.log").toUtf8().data() },
-        { "Configuration file path", (QCoreApplication::applicationDirPath() + "/ProjectUtilityConfig.ini").toUtf8().data() },
-        { "Default base path", QCoreApplication::applicationDirPath().toUtf8().data()},
-        { "Program default directory", QCoreApplication::applicationDirPath().toUtf8().data() },
+        { "Backup directory for changes", "./saveChangesBackup" },
+        { "Log file name", "./ProjectUtility.log" },
+        { "Configuration file path", "./ProjectUtilityConfig.ini" },
+        { "Default base path", "" },
+        { "Program default directory", "" },
         { "Default main template path", "$$PWD/../../template.pri"},
         { "Automatic project list update", "true" },
 

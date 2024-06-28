@@ -14,6 +14,7 @@
 #include "components/projectdirectoryfileinterface.h"
 #include "components/cleaner.h"
 #include "components/projectbasegenerator.h"
+#include "components/taskmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void setBasePath(const QString & basePath);
+    void init();
 
 private slots:
     // Window actions
@@ -77,6 +81,8 @@ private:
     ProjectUtility::ProjectDirectoryFileInterface m_fileInterface;
     GraphWidget::DependencyGraphWidget * m_depGraphWidget;
     ProjectUtility::Cleaner * m_cleaner;
+    TaskManager m_taskManager;
+    std::shared_ptr<TreeProxy::TreeItemModel> pTaskModel {};
 
     QString basePath;
 
@@ -88,6 +94,9 @@ private:
     void setupSignals();
     void removeButtonFocuses();
     void setupSettings();
+    void setupTaskModel();
+    void saveTasks();
+    void loadTasks();
 
     void updateUsedLibraries();
 };

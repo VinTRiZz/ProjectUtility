@@ -29,7 +29,7 @@ public:
 
     QStringList getFileList(const QString & basePath, int fileType = FILE_REMOVE_TYPE::NO_FILE);
 
-    static void clearFromMistakes(QStringList &filesToRemove);
+    void clearFromMistakes(QStringList &filesToRemove);
 
 private:
     void addFiles(const QString &findOutput, QStringList & resultList);

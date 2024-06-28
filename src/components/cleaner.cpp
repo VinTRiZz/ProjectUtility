@@ -78,19 +78,50 @@ void Cleaner::clearFromMistakes(QStringList &filesToRemove)
 {
     // Check if all's good
     QStringList mistakes;
+    bool isCorrect;
+
+    QStringList apps = m_utilClass.getAppNameList();
+    QStringList libs = m_utilClass.getLibraryNameList();
+
     for (QString & file : filesToRemove)
     {
-        if (
-            !file.contains("/BIN") &&
-            !file.contains("/BUILD") &&
-            !(file.contains(QRegExp("\\/[^/]+\\.so[^\\/|\\w]+")) || file.contains(QRegExp("\\/[^/]+\\.so[^\\/|\\w.]+"))) &&
-            !file.contains("/Makefile") &&
-            !file.contains("/.qmake.stash")
-        )
+        // Check if it's project files, not something important
+        isCorrect = false;
+        for (auto & a : apps)
+        {
+            isCorrect = file.contains("/" + a + "/");
+            if (isCorrect)
+                break;
+        }
+        if (isCorrect)
+            continue;
+        for (auto & l : libs)
+        {
+            isCorrect = file.contains("/" + l + "/");
+            if (isCorrect)
+                break;
+        }
+        if (isCorrect)
+            continue;
+
+        if (!isCorrect)
         {
             UtilFunctionClass::getInstance().logChannel() << "[REMOVE CHECK] Invalid file:[" << file << "]";
             mistakes << file;
         }
+
+
+//        if (
+//            !file.contains("/BIN") &&
+//            !file.contains("/BUILD") &&
+//            !(file.contains(QRegExp("\\/[^/]+\\.so[^\\/|\\w]+")) || file.contains(QRegExp("\\/[^/]+\\.so[^\\/|\\w.]+"))) &&
+//            !file.contains("/Makefile") &&
+//            !file.contains("/.qmake.stash")
+//        )
+//        {
+//            UtilFunctionClass::getInstance().logChannel() << "[REMOVE CHECK] Invalid file:[" << file << "]";
+//            mistakes << file;
+//        }
     }
 
     for (QString & miss : mistakes)
@@ -112,7 +143,6 @@ void Cleaner::removeFiles(const QStringList &  filesToRemove)
 void Cleaner::addFiles(const QString &findOutput, QStringList & resultList)
 {
     QString buffer;
-
     int copyFrom = 0,
         copyTo = 0;
     for (; copyTo < findOutput.size(); copyTo++)

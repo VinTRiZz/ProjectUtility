@@ -19,6 +19,27 @@ MainWindow::MainWindow(QWidget *parent) :
     m_cleaner{ new ProjectUtility::Cleaner(m_fileInterface.utilClass()) }
 {
     ui->setupUi(this);
+}
+
+MainWindow::~MainWindow()
+{
+    saveTasks();
+    delete ui;
+}
+
+void MainWindow::setBasePath(const QString &basePath)
+{
+    m_fileInterface.configuration() = std::make_shared<Configuration::ProjectConfiguration>(Configuration::ProjectConfiguration(basePath));
+}
+
+
+void MainWindow::init()
+{
+    pTaskModel = std::shared_ptr<TreeProxy::TreeItemModel>(new TreeProxy::TreeItemModel(), std::default_delete<TreeProxy::TreeItemModel>());
+    setupTaskModel();
+    ui->taskList_treeView->setModel(pTaskModel.get());
+    m_taskManager.setModel(pTaskModel);
+    loadTasks();
 
     ui->menu_stackedWidget->setCurrentIndex(MENU_INDEX::DEPENDS);
 
@@ -38,14 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     removeButtonFocuses();
 
     if (m_fileInterface.configuration()->strSettings["Automatic project list update"] == "true")
-    {
         emit updateProjectList();
-    }
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::printInfo(const QString & what)
